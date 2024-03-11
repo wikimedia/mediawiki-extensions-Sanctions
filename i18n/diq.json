@@ -1,0 +1,21 @@
+{
+	"@metadata": {
+		"authors": [
+			"Mirzali"
+		]
+	},
+	"sanctions-form-target": "Hedef:",
+	"sanctions-submit": "Qeyd ke",
+	"sanctions-submit-error-other": "Kodê xeta $1",
+	"sanctions-row-label-normal": "Normal",
+	"sanctions-row-button-execute": "Darde ke",
+	"sanctions-topic-summary-status-label": "Weziyet: $1",
+	"sanctions-reason-not-logged-in": "Nêkewt cı.",
+	"sanctions-agree-template-title": "Peşti",
+	"sanctions-disagree-template-title": "Red",
+	"sanctions-agree-template-body": "Peşti",
+	"sanctions-disagree-template-body": "Red",
+	"sanctions-ve-vote-agree-tool-title": "Peşti",
+	"sanctions-ve-vote-disagree-tool-title": "Red",
+	"sanctions-ve-agree-days-inspector-remove-label": "Wedare"
+}

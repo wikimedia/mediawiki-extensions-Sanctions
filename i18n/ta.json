@@ -1,0 +1,12 @@
+{
+	"@metadata": {
+		"authors": [
+			"ElangoRamanujam",
+			"Fahimrazick"
+		]
+	},
+	"sanctions-row-label-pending": "நிலுவையிலுள்ளது",
+	"sanctions-disagree-template-body": "எதிர்ப்பு",
+	"sanctions-ve-agree-days-inspector-remove-label": "அகற்று",
+	"sanctions-ve-agree-days-inspector-invalid-value": "\"$1\" செல்லாது"
+}

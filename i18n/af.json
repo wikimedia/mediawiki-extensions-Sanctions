@@ -1,0 +1,20 @@
+{
+	"@metadata": {
+		"authors": [
+			"Fwolff",
+			"Joris Darlington Quarshie"
+		]
+	},
+	"sanctions-empty": "Daar is geen sanksie nie.",
+	"sanctions-empty-now": "Daar is nou geen sanksie nie.",
+	"sanctions-empty-about-now": "Daar is vir nou geen $1 sanksie nie.",
+	"sanctions-sactions-form-header": "Skep 'n nuwe sanksie",
+	"sanctions-unable-create-new": "U kan weens die volgende rede(s) nie aan die sanksieproses deelneem nie. Besoek [[Project:Block]] vir detail.",
+	"sanctions-unable-create-new-logged-in": "U kan weens die volgende redes (s) nie aan die sanksieproses deelneem nie. Besoek [[Project:Block]] vir detail",
+	"sanctions-submit-error-failed-to-add-topic": "Kon nie 'n sanksie skep nie.",
+	"sanctions-submit-massage-added-topic": "Die sanksie is geskep.($1)",
+	"sanctions-submit-massage-switched-emergency": "Die prioriteit van die sanksie is noodgeval.($1)",
+	"sanctions-submit-massage-executed-sanction": "Die sanksie word uitgevoer.($1)",
+	"sanctions-topic-summary-status-immediate-rejection": "Onmiddellik verwerp",
+	"sanctions-topic-summary-reason-canceled-by-author": "Gekanselleer deur die skrywer van die sanksie."
+}

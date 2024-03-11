@@ -1,0 +1,15 @@
+{
+	"@metadata": {
+		"authors": [
+			"Starladin"
+		]
+	},
+	"sanctions-empty": "Degöna sanziun.",
+	"sanctions-empty-now": "Degöna sanziun al momënt.",
+	"sanctions-sactions-form-header": "Cheriëia na sanziun nöia",
+	"sanctions-unable-create-new-logged-in": "Ne pos nia tó pert ala prozedöra de sanziun aladô dla(dles) gauja(gaujes) suandënta (suandëntes). Ciara por detais",
+	"sanctions-submit-error-failed-to-add-topic": "Nia jüda da cherié na sanziun",
+	"sanctions-submit-massage-added-topic": "Al é gnü cherié la sanziun",
+	"sanctions-topic-summary-status-immediate-rejection": "Refodé atira",
+	"sanctions-topic-summary-reason-canceled-by-author": "Straiché dal autur dla sanziun."
+}

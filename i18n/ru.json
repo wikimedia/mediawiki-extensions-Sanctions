@@ -1,0 +1,13 @@
+{
+	"@metadata": {
+		"authors": [
+			"PlushBoy"
+		]
+	},
+	"sanctions-form-target": "Цель:",
+	"sanctions-submit-error-no-username": "Имя участника пустое.",
+	"sanctions-submit-error-other": "Код ошибки: $1",
+	"sanctions-row-label-not-voted": "Нет проголосовавших",
+	"sanctions-topic-summary-status-passed": "Прошло",
+	"sanctions-topic-summary-deadline": "Конечная дата: $1"
+}

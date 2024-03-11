@@ -1,0 +1,10 @@
+{
+	"@metadata": {
+		"authors": [
+			"Joao Xavier"
+		]
+	},
+	"sanctions-empty": "Nula sanciono existas.",
+	"sanctions-empty-now": "Nula sanciono existas nun.",
+	"sanctions-submit-error-failed-to-add-topic": "Ne povis krear sanciono."
+}
