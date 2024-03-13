@@ -1,0 +1,11 @@
+{
+	"@metadata": {
+		"authors": [
+			"Beta16"
+		]
+	},
+	"sanctions-submit": "Invia",
+	"sanctions-row-button-execute": "Esegui",
+	"sanctions-ve-agree-days-inspector-title": "Scadenza",
+	"sanctions-ve-agree-days-inspector-invalid-value": "\"$1\" non è valido."
+}

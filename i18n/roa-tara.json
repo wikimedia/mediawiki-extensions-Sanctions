@@ -1,0 +1,12 @@
+{
+	"@metadata": {
+		"authors": [
+			"Joetaras"
+		]
+	},
+	"sanctions-row-label-rejected": "Scettate",
+	"sanctions-link-on-user-tool": "Sanziune",
+	"sanctions-link-on-user-contributes": "Sanziune",
+	"sanctions-agree-with-day-template-body": "Supporte pe bloccà pe $1 sciurne",
+	"sanctions-ve-vote-agree-tool-title": "Supporte"
+}

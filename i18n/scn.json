@@ -1,0 +1,9 @@
+{
+	"@metadata": {
+		"authors": [
+			"Ajeje Brazorf"
+		]
+	},
+	"sanctions-submit-error-no-username": "Lu nomu utenti è vacanti.",
+	"sanctions-ve-agree-days-inspector-invalid-value": "\"$1\" nun è vàlidu."
+}

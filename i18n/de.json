@@ -1,0 +1,27 @@
+{
+	"@metadata": {
+		"authors": [
+			"Brettchenweber",
+			"Umlaut",
+			"Zabe"
+		]
+	},
+	"sanctions-type-insulting-name": "Beleidigenden Benutzernamen melden",
+	"sanctions-topic-no-description": "Keine Beschreibung vorhanden.",
+	"sanctions-submit-error-no-username": "Der Benutezrname ist leer.",
+	"sanctions-submit-error-invaild-username": "Der Benutzer $1 ist nicht vorhanden.",
+	"sanctions-submit-error-other": "Fehlercode $1",
+	"sanctions-submit-massage-other": "Code $1",
+	"sanctions-row-label-rejected": "Abgelehnt",
+	"sanctions-row-label-voted": "Abgestimmt",
+	"sanctions-row-label-not-voted": "Nicht abgestimmt",
+	"sanctions-row-button-execute": "Ausführen",
+	"sanctions-row-button-toggle-emergency": "Priorität ändern",
+	"sanctions-topic-title": "$2 von $1",
+	"sanctions-topic-summary-status-label": "Status: $1",
+	"sanctions-topic-summary-status-rejected": "Abgelehnt",
+	"sanctions-topic-summary-deadline": "Enddatum: $1",
+	"sanctions-reason-not-logged-in": "Nicht angemeldet",
+	"sanctions-ve-agree-days-inspector-remove-label": "Entfernen",
+	"sanctions-ve-agree-days-inspector-invalid-value": "\" $1 \" ist ungültig."
+}

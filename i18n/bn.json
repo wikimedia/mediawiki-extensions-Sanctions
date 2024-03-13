@@ -1,0 +1,15 @@
+{
+	"@metadata": {
+		"authors": [
+			"আফতাবুজ্জামান"
+		]
+	},
+	"sanctions-submit": "জমা দিন",
+	"sanctions-reason-not-logged-in": "প্রবেশ করেন নি।",
+	"sanctions-disagree-template-title": "বিরোধিতা",
+	"sanctions-agree-template-body": "সমর্থন",
+	"sanctions-disagree-template-body": "বিরোধিতা",
+	"sanctions-ve-vote-agree-tool-title": "সমর্থন",
+	"sanctions-ve-agree-days-inspector-remove-label": "সরান",
+	"sanctions-ve-agree-days-inspector-invalid-value": "\"$1\" বৈধ নয়।"
+}

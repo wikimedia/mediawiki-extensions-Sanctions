@@ -1,0 +1,25 @@
+{
+	"@metadata": {
+		"authors": [
+			"Eleassar"
+		]
+	},
+	"sanctions": "Vse sankcije",
+	"sanctions-sactions-form-header": "Ustvari novo sankcijo",
+	"sanctions-content-placeholder": "Vnesite vsebino sankcije.",
+	"sanctions-topic-no-description": "Naveden ni noben opis.",
+	"sanctions-submit-error-invalid-token": "Neveljaven žeton.",
+	"sanctions-submit-error-failed-to-add-topic": "Sankcije ni bilo mogoče ustvariti.",
+	"sanctions-submit-error-failed-to-toggle-process": "Sprememba vrste sankcije ni uspela.",
+	"sanctions-submit-error-failed-to-execute": "Sankcije ni bilo mogoče izvesti.",
+	"sanctions-submit-error-invaild-username": "Uporabnik $1 ne obstaja.",
+	"sanctions-submit-error-other": "Oznaka napake $1",
+	"sanctions-row-button-toggle-emergency": "Spremeni prioriteto",
+	"sanctions-topic-auto-reply-no-count": "Zgornji odgovor se ne šteje, ker:",
+	"sanctions-log-take-measure": "[[Topic:$1|Sankcija]] sprejeta.",
+	"sanctions-log-immediate-rejection": "[[Topic:$1|Sankcija]] zavrnjena.",
+	"sanctions-reason-not-logged-in": "Niste prijavljeni.",
+	"sanctions-reason-failed-to-load-registration": "Pridobivanje datuma registracije računa ni uspela.",
+	"echo-category-title-sanctions-against-me": "Sankcija zoper mene",
+	"sanctions-pref-tooltip-sanctions-against-me": "Obvesti me, ko je zoper mene predlagana ali uvedena sankcija."
+}

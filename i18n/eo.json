@@ -1,0 +1,12 @@
+{
+	"@metadata": {
+		"authors": [
+			"Javiero"
+		]
+	},
+	"sanctions-content-placeholder": "Enigu la enhavon de la sankcio.",
+	"sanctions-topic-auto-reply-unable-self-agree": "Ne povas voĉdoni al sankcio farita de vi mem.",
+	"sanctions-link-on-diff": "Proponu novan sankcion bazitan sur ĉi tio",
+	"sanctions-link-on-history": "Proponu novan sankcion bazitan sur tio ĉi",
+	"echo-category-title-sanctions-against-me": "Sankcio kontraŭ mi"
+}

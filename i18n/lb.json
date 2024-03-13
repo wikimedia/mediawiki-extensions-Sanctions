@@ -1,0 +1,24 @@
+{
+	"@metadata": {
+		"authors": [
+			"Les Meloures",
+			"Robby"
+		]
+	},
+	"sanctions-type-block": "Ufro fir ze spären",
+	"sanctions-form-target": "Zil:",
+	"sanctions-submit-error-no-permission": "Net erlaabt.",
+	"sanctions-submit-error-no-username": "Benotzernumm ass eidel.",
+	"sanctions-submit-error-invaild-username": "Benotzer $1 gëtt et net.",
+	"sanctions-submit-error-other": "Feelercode $1",
+	"sanctions-row-label-emergency": "Urgence",
+	"sanctions-row-label-normal": "Normal",
+	"sanctions-row-button-execute": "Maachen",
+	"sanctions-topic-title": "$2 vu(n) $1",
+	"sanctions-topic-summary-deadline": "Schlussdatum: $1",
+	"sanctions-reason-not-logged-in": "Net ageloggt.",
+	"sanctions-link-on-user-contributes": "Sanktiounen",
+	"sanctions-ve-vote-agree-tool-title": "Ënnerstëtzung",
+	"sanctions-ve-agree-days-inspector-remove-label": "Ewechhuelen",
+	"sanctions-ve-agree-days-inspector-invalid-value": "\"$1\" ass net valabel."
+}

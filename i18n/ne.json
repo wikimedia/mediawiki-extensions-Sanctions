@@ -1,0 +1,11 @@
+{
+	"@metadata": {
+		"authors": [
+			"पर्वत सुबेदी",
+			"बडा काजी"
+		]
+	},
+	"sanctions-empty": "यहाँ कुनै स्वीकृति छैन।",
+	"sanctions-topic-summary-status-label": "स्थिति: $1",
+	"sanctions-reason-not-logged-in": "तपाईंले प्रवेश गर्नुभएको छैन।"
+}
