@@ -46,7 +46,7 @@ class Sanction {
 	async createVoters( bot, size = 3 ) {
 		const voters = [];
 		for ( let count = 0; count < size; count++ ) {
-			const username = Util.getTestString( `Sanction-voter${count}-` );
+			const username = Util.getTestString( `Sanction-voter${ count }-` );
 			const password = Util.getTestString();
 			await Api.createAccount( bot, username, password );
 			const voter = await Api.bot( username, password );

@@ -14,9 +14,11 @@ class Config {
 	static get VERIFICATION_PERIOD() {
 		return VERIFICATION_PERIOD;
 	}
+
 	static get VERIFICATION_EDITS() {
 		return VERIFICATION_EDITS;
 	}
+
 	/** @return {number} In seconds */
 	static get VOTING_PERIOD() {
 		return VOTING_PERIOD;

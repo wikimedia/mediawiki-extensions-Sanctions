@@ -5,18 +5,23 @@ class SanctionsPage extends Page {
 	get reasonsDisabledParticipation() {
 		return $( '.sanctions-reasons-disabled-participation' );
 	}
+
 	get target() {
 		return $( '#sanctions-target' );
 	}
+
 	get forInsultingName() {
 		return $( '#forInsultingName' );
 	}
+
 	get submitButton() {
 		return $( '#sanctions-submit-button' );
 	}
+
 	get sanctions() {
 		return $( '.sanctions' );
 	}
+
 	get sanctionLink() {
 		return $( '.sanction a.sanction-type' );
 	}

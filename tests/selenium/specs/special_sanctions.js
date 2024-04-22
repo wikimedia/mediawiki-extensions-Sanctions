@@ -77,14 +77,14 @@ describe( 'Special:Sanctions', () => {
 
 		await UserLoginPage.loginAdmin();
 		await SanctionsPage.open();
-		assert.ok( await $( `#sanction-${uuid}` ).isExisting() );
+		assert.ok( await $( `#sanction-${ uuid }` ).isExisting() );
 
 		// Votes
 		await FlowApi.reply( '{{Oppose}}', uuid, bot );
 		browser.pause( 500 );
 		browser.refresh();
 
-		assert.ok( await $( `#sanction-${uuid}.voted` ).isExisting() );
+		assert.ok( await $( `#sanction-${ uuid }.voted` ).isExisting() );
 
 		// Closes the sanction
 		for ( let count = 0; count < 2; count++ ) {
