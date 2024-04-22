@@ -5,7 +5,7 @@ class FlowApi {
 		await bot.request( {
 			action: 'flow',
 			submodule: 'reply',
-			page: `Topic:${uuid}`,
+			page: `Topic:${ uuid }`,
 			repreplyTo: uuid,
 			repcontent: msg,
 			repformat: 'wikitext',
@@ -17,7 +17,7 @@ class FlowApi {
 		const res = await bot.request( {
 			action: 'flow',
 			submodule: 'view-topic-summary',
-			page: `Topic:${uuid}`,
+			page: `Topic:${ uuid }`,
 			vtsformat: 'wikitext'
 		} );
 		const prevRev =
@@ -26,7 +26,7 @@ class FlowApi {
 		await bot.request( {
 			action: 'flow',
 			submodule: 'edit-topic-summary',
-			page: `Topic:${uuid}`,
+			page: `Topic:${ uuid }`,
 			// eslint-disable-next-line camelcase
 			etsprev_revision: prevRev,
 			etssummary: msg,

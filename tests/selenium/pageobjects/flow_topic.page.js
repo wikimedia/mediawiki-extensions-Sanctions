@@ -5,12 +5,15 @@ class FlowTopic extends Page {
 	get replyButton() {
 		return $( '.flow-ui-replyWidget .oo-ui-inputWidget-input' );
 	}
+
 	get replyEditor() {
 		return $( '.flow-ui-replyWidget [role="textbox"]' );
 	}
+
 	get replySaveButton() {
 		return $( '.flow-ui-editorControlsWidget-saveButton a' );
 	}
+
 	get topicSummary() {
 		return $( '.flow-topic-summary-content' );
 	}

@@ -152,20 +152,20 @@ class SpacialSanctions extends SpecialPage {
 		$newRevisionId = 0;
 
 		switch ( count( $parts ) ) {
-		case 0:
-			return;
-		case 1:
-			$targetName = (string)$parts[0];
-			break;
-		case 2:
-			$targetName = (string)$parts[0];
-			$newRevisionId = (int)$parts[1];
-			break;
-		case 3:
-			$targetName = (string)$parts[0];
-			$oldRevisionId = (int)$parts[1];
-			$newRevisionId = (int)$parts[2];
-			break;
+			case 0:
+				return;
+			case 1:
+				$targetName = (string)$parts[0];
+				break;
+			case 2:
+				$targetName = (string)$parts[0];
+				$newRevisionId = (int)$parts[1];
+				break;
+			case 3:
+				$targetName = (string)$parts[0];
+				$oldRevisionId = (int)$parts[1];
+				$newRevisionId = (int)$parts[2];
+				break;
 		}
 
 		$target = $this->userFactory->newFromName( $targetName );
@@ -281,95 +281,96 @@ class SpacialSanctions extends SpecialPage {
 		// 102 중복된 부적절한 사용자명 변경 건의
 		if ( !RequestContext::getMain()->getCsrfTokenSet()->getToken( 'sanctions' )->match(
 			$request->getVal( 'token' ) ) ) {
-			list( $query['showResult'], $query['errorCode'] ) = [ true, 0 ];
+			[ $query['showResult'], $query['errorCode'] ] = [ true, 0 ];
 			// '토큰이 일치하지 않습니다.'
-		} else { switch ( $action ) {
-			case 'write':
-				// 제재안 올리기
-				$user = $this->getUser();
-				$targetName = $request->getVal( 'target' );
-				$forInsultingName = $request->getBool( 'forInsultingName' );
-				$content = $request->getVal( 'content' ) ?:
-					$this->msg( 'sanctions-topic-no-description' )->text();
+		} else {
+			switch ( $action ) {
+				case 'write':
+					// 제재안 올리기
+					$user = $this->getUser();
+					$targetName = $request->getVal( 'target' );
+					$forInsultingName = $request->getBool( 'forInsultingName' );
+					$content = $request->getVal( 'content' ) ?:
+						$this->msg( 'sanctions-topic-no-description' )->text();
 
-				if ( !$targetName ) {
-					list( $query['showResult'], $query['errorCode'] ) = [ true, 100 ];
-					// '사용자명이 입력되지 않았습니다.'
-					break;
-				}
-
-				$target = $this->userFactory->newFromName( $targetName );
-
-				if ( !$target || !$target->isRegistered() ) {
-					list( $query['showResult'], $query['errorCode'], $query['targetName'] )
-						= [ true, 101, $targetName ];
-					// '"'.$targetName.'"라는 이름의 사용자가 존재하지 않습니다.'
-					break;
-				}
-
-				// 만일 동일 사용자명에 대한 부적절한 사용자명 변경 건의안이 이미 있다면 중복 작성을 막습니다.
-				if ( $forInsultingName ) {
-					$existingSanction = $this->sanctionStore->findByTarget( $target, true, false );
-					if ( $existingSanction && count( $existingSanction ) > 0 ) {
-						$existingSanction = $existingSanction[0];
-						list(
-							$query['showResult'],
-							$query['errorCode'],
-							$query['targetName'],
-							$query['uuid']
-						) = [
-							true,
-							102,
-							$targetName,
-							$existingSanction->getWorkflowId()->getAlphaDecimal()
-						];
+					if ( !$targetName ) {
+						[ $query['showResult'], $query['errorCode'] ] = [ true, 100 ];
+						// '사용자명이 입력되지 않았습니다.'
 						break;
 					}
-				}
 
-				$sanction = Sanction::write( $user, $target, $forInsultingName, $content );
+					$target = $this->userFactory->newFromName( $targetName );
 
-				if ( !$sanction ) {
-					list( $query['showResult'], $query['errorCode'] ) = [ true, 2 ];
-					// '제재안 작성에 실패하였습니다.'
+					if ( !$target || !$target->isRegistered() ) {
+						[ $query['showResult'], $query['errorCode'], $query['targetName'] ]
+							= [ true, 101, $targetName ];
+						// '"'.$targetName.'"라는 이름의 사용자가 존재하지 않습니다.'
+						break;
+					}
+
+					// 만일 동일 사용자명에 대한 부적절한 사용자명 변경 건의안이 이미 있다면 중복 작성을 막습니다.
+					if ( $forInsultingName ) {
+						$existingSanction = $this->sanctionStore->findByTarget( $target, true, false );
+						if ( $existingSanction && count( $existingSanction ) > 0 ) {
+							$existingSanction = $existingSanction[0];
+							[
+								$query['showResult'],
+								$query['errorCode'],
+								$query['targetName'],
+								$query['uuid']
+							] = [
+								true,
+								102,
+								$targetName,
+								$existingSanction->getWorkflowId()->getAlphaDecimal()
+							];
+							break;
+						}
+					}
+
+					$sanction = Sanction::write( $user, $target, $forInsultingName, $content );
+
+					if ( !$sanction ) {
+						[ $query['showResult'], $query['errorCode'] ] = [ true, 2 ];
+						// '제재안 작성에 실패하였습니다.'
+						break;
+					}
+
+					[ $query['showResult'], $query['code'], $query['uuid'] ]
+						= [ true, 0, $sanction->getWorkflowId()->getAlphaDecimal() ];
+					// '제재안 '.Linker::link( $sanction->getTopic() ).'가 작성되었습니다.'
 					break;
-				}
+				case 'toggle-emergency':
+					// 제재안 절차 변경( 일반 <-> 긴급 )
+					$user = $this->getUser();
 
-				list( $query['showResult'], $query['code'], $query['uuid'] )
-					= [ true, 0, $sanction->getWorkflowId()->getAlphaDecimal() ];
-				// '제재안 '.Linker::link( $sanction->getTopic() ).'가 작성되었습니다.'
-				break;
-			case 'toggle-emergency':
-				// 제재안 절차 변경( 일반 <-> 긴급 )
-				$user = $this->getUser();
+					// 차단 권한이 없다면 절차를 변경할 수 없습니다.
+					if ( !$user->isAllowed( 'block' ) ) {
+						[ $query['showResult'], $query['errorCode'] ] = [ true, 1 ];
+						// '권한이 없습니다.'
+						break;
+					}
 
-				// 차단 권한이 없다면 절차를 변경할 수 없습니다.
-				if ( !$user->isAllowed( 'block' ) ) {
-					list( $query['showResult'], $query['errorCode'] ) = [ true, 1 ];
-					// '권한이 없습니다.'
+					$sanctionId = (int)$request->getVal( 'sanctionId' );
+					$sanction = $this->sanctionStore->newFromId( $sanctionId );
+
+					if ( !$sanction || !$sanction->toggleEmergency( $user ) ) {
+						[ $query['showResult'], $query['errorCode'], $query['uuid'] ]
+							= [ true, 3, $sanction->getWorkflowId()->getAlphaDecimal() ];
+						// '절차 변경에 실패하였습니다.'
+						break;
+					}
+					if ( $sanction->isEmergency() ) {
+						[ $query['showResult'], $query['code'], $query['uuid'] ]
+							= [ true, 1, $sanction->getWorkflowId()->getAlphaDecimal() ];
+						// '절차를 긴급으로 바꾸었습니다.'
+					} else {
+						[ $query['showResult'], $query['code'], $query['uuid'] ]
+						= [ true, 2, $sanction->getWorkflowId()->getAlphaDecimal() ];
+						// '절차를 일반으로 바꾸었습니다.'
+					}
 					break;
-				}
-
-				$sanctionId = (int)$request->getVal( 'sanctionId' );
-				$sanction = $this->sanctionStore->newFromId( $sanctionId );
-
-				if ( !$sanction || !$sanction->toggleEmergency( $user ) ) {
-					list( $query['showResult'], $query['errorCode'], $query['uuid'] )
-					= [ true, 3, $sanction->getWorkflowId()->getAlphaDecimal() ];
-					// '절차 변경에 실패하였습니다.'
-					break;
-				}
-				if ( $sanction->isEmergency() ) {
-					list( $query['showResult'], $query['code'], $query['uuid'] )
-					= [ true, 1, $sanction->getWorkflowId()->getAlphaDecimal() ];
-					// '절차를 긴급으로 바꾸었습니다.'
-				} else {
-					list( $query['showResult'], $query['code'], $query['uuid'] )
-					= [ true, 2, $sanction->getWorkflowId()->getAlphaDecimal() ];
-					// '절차를 일반으로 바꾸었습니다.'
-				}
-				break;
-		}
+			}
 		}
 
 		$output->redirect( $this->getPageTitle()->getLocalURL( $query ) );
@@ -398,26 +399,26 @@ class SpacialSanctions extends SpecialPage {
 			$this->linkRenderer->makeLink( $this->sanctionStore->newFromWorkflowId( $uuid )->getWorkflow() ) :
 			'';
 		switch ( $errorCode ) {
-		case 0:
-			return $this->msg( "sanctions-submit-error-invalid-token" )->text();
-		case 1:
-			return $this->msg( "sanctions-submit-error-no-permission" )->text();
-		case 2:
-			return $this->msg( "sanctions-submit-error-failed-to-add-topic" )->text();
-		case 3:
-			return $this->msg( "sanctions-submit-error-failed-to-toggle-process" )->text();
-		case 4:
-			return $this->msg( "sanctions-submit-error-failed-to-execute" )->text();
-		case 100:
-			return $this->msg( "sanctions-submit-error-no-username" )->text();
-		case 101:
-			return $this->msg( "sanctions-submit-error-invaild-username", $targetName )->text();
-		case 102:
-			return $this->msg(
+			case 0:
+				return $this->msg( "sanctions-submit-error-invalid-token" )->text();
+			case 1:
+				return $this->msg( "sanctions-submit-error-no-permission" )->text();
+			case 2:
+				return $this->msg( "sanctions-submit-error-failed-to-add-topic" )->text();
+			case 3:
+				return $this->msg( "sanctions-submit-error-failed-to-toggle-process" )->text();
+			case 4:
+				return $this->msg( "sanctions-submit-error-failed-to-execute" )->text();
+			case 100:
+				return $this->msg( "sanctions-submit-error-no-username" )->text();
+			case 101:
+				return $this->msg( "sanctions-submit-error-invaild-username", $targetName )->text();
+			case 102:
+				return $this->msg(
 					"sanctions-submit-error-insulting-report-already-exist", [ $targetName, $link ]
 				)->text();
-		default:
-			return $this->msg( "sanctions-submit-error-other", (string)$errorCode )->text();
+			default:
+				return $this->msg( "sanctions-submit-error-other", (string)$errorCode )->text();
 		}
 	}
 
@@ -431,16 +432,16 @@ class SpacialSanctions extends SpecialPage {
 			$this->linkRenderer->makeLink( $this->sanctionStore->newFromWorkflowId( $uuid )->getWorkflow() ) :
 			'';
 		switch ( $code ) {
-		case 0:
-			return $this->msg( "sanctions-submit-massage-added-topic", $link )->text();
-		case 1:
-			return $this->msg( "sanctions-submit-massage-switched-emergency", $link )->text();
-		case 2:
-			return $this->msg( "sanctions-submit-massage-switched-normal", $link )->text();
-		case 3:
-			return $this->msg( "sanctions-submit-massage-executed-sanction", $link )->text();
-		default:
-			return $this->msg( "sanctions-submit-massage-other", (string)$code )->text();
+			case 0:
+				return $this->msg( "sanctions-submit-massage-added-topic", $link )->text();
+			case 1:
+				return $this->msg( "sanctions-submit-massage-switched-emergency", $link )->text();
+			case 2:
+				return $this->msg( "sanctions-submit-massage-switched-normal", $link )->text();
+			case 3:
+				return $this->msg( "sanctions-submit-massage-executed-sanction", $link )->text();
+			default:
+				return $this->msg( "sanctions-submit-massage-other", (string)$code )->text();
 		}
 	}
 

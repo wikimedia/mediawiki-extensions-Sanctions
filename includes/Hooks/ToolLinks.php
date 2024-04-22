@@ -17,21 +17,21 @@ class ToolLinks implements
 	\MediaWiki\Hook\HistoryToolsHook,
 	\MediaWiki\Hook\SidebarBeforeOutputHook,
 	\MediaWiki\Hook\UserToolLinksEditHook
-	{
-		/** @var UserFactory */
-		private $userFactory;
+{
+	/** @var UserFactory */
+	private $userFactory;
 
-		/** @var LinkRenderer */
-		private $linkRenderer;
+	/** @var LinkRenderer */
+	private $linkRenderer;
 
-		/**
-		 * @param UserFactory $userFactory
-		 * @param LinkRenderer $linkRenderer
-		 */
-		public function __construct( UserFactory $userFactory, LinkRenderer $linkRenderer ) {
-			$this->userFactory = $userFactory;
-			$this->linkRenderer = $linkRenderer;
-		}
+	/**
+	 * @param UserFactory $userFactory
+	 * @param LinkRenderer $linkRenderer
+	 */
+	public function __construct( UserFactory $userFactory, LinkRenderer $linkRenderer ) {
+		$this->userFactory = $userFactory;
+		$this->linkRenderer = $linkRenderer;
+	}
 
 	/**
 	 * (talk|contribs)
@@ -139,8 +139,8 @@ class ToolLinks implements
 	 */
 	public function onContributionsToolLinks( $id, Title $title, array &$tools, SpecialPage $specialPage ) {
 		$tools['sanctions'] = $specialPage->getLinkRenderer()->makeKnownLink(
-				SpecialPage::getTitleFor( 'Sanctions', $this->userFactory->newFromId( $id )->getName() ),
-				wfMessage( 'sanctions-link-on-user-contributes' )->text()
-			);
+			SpecialPage::getTitleFor( 'Sanctions', $this->userFactory->newFromId( $id )->getName() ),
+			wfMessage( 'sanctions-link-on-user-contributes' )->text()
+		);
 	}
 }

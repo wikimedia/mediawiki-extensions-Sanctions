@@ -36,25 +36,25 @@ class SanctionsPagerTest extends MediaWikiIntegrationTestCase {
 		// Make MessageCache to return sanctions-voting-right-verification-edits as 0
 		$mock = $this->createMock( MessageCache::class );
 		$mock->method( 'get' )
-			->will( $this->returnValue( '0' ) );
+			->willReturn( '0' );
 		$mock->method( 'transform' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 		$this->setService( 'MessageCache', $mock );
 
 		$user = $this->createMock( User::class );
 
 		$user->expects( $this->any() )
 			->method( 'isAnon' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 		$user->expects( $this->any() )
 			->method( 'getRegistration' )
-			->will( $this->returnValue( wfTimestamp( TS_MW, 1 ) ) );
+			->willReturn( wfTimestamp( TS_MW, 1 ) );
 		$user->expects( $this->any() )
 			->method( 'isAllowed' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 		$user->expects( $this->any() )
 			->method( 'isBlocked' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		return $user;
 	}
