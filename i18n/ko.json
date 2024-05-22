@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Ykhwong",
-			"렌즈"
+			"렌즈",
+			"Suleiman the Magnificent Television"
 		]
 	},
 	"sanctions-desc": "사용자가 제재안을 관리할 수 있게 합니다",
@@ -17,7 +18,7 @@
 	"sanctions-empty-about-now": "현재 의결 중인 $1 님에 대한 제재안이 없습니다.",
 	"sanctions-sactions-form-header": "새 제재안 올리기",
 	"sanctions-unable-create-new": "다음의 이유로 제재 절차에 참여할 수 없습니다. 자세한 내용은 [[Project:Block|차단]]을 참고해 주세요.",
-	"sanctions-unable-create-new-logged-in": "다음의 이유로 현재 $1 님께서는 제재 절차에 참여할 수 없습니다. [[Project:제재 정책|제재 정책]]을 참고해 주세요.",
+	"sanctions-unable-create-new-logged-in": "다음의 이유로 제재 절차에 참여할 수 없습니다. 자세한 내용은 [[Project:Block|차단]]을 참고해 주세요.",
 	"sanctions-form-target": "대상 :",
 	"sanctions-form-for-insulting-name": "부적절한 사용자명",
 	"sanctions-content-placeholder": "제재안의 내용을 입력하십시오.",
