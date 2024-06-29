@@ -12,6 +12,7 @@ use Flow\Model\PostRevision;
 use Flow\Model\PostSummary;
 use Flow\Model\UUID;
 use Flow\WorkflowLoaderFactory;
+use IDBAccessObject;
 use MediaWiki\MediaWikiServices;
 use Psr\Log\NullLogger;
 use RequestContext;
@@ -101,7 +102,7 @@ class FlowUtil {
 	public static function convertToFlow( $title ) {
 		$logger = new NullLogger;
 		$user = Utils::getBot();
-		if ( $title->exists( Title::READ_LATEST ) ) {
+		if ( $title->exists( IDBAccessObject::READ_LATEST ) ) {
 			$converter = new Converter(
 				wfGetDB( DB_PRIMARY ),
 				Container::get( 'importer' ),
