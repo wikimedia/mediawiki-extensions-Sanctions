@@ -10,8 +10,7 @@
 		"MediaWiki": ">= 1.35.0",
 		"extensions": {
 			"Echo": "*",
-			"Flow": "*",
-			"Renameuser": "*"
+			"Flow": "*"
 		}
 	},
 	"AutoloadNamespaces": {
