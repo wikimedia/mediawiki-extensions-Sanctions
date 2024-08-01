@@ -5,7 +5,6 @@ namespace MediaWiki\Extension\Sanctions\Tests\Integration\Hooks;
 use MediaWiki\Extension\Sanctions\Hooks\Main;
 use MediaWiki\Extension\Sanctions\SanctionStore;
 use MediaWiki\Extension\Sanctions\VoteStore;
-use MediaWiki\MediaWikiServices;
 use MediaWikiIntegrationTestCase;
 
 /**
@@ -17,12 +16,13 @@ class MainTest extends MediaWikiIntegrationTestCase {
 	 * @covers \MediaWiki\Extension\Sanctions\Hooks\Main::__construct
 	 */
 	public function testConstruct() {
-		$sanctionStore = new SanctionStore( MediaWikiServices::getInstance()->getDBLoadBalancer() );
-		$voteStore = new VoteStore( MediaWikiServices::getInstance()->getDBLoadBalancer() );
+		$services = $this->getServiceContainer();
+		$sanctionStore = new SanctionStore( $services->getDBLoadBalancer() );
+		$voteStore = new VoteStore( $services->getDBLoadBalancer() );
 		$actual = new Main(
 			$sanctionStore,
 			$voteStore,
-			MediaWikiServices::getInstance()->getUserFactory()
+			$services->getUserFactory()
 		);
 		$this->assertInstanceOf( Main::class, $actual );
 	}
