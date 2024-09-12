@@ -28,7 +28,7 @@ class FlowTopic extends Page {
 	}
 
 	async open( subpage ) {
-		super.openTitle( 'Special:Sanctions/' + subpage, { uselang: 'qqx' } );
+		await super.openTitle( 'Special:Sanctions/' + subpage, { uselang: 'qqx' } );
 	}
 }
 module.exports = new FlowTopic();

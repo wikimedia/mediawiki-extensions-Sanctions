@@ -63,7 +63,7 @@ describe( 'Special:Sanctions', () => {
 
 		await SanctionsPage.waitUntilUserIsNotNew();
 
-		browser.refresh();
+		await browser.refresh();
 		const warning = await SanctionsPage.reasonsDisabledParticipation.getText();
 		assert.ok( warning === '', 'There should be no warnings, but: ' + warning );
 	} );
@@ -72,7 +72,7 @@ describe( 'Special:Sanctions', () => {
 		// Creates a sanction
 		const username = Util.getTestString( 'Sanction-another-' );
 		const password = Util.getTestString();
-		Api.createAccount( bot, username, password );
+		await Api.createAccount( bot, username, password );
 		const uuid = await Sanction.create( username, username, password );
 
 		await UserLoginPage.loginAdmin();
@@ -81,8 +81,8 @@ describe( 'Special:Sanctions', () => {
 
 		// Votes
 		await FlowApi.reply( '{{Oppose}}', uuid, bot );
-		browser.pause( 500 );
-		browser.refresh();
+		await browser.pause( 500 );
+		await browser.refresh();
 
 		assert.ok( await $( `#sanction-${ uuid }.voted` ).isExisting() );
 

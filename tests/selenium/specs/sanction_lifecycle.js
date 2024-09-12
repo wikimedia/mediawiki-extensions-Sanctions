@@ -74,7 +74,7 @@ describe( 'Sanction', () => {
 		await FlowApi.reply( '{{Oppose}}', uuid, bot );
 
 		await browser.pause( 500 );
-		browser.refresh();
+		await browser.refresh();
 		assert.strictEqual(
 			"Status: Rejected (Canceled by the sanction's author.)",
 			await FlowTopic.topicSummary.getText()
@@ -98,7 +98,7 @@ describe( 'Sanction', () => {
 
 	it( 'should be passed if three users support before expired', async () => {
 		await createPassedSanction();
-		browser.refresh();
+		await browser.refresh();
 
 		const blocks = await queryBlocks();
 		assert.ok( blocks.includes( targetName ), 'Block list: ' + blocks );
@@ -133,7 +133,7 @@ describe( 'Sanction', () => {
 		await FlowApi.editTopicSummary( manualSum, uuid, bot );
 		await FlowApi.reply( 'An additional comment.', uuid, bot );
 
-		browser.refresh();
+		await browser.refresh();
 		summary = await FlowTopic.topicSummary.getText();
 		assert.ok(
 			summary.includes( manualSum ),

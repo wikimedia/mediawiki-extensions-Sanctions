@@ -37,7 +37,7 @@ class SanctionsPage extends Page {
 
 			// Wait
 			await browser.pause( 3000 );
-			browser.refresh();
+			await browser.refresh();
 		} while ( /sanctions-reason-unsatisfying-verification-period/.test( text ) );
 	}
 
