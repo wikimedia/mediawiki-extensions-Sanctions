@@ -113,7 +113,7 @@
 		},
 		"Block": {
 			"class": "MediaWiki\\Extension\\Sanctions\\Hooks\\Block",
-			"services": [ "SanctionStore", "MainWANObjectCache" ]
+			"services": [ "SanctionStore", "MainWANObjectCache", "DBLoadBalancer" ]
 		},
 		"Notification": {
 			"class": "MediaWiki\\Extension\\Sanctions\\Hooks\\Notification"

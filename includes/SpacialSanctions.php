@@ -145,6 +145,9 @@ class SpacialSanctions extends SpecialPage {
 	private function setParameter( $subpage ) {
 		$revLookup = $this->revLookup;
 
+		if ( $subpage === null ) {
+			return;
+		}
 		$parts = explode( '/', $subpage, 3 );
 
 		$targetName = '';

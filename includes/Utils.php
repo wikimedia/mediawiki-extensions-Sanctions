@@ -77,7 +77,9 @@ class Utils {
 			}
 		}
 
-		$db = wfGetDB( DB_REPLICA );
+		$db = MediaWikiServices::getInstance()
+			->getDBLoadBalancer()
+			->getMaintenanceConnectionRef( DB_REPLICA );
 
 		// There have been more than three contribution histories within the last 20 days (currently
 		// active)
@@ -211,7 +213,9 @@ class Utils {
 
 		// Move any user pages
 		if ( $bot->isAllowed( 'move' ) ) {
-			$dbr = wfGetDB( DB_REPLICA );
+			$dbr = MediaWikiServices::getInstance()
+			->getDBLoadBalancer()
+			->getMaintenanceConnectionRef( DB_REPLICA );
 			$pages = $dbr->select(
 				'page',
 				[ 'page_namespace', 'page_title' ],
