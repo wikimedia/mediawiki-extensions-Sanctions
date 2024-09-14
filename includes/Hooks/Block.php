@@ -24,6 +24,7 @@ class Block implements \MediaWiki\Block\Hook\GetUserBlockHook {
 	/**
 	 * @param SanctionStore $sanctionStore
 	 * @param WANObjectCache $wanCache
+	 * @param ILoadBalancer $loadBalancer
 	 */
 	public function __construct(
 		SanctionStore $sanctionStore,

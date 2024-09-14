@@ -54,15 +54,15 @@ class SanctionsPagerTest extends MediaWikiIntegrationTestCase {
 			->method( 'isAllowed' )
 			->will( $this->returnValue( true ) );
 		$user->expects( $this->any() )
-			->method( 'isBlocked' )
-			->will( $this->returnValue( false ) );
+			->method( 'getBlock' )
+			->willReturn( null );
 
 		return $user;
 	}
 
 	public static function provideRow() {
-		$future = wfTimestamp( TS_MW, time() + 60 );
-		$past = wfTimestamp( TS_MW, time() - 60 );
+		$future = wfTimestamp( TS_MW, time() + 3600 );
+		$past = wfTimestamp( TS_MW, time() - 3600 );
 		return [
 			'An unexpired sanction should be shown' => [
 				[
