@@ -13,7 +13,6 @@ use MediaWiki\Extension\Sanctions\VoteStore;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\User\UserFactory;
 use OutputPage;
-use RequestContext;
 use SpecialPage;
 use Title;
 use User;
@@ -65,8 +64,7 @@ class Main implements
 		if ( $title->equals( Title::newFromText( $discussionPageName ) ) ) {
 			// Flow does not support redirection, so implement it.
 			// See https://phabricator.wikimedia.org/T102300
-			$request = RequestContext::getMain()->getRequest();
-			$redirect = $request->getVal( 'redirect' );
+			$redirect = $out->getRequest()->getRawVal( 'redirect' );
 			if ( !$redirect || $redirect !== 'no' ) {
 				$out->redirect( $specialSanctionTitle->getLocalURL() );
 			}
