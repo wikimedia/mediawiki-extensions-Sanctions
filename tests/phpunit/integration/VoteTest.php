@@ -61,7 +61,7 @@ class VoteTest extends MediaWikiIntegrationTestCase {
 	 * @dataProvider provideReplies
 	 */
 	public function testCheckNewVote( $expected, $content, $flowContentType = 'html' ) {
-		$this->setMwGlobals( 'wgFlowContentFormat', $flowContentType );
+		$this->overrideConfigValue( 'FlowContentFormat', $flowContentType );
 		$actual = Vote::extractPeriodFromReply( $content );
 		$this->assertSame( $expected, $actual );
 	}
