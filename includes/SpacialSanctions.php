@@ -91,7 +91,8 @@ class SpacialSanctions extends SpecialPage {
 
 		// 대상자가 있다면 제목을 변경하고 전체 목록을 보는 링크를 추가합니다.
 		if ( $this->targetName ) {
-			$output->setPageTitle( $this->msg( 'sanctions-title-with-target', $this->targetName ) );
+			$msg = $this->msg( 'sanctions-title-with-target' )->plaintextParams( $this->targetName );
+			$output->setPageTitleMsg( $msg );
 			$output->setSubTitle( '< ' . $this->linkRenderer->makeLink(
 				$this->getPageTitle(),
 				$this->msg( 'sanctions-show-all-sanctions-link' )->text()
