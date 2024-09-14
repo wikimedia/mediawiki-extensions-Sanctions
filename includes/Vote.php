@@ -2,7 +2,7 @@
 
 namespace MediaWiki\Extension\Sanctions;
 
-use Exception;
+use BadMethodCallException;
 use Flow\Model\PostRevision;
 use Flow\Model\UUID;
 use InvalidArgumentException;
@@ -193,9 +193,9 @@ class Vote {
 	 * @param PostRevision $post
 	 * @return never
 	 *
-	 * @throws Exception
+	 * @throws BadMethodCallException
 	 */
 	public function loadFromPostRevision( PostRevision $post ) {
-		throw new Exception( 'Not implemented' );
+		throw new BadMethodCallException( 'Not implemented' );
 	}
 }
