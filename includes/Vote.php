@@ -126,7 +126,7 @@ class Vote {
 		} else {
 			$agreementTemplateTitle = wfMessage( 'sanctions-agree-template-title' )->inContentLanguage()->text();
 			$agreementTemplateTitle = preg_quote( $agreementTemplateTitle );
-			$agreementWithDayRegex = "/\{\{${agreementTemplateTitle}\|(\d+)\}\}/";
+			$agreementWithDayRegex = '/\{\{' . $agreementTemplateTitle . '\|(\d+)\}\}/';
 			$agreementRegex = '{{' . $agreementTemplateTitle . '}}';
 			$disagreementRegex = wfMessage( 'sanctions-disagree-template-title' )->inContentLanguage()->text();
 			$disagreementRegex = '{{' . $disagreementRegex . '}}';

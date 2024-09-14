@@ -77,7 +77,7 @@ class Sanction {
 		$discussionPageName = wfMessage( 'sanctions-discussion-page-name' )->inContentLanguage()->text();
 		$discussionPage = Title::newFromText( $discussionPageName );
 		$topic = wfMessage( 'sanctions-topic-title', [
-			"[[Special:redirect/user/${targetId}|${targetName}]]",
+			'[[Special:redirect/user/' . $targetId . '|' . $targetName . ']]',
 			wfMessage( $forInsultingName ? 'sanctions-type-insulting-name' : 'sanctions-type-block' )
 				->inContentLanguage()->text()
 		] )->inContentLanguage()->text();
