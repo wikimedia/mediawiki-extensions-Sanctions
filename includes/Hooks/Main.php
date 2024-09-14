@@ -10,7 +10,6 @@ use MediaWiki\Extension\Sanctions\SanctionStore;
 use MediaWiki\Extension\Sanctions\Utils;
 use MediaWiki\Extension\Sanctions\Vote;
 use MediaWiki\Extension\Sanctions\VoteStore;
-use MediaWiki\MediaWikiServices;
 use MediaWiki\User\UserFactory;
 use OutputPage;
 use RequestContext;
@@ -19,6 +18,7 @@ use Title;
 use User;
 
 class Main implements
+	\Flow\Hooks\FlowAddModulesHook,
 	\MediaWiki\Hook\RecentChange_saveHook,
 	\MediaWiki\ResourceLoader\Hook\ResourceLoaderGetConfigVarsHook
 {
@@ -51,7 +51,7 @@ class Main implements
 	 * @param OutputPage $out
 	 * @return bool
 	 */
-	public static function onFlowAddModules( OutputPage $out ) {
+	public function onFlowAddModules( OutputPage $out ) {
 		$title = $out->getTitle();
 		if ( $title == null ) {
 			return true;
@@ -90,9 +90,7 @@ class Main implements
 		}
 
 		// Do nothing if the topic is not about sanction.
-		/** @var SanctionStore $store */
-		$store = MediaWikiServices::getInstance()->getService( 'SanctionStore' );
-		$sanction = $store->newFromWorkflowId( $uuid );
+		$sanction = $this->sanctionStore->newFromWorkflowId( $uuid );
 		if ( !$sanction ) {
 			return true;
 		}
