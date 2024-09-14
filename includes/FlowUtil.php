@@ -13,6 +13,7 @@ use Flow\Model\PostSummary;
 use Flow\Model\UUID;
 use Flow\WorkflowLoaderFactory;
 use IDBAccessObject;
+use MediaWiki\Context\DerivativeContext;
 use MediaWiki\MediaWikiServices;
 use Psr\Log\NullLogger;
 use RequestContext;
@@ -147,7 +148,7 @@ class FlowUtil {
 			];
 
 			$blocksToCommit = $loader->handleSubmit(
-				clone RequestContext::getMain(),
+				new DerivativeContext( RequestContext::getMain() ),
 				$action,
 				$params
 			);
