@@ -9,6 +9,7 @@ use User;
 
 /**
  * @covers \MediaWiki\Extension\Sanctions\Utils
+ * @group Database
  */
 class UtilsTest extends MediaWikiIntegrationTestCase {
 
