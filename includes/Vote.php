@@ -62,7 +62,9 @@ class Vote {
 	 * @param IDatabase|null $dbw
 	 */
 	public function insert( $timestamp = null, IDatabase $dbw = null ) {
-		$dbw = $dbw ?: wfGetDB( DB_PRIMARY );
+		$dbw = $dbw ?: MediaWikiServices::getInstance()
+			->getDBLoadBalancer()
+			->getMaintenanceConnectionRef( DB_PRIMARY );
 
 		$dbw->insert(
 			'sanctions_vote',
@@ -82,7 +84,9 @@ class Vote {
 	 * @param IDatabase|null $dbw
 	 */
 	public function updateByPostRevision( PostRevision $post, $timestamp, IDatabase $dbw = null ) {
-		$dbw = $dbw ?: wfGetDB( DB_PRIMARY );
+		$dbw = $dbw ?: MediaWikiServices::getInstance()
+			->getDBLoadBalancer()
+			->getMaintenanceConnectionRef( DB_PRIMARY );
 		$period = self::extractPeriodFromReply( $post->getContentRaw() );
 
 		$dbw->update(

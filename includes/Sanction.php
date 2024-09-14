@@ -146,7 +146,9 @@ class Sanction {
 
 		// Update DB
 		$id = $this->mId;
-		$db = wfGetDB( DB_PRIMARY );
+		$db = MediaWikiServices::getInstance()
+			->getDBLoadBalancer()
+			->getMaintenanceConnectionRef( DB_PRIMARY );
 		$now = wfTimestamp( TS_MW );
 		$db->update(
 			'sanctions',
@@ -380,7 +382,9 @@ class Sanction {
 		$this->updateTopicSummary( $force );
 
 		// Write to DB
-		$dbw = wfGetDB( DB_PRIMARY );
+		$dbw = MediaWikiServices::getInstance()
+			->getDBLoadBalancer()
+			->getMaintenanceConnectionRef( DB_PRIMARY );
 		$dbw->update(
 			'sanctions',
 			[
@@ -499,7 +503,9 @@ class Sanction {
 	 * @deprecated Use self::loadFromRow() instead
 	 */
 	public function loadFrom( $name, $value ) {
-		$db = wfGetDB( DB_REPLICA );
+		$db = MediaWikiServices::getInstance()
+			->getDBLoadBalancer()
+			->getMaintenanceConnectionRef( DB_REPLICA );
 
 		$row = $db->selectRow(
 			'sanctions',
@@ -568,7 +574,9 @@ class Sanction {
 	 * @return int|null ID of the sanction
 	 */
 	public function insert() {
-		$dbw = wfGetDB( DB_PRIMARY );
+		$dbw = MediaWikiServices::getInstance()
+			->getDBLoadBalancer()
+			->getMaintenanceConnectionRef( DB_PRIMARY );
 
 		$data = [
 			'st_author' => $this->mAuthor->getId(),
@@ -732,7 +740,9 @@ class Sanction {
 		if ( $this->mVotes === null ) {
 			$this->mVotes = [];
 
-			$db = wfGetDB( DB_REPLICA );
+			$db = MediaWikiServices::getInstance()
+			->getDBLoadBalancer()
+			->getMaintenanceConnectionRef( DB_REPLICA );
 			$res = $db->select(
 				'sanctions_vote',
 				'*',

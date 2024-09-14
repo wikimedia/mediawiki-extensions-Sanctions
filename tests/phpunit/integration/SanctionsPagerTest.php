@@ -14,6 +14,7 @@ use Wikimedia\TestingAccessWrapper;
 
 /**
  * @covers \MediaWiki\Extension\Sanctions\SanctionsPager
+ * @group Database
  */
 class SanctionsPagerTest extends MediaWikiIntegrationTestCase {
 

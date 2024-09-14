@@ -51,7 +51,9 @@ class SanctionStoreTest extends MediaWikiIntegrationTestCase {
 		$target->setId( 11 );
 		$target->setName( 'SanctionStore-find-test-target' );
 		$uuid = UUID::create();
-		$expiry = wfGetDB( DB_REPLICA )->timestamp();
+		$expiry = MediaWikiServices::getInstance()
+		->getDBLoadBalancer()
+		->getMaintenanceConnectionRef( DB_REPLICA )->timestamp();
 
 		$sanction = new Sanction();
 		$sanction->setAuthor( $author );
@@ -85,7 +87,9 @@ class SanctionStoreTest extends MediaWikiIntegrationTestCase {
 		$target->setId( 11 );
 		$target->setName( 'SanctionStore-find-test-target' );
 		$uuid = UUID::create();
-		$expiry = wfGetDB( DB_REPLICA )->timestamp( wfTimestamp( TS_MW ) + 100 );
+		$expiry = MediaWikiServices::getInstance()
+		->getDBLoadBalancer()
+		->getMaintenanceConnectionRef( DB_REPLICA )->timestamp( wfTimestamp( TS_MW ) + 100 );
 
 		$sanction = new Sanction();
 		$sanction->setAuthor( $author );
@@ -125,7 +129,9 @@ class SanctionStoreTest extends MediaWikiIntegrationTestCase {
 		$target->setId( 11 );
 		$target->setName( 'SanctionStore-find-test-target' );
 		$uuid = UUID::create();
-		$expiry = wfGetDB( DB_REPLICA )->timestamp( wfTimestamp( TS_MW ) + 100 );
+		$expiry = MediaWikiServices::getInstance()
+		->getDBLoadBalancer()
+		->getMaintenanceConnectionRef( DB_REPLICA )->timestamp( wfTimestamp( TS_MW ) + 100 );
 
 		$sanction = new Sanction();
 		$sanction->setAuthor( $author );
