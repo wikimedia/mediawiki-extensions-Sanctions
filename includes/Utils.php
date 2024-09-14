@@ -113,32 +113,24 @@ class Utils {
 			}
 		}
 
-		if ( $user->getBlock() !== null ) {
-			if ( $reasons !== false ) {
-				self::addReason( wfMessage( 'sanctions-reason-blocked' ), $reasons, $contentLang );
-			} else {
-				return false;
-			}
-		} else {
-			// No blocking history within the last 20 days (no recent negative activity)
-			$blockExpiry = $db->selectField(
-				'ipblocks',
-				'MAX(ipb_expiry)',
-				[
-				'ipb_user' => $user->getId()
-				],
-				__METHOD__,
-				[ 'GROUP BY' => 'ipb_id' ]
-			);
-			if ( $blockExpiry > $twentyDaysAgo ) {
+		$block = $user->getBlock();
+		if ( $block !== null ) {
+			$blockExpiry = $block->getExpiry();
+			if ( $blockExpiry && wfTimestampNow() < $blockExpiry ) {
 				if ( $reasons !== false ) {
-						self::addReason( wfMessage( 'sanctions-reason-recently-blocked', [
-							MWTimestamp::getLocalInstance( $blockExpiry )->getTimestamp( TS_ISO_8601 ),
-							(string)$verificationPeriod,
-						] ), $reasons, $contentLang );
+					self::addReason( wfMessage( 'sanctions-reason-blocked' ), $reasons, $contentLang );
 				} else {
 					return false;
 				}
+			} elseif ( $twentyDaysAgo < $blockExpiry && $reasons !== false ) {
+				// No blocking history within the last 20 days (no recent negative activity)
+				// Note that both CompositeBlock and Block have getExpiry()
+				self::addReason( wfMessage( 'sanctions-reason-recently-blocked', [
+					MWTimestamp::getLocalInstance( $blockExpiry )->getTimestamp( TS_ISO_8601 ),
+					(string)$verificationPeriod,
+				] ), $reasons, $contentLang );
+			} else {
+				return false;
 			}
 		}
 
