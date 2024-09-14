@@ -6,7 +6,6 @@ use Flow\Model\UUID;
 use MediaWiki\Extension\Sanctions\Sanction;
 use MediaWiki\Extension\Sanctions\Vote;
 use MediaWiki\Extension\Sanctions\VoteStore;
-use MediaWiki\MediaWikiServices;
 use MediaWikiIntegrationTestCase;
 use User;
 
@@ -16,8 +15,8 @@ use User;
  */
 class VoteStoreTest extends MediaWikiIntegrationTestCase {
 
-	protected static function getVoteStore(): VoteStore {
-		return new VoteStore( MediaWikiServices::getInstance()->getDBLoadBalancer() );
+	protected function getVoteStore(): VoteStore {
+		return new VoteStore( $this->getServiceContainer()->getDBLoadBalancer() );
 	}
 
 	/**
@@ -47,7 +46,7 @@ class VoteStoreTest extends MediaWikiIntegrationTestCase {
 		$vote->setSanction( $sanction );
 		$vote->insert( $uuid->getTimestamp() );
 
-		$store = new VoteStore( MediaWikiServices::getInstance()->getDBLoadBalancer() );
+		$store = new VoteStore( $this->getServiceContainer()->getDBLoadBalancer() );
 		$find = $store->getVoteBySanction( $sanction, $user );
 		$this->assertSame( $vote->getPeriod(), $find->getPeriod() );
 
