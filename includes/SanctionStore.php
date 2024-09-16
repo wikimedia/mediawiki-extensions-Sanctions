@@ -4,25 +4,14 @@ namespace MediaWiki\Extension\Sanctions;
 
 use Flow\Model\UUID;
 use User;
-use Wikimedia\Rdbms\ILoadBalancer;
+use Wikimedia\Rdbms\IConnectionProvider;
 
 class SanctionStore {
 
-	/** @var ILoadBalancer */
-	private $loadBalancer;
+	private IConnectionProvider $dbProvider;
 
-	/**
-	 * @param ILoadBalancer $loadBalancer
-	 */
-	public function __construct( ILoadBalancer $loadBalancer ) {
-		$this->loadBalancer = $loadBalancer;
-	}
-
-	/**
-	 * @return ILoadBalancer
-	 */
-	private function getDBLoadBalancer() {
-		return $this->loadBalancer;
+	public function __construct( IConnectionProvider $dbProvider ) {
+		$this->dbProvider = $dbProvider;
 	}
 
 	/**
@@ -30,7 +19,7 @@ class SanctionStore {
 	 * @return Sanction|null
 	 */
 	public function newFromId( $id ) {
-		$db = $this->loadBalancer->getConnection( DB_REPLICA );
+		$db = $this->dbProvider->getReplicaDatabase();
 
 		$row = $db->selectRow(
 			'sanctions',
@@ -51,7 +40,7 @@ class SanctionStore {
 	 * @return Sanction[]
 	 */
 	public function findByTarget( User $user, $forInsertingName = null, $expired = null, $handled = null ) {
-		$db = $this->loadBalancer->getConnection( DB_REPLICA );
+		$db = $this->dbProvider->getReplicaDatabase();
 
 		$conds = [
 			'st_target' => $user->getId(),
@@ -98,7 +87,7 @@ class SanctionStore {
 	 * @return Sanction[]
 	 */
 	public function findNotHandledExpired() {
-		$db = $this->loadBalancer->getConnection( DB_REPLICA );
+		$db = $this->dbProvider->getReplicaDatabase();
 		$rows = $db->select(
 			'sanctions',
 			'*',
@@ -124,7 +113,7 @@ class SanctionStore {
 	 * @return Sanction|null
 	 */
 	public function newFromWorkflowId( UUID $uuid ) {
-		$db = $this->loadBalancer->getConnection( DB_REPLICA );
+		$db = $this->dbProvider->getReplicaDatabase();
 
 		$row = $db->selectRow(
 			'sanctions',

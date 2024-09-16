@@ -78,8 +78,8 @@ class Utils {
 		}
 
 		$db = MediaWikiServices::getInstance()
-			->getDBLoadBalancer()
-			->getMaintenanceConnectionRef( DB_REPLICA );
+			->getConnectionProvider()
+			->getReplicaDatabase();
 
 		// There have been more than three contribution histories within the last 20 days (currently
 		// active)
@@ -206,8 +206,8 @@ class Utils {
 		// Move any user pages
 		if ( $bot->isAllowed( 'move' ) ) {
 			$dbr = MediaWikiServices::getInstance()
-			->getDBLoadBalancer()
-			->getMaintenanceConnectionRef( DB_REPLICA );
+			->getConnectionProvider()
+			->getReplicaDatabase();
 			$pages = $dbr->select(
 				'page',
 				[ 'page_namespace', 'page_title' ],

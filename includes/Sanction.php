@@ -147,8 +147,8 @@ class Sanction {
 		// Update DB
 		$id = $this->mId;
 		$db = MediaWikiServices::getInstance()
-			->getDBLoadBalancer()
-			->getMaintenanceConnectionRef( DB_PRIMARY );
+			->getConnectionProvider()
+			->getPrimaryDatabase();
 		$now = wfTimestamp( TS_MW );
 		$db->update(
 			'sanctions',
@@ -383,8 +383,8 @@ class Sanction {
 
 		// Write to DB
 		$dbw = MediaWikiServices::getInstance()
-			->getDBLoadBalancer()
-			->getMaintenanceConnectionRef( DB_PRIMARY );
+			->getConnectionProvider()
+			->getPrimaryDatabase();
 		$dbw->update(
 			'sanctions',
 			[
@@ -396,7 +396,7 @@ class Sanction {
 		);
 		/** @var VoteStore $voteStore */
 		$voteStore = MediaWikiServices::getInstance()->getService( 'VoteStore' );
-		if ( !$voteStore->deleteOn( $this, $dbw ) ) {
+		if ( !$voteStore->deleteOn( $this ) ) {
 			Utils::getLogger()->warning( "Deleting votes on {$this->getId()} failed" );
 		}
 
@@ -504,8 +504,8 @@ class Sanction {
 	 */
 	public function loadFrom( $name, $value ) {
 		$db = MediaWikiServices::getInstance()
-			->getDBLoadBalancer()
-			->getMaintenanceConnectionRef( DB_REPLICA );
+			->getConnectionProvider()
+			->getReplicaDatabase();
 
 		$row = $db->selectRow(
 			'sanctions',
@@ -575,8 +575,8 @@ class Sanction {
 	 */
 	public function insert() {
 		$dbw = MediaWikiServices::getInstance()
-			->getDBLoadBalancer()
-			->getMaintenanceConnectionRef( DB_PRIMARY );
+			->getConnectionProvider()
+			->getPrimaryDatabase();
 
 		$data = [
 			'st_author' => $this->mAuthor->getId(),
@@ -741,8 +741,8 @@ class Sanction {
 			$this->mVotes = [];
 
 			$db = MediaWikiServices::getInstance()
-			->getDBLoadBalancer()
-			->getMaintenanceConnectionRef( DB_REPLICA );
+			->getConnectionProvider()
+			->getReplicaDatabase();
 			$res = $db->select(
 				'sanctions_vote',
 				'*',

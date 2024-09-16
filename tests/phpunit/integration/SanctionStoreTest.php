@@ -7,8 +7,6 @@ use MediaWiki\Extension\Sanctions\Sanction;
 use MediaWiki\Extension\Sanctions\SanctionStore;
 use MediaWikiIntegrationTestCase;
 use User;
-use Wikimedia\Rdbms\ILoadBalancer;
-use Wikimedia\TestingAccessWrapper;
 
 /**
  * @covers \MediaWiki\Extension\Sanctions\SanctionStore
@@ -17,21 +15,9 @@ use Wikimedia\TestingAccessWrapper;
 class SanctionStoreTest extends MediaWikiIntegrationTestCase {
 
 	protected function getSanctionStore(): SanctionStore {
-		$store = new SanctionStore( $this->getServiceContainer()->getDBLoadBalancer() );
+		$store = new SanctionStore( $this->getServiceContainer()->getConnectionProvider() );
 		$this->assertInstanceOf( SanctionStore::class, $store );
 		return $store;
-	}
-
-	/**
-	 * @covers \MediaWiki\Extension\Sanctions\SanctionStore::getDBLoadBalancer
-	 */
-	public function testGetDBLoadBalancer() {
-		$sanctionStore = $this->getSanctionStore();
-
-		'@phan-var SanctionsStore $sanctionStore';
-		$sanctionStore = TestingAccessWrapper::newFromObject( $sanctionStore );
-		$actual = $sanctionStore->getDBLoadBalancer();
-		$this->assertInstanceOf( ILoadBalancer::class, $actual );
 	}
 
 	/**

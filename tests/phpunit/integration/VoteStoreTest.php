@@ -16,7 +16,9 @@ use User;
 class VoteStoreTest extends MediaWikiIntegrationTestCase {
 
 	protected function getVoteStore(): VoteStore {
-		return new VoteStore( $this->getServiceContainer()->getDBLoadBalancer() );
+		return new VoteStore(
+			$this->getServiceContainer()->getConnectionProvider()
+		);
 	}
 
 	/**
@@ -46,7 +48,7 @@ class VoteStoreTest extends MediaWikiIntegrationTestCase {
 		$vote->setSanction( $sanction );
 		$vote->insert( $uuid->getTimestamp() );
 
-		$store = new VoteStore( $this->getServiceContainer()->getDBLoadBalancer() );
+		$store = $this->getVoteStore();
 		$find = $store->getVoteBySanction( $sanction, $user );
 		$this->assertSame( $vote->getPeriod(), $find->getPeriod() );
 

@@ -23,7 +23,7 @@ class SanctionsPagerTest extends MediaWikiIntegrationTestCase {
 			$request->setUser( $viewer );
 		}
 		$services = $this->getServiceContainer();
-		$sanctionStore = new SanctionStore( $services->getDBLoadBalancer() );
+		$sanctionStore = new SanctionStore( $services->getConnectionProvider() );
 		$userFactory = $services->getUserFactory();
 		$linkRenderer = $services->getLinkRenderer();
 		return new SanctionsPager( $request, $sanctionStore, $userFactory, $linkRenderer, $targetName );

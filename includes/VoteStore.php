@@ -3,19 +3,14 @@
 namespace MediaWiki\Extension\Sanctions;
 
 use User;
-use Wikimedia\Rdbms\IDatabase;
-use Wikimedia\Rdbms\ILoadBalancer;
+use Wikimedia\Rdbms\IConnectionProvider;
 
 class VoteStore {
 
-	/** @var ILoadBalancer */
-	private $loadBalancer;
+	private IConnectionProvider $dbProvider;
 
-	/**
-	 * @param ILoadBalancer $loadBalancer
-	 */
-	public function __construct( ILoadBalancer $loadBalancer ) {
-		$this->loadBalancer = $loadBalancer;
+	public function __construct( IConnectionProvider $dbProvider ) {
+		$this->dbProvider = $dbProvider;
 	}
 
 	/**
@@ -24,7 +19,7 @@ class VoteStore {
 	 * @return Vote|null
 	 */
 	public function getVoteBySanction( Sanction $sanction, User $user ) {
-		$db = $this->getDBConnection( DB_REPLICA );
+		$db = $this->dbProvider->getReplicaDatabase();
 		$row = $db->selectRow(
 			'sanctions_vote',
 			[
@@ -45,11 +40,10 @@ class VoteStore {
 
 	/**
 	 * @param Sanction $sanction
-	 * @param IDatabase|null $dbw
 	 * @return bool
 	 */
-	public function deleteOn( Sanction $sanction, $dbw = null ) {
-		$dbw = $dbw ?: $this->getDBConnection( DB_PRIMARY );
+	public function deleteOn( Sanction $sanction ) {
+		$dbw = $this->dbProvider->getPrimaryDatabase();
 
 		$dbw->delete(
 			'sanctions_vote',
@@ -57,27 +51,10 @@ class VoteStore {
 			__METHOD__
 		);
 
-		if ( $dbw->affectedRows() == 0 ) {
+		if ( $dbw->affectedRows() === 0 ) {
 			return false;
 		}
 		return true;
-	}
-
-	/**
-	 * @return ILoadBalancer
-	 */
-	private function getDBLoadBalancer() {
-		return $this->loadBalancer;
-	}
-
-	/**
-	 * @param int $mode DB_PRIMARY or DB_REPLICA
-	 * @param array $groups
-	 * @return IDatabase|false
-	 */
-	private function getDBConnection( $mode, $groups = [] ) {
-		$lb = $this->getDBLoadBalancer();
-		return $lb->getConnection( $mode, $groups );
 	}
 
 }

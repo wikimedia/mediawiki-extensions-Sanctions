@@ -17,8 +17,8 @@ class MainTest extends MediaWikiIntegrationTestCase {
 	 */
 	public function testConstruct() {
 		$services = $this->getServiceContainer();
-		$sanctionStore = new SanctionStore( $services->getDBLoadBalancer() );
-		$voteStore = new VoteStore( $services->getDBLoadBalancer() );
+		$sanctionStore = new SanctionStore( $services->getConnectionProvider() );
+		$voteStore = new VoteStore( $services->getConnectionProvider() );
 		$actual = new Main(
 			$sanctionStore,
 			$voteStore,

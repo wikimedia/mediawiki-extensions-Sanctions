@@ -12,10 +12,10 @@ return [
 		return new SanctionsHookRunner( $services->getHookContainer() );
 	},
 	'VoteStore' => static function ( MediaWikiServices $services ): VoteStore {
-		return new VoteStore( $services->getDBLoadBalancer() );
+		return new VoteStore( $services->getConnectionProvider() );
 	},
 	'SanctionStore' => static function ( MediaWikiServices $services ): SanctionStore {
-		return new SanctionStore( $services->getDBLoadBalancer() );
+		return new SanctionStore( $services->getConnectionProvider() );
 	},
 ];
 

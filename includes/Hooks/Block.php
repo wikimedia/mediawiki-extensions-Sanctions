@@ -8,7 +8,7 @@ use Message;
 use MWTimestamp;
 use WANObjectCache;
 use Wikimedia\Rdbms\Database;
-use Wikimedia\Rdbms\ILoadBalancer;
+use Wikimedia\Rdbms\IConnectionProvider;
 
 class Block implements \MediaWiki\Block\Hook\GetUserBlockHook {
 
@@ -18,21 +18,16 @@ class Block implements \MediaWiki\Block\Hook\GetUserBlockHook {
 	/** @var WANObjectCache */
 	private $wanCache;
 
-	/** @var ILoadBalancer */
-	private $loadBalancer;
+	private IConnectionProvider $dbProvider;
 
-	/**
-	 * @param SanctionStore $sanctionStore
-	 * @param WANObjectCache $wanCache
-	 */
 	public function __construct(
 		SanctionStore $sanctionStore,
 		WANObjectCache $wanCache,
-		ILoadBalancer $loadBalancer
+		IConnectionProvider $dbProvider
 	) {
 		$this->sanctionStore = $sanctionStore;
 		$this->wanCache = $wanCache;
-		$this->loadBalancer = $loadBalancer;
+		$this->dbProvider = $dbProvider;
 	}
 
 	/** @inheritDoc */
@@ -43,7 +38,7 @@ class Block implements \MediaWiki\Block\Hook\GetUserBlockHook {
 			return;
 		}
 		$store = $this->sanctionStore;
-		$dbr = $this->loadBalancer->getConnection( DB_REPLICA );
+		$dbr = $this->dbProvider->getReplicaDatabase();
 		$callback = static function ( $old, &$ttl, array &$setOpts ) use ( $user, $store, $dbr ) {
 			$setOpts += Database::getCacheSetOptions( $dbr );
 			$unhandledSanctions = $store->findByTarget( $user, null, null, false );
