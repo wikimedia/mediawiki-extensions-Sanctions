@@ -121,9 +121,7 @@ class Vote {
 	 * @return int|null
 	 */
 	public static function extractPeriodFromReply( $content ) {
-		global $wgFlowContentFormat;
-
-		if ( $wgFlowContentFormat == 'html' ) {
+		if ( MediaWikiServices::getInstance()->getMainConfig()->get( 'FlowContentFormat' ) === 'html' ) {
 			$agreementWithDayRegex = '/<span class="sanction-vote-agree-period">(\d+)<\/span>/';
 			$agreementRegex = '"sanction-vote-agree"';
 			$disagreementRegex = '"sanction-vote-disagree"';
