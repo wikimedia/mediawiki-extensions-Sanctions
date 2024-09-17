@@ -31,12 +31,7 @@ class VoteStore {
 			->from( 'sanctions_vote' );
 	}
 
-	/**
-	 * @param Sanction $sanction
-	 * @param User $user
-	 * @return Vote|null
-	 */
-	public function getVoteBySanction( Sanction $sanction, User $user ) {
+	public function getVoteBySanction( Sanction $sanction, User $user ): ?Vote {
 		$row = $this->newSelectQueryBuilder()
 			->where( [
 				'stv_sanction' => $sanction->getId(),
@@ -50,11 +45,7 @@ class VoteStore {
 		return Vote::newFromRow( $row );
 	}
 
-	/**
-	 * @param Sanction $sanction
-	 * @return bool
-	 */
-	public function deleteOn( Sanction $sanction ) {
+	public function deleteOn( Sanction $sanction ): bool {
 		$dbw = $this->dbProvider->getPrimaryDatabase();
 
 		$dbw->newDeleteQueryBuilder()

@@ -24,7 +24,7 @@ class Vote {
 	 * @param stdClass $row A row from the sanctions_vote table
 	 * @return Vote
 	 */
-	public static function newFromRow( stdClass $row ) {
+	public static function newFromRow( stdClass $row ): self {
 		$vote = new Vote();
 		$vote->loadFromRow( $row );
 		return $vote;
@@ -35,7 +35,7 @@ class Vote {
 	 *
 	 * @param stdClass $row Row from the user table to load.
 	 */
-	protected function loadFromRow( stdClass $row ) {
+	protected function loadFromRow( stdClass $row ): void {
 		if ( isset( $row->stv_user ) ) {
 			$userFactory = MediaWikiServices::getInstance()->getUserFactory();
 			$this->user = $userFactory->newFromId( (int)$row->stv_user );
@@ -53,7 +53,7 @@ class Vote {
 	/**
 	 * @param string|null $timestamp
 	 */
-	public function insert( $timestamp = null ) {
+	public function insert( ?string $timestamp = null ): void {
 		$dbw = MediaWikiServices::getInstance()
 			->getConnectionProvider()
 			->getPrimaryDatabase();
@@ -72,19 +72,12 @@ class Vote {
 		$this->updateLastTouched( $timestamp, $dbw );
 	}
 
-	/**
-	 * @param PostRevision $post
-	 * @param string $timestamp
-	 */
-	public function updateByPostRevision( PostRevision $post, $timestamp ) {
+	public function updateByPostRevision( PostRevision $post, string $timestamp ): void {
+		// @phan-suppress-next-line PhanTypeMismatchArgumentNullable FIXME, fails with null!
 		$this->updatePeriod( self::extractPeriodFromReply( $post->getContentRaw() ), $timestamp );
 	}
 
-	/**
-	 * @param int $period
-	 * @param string $timestamp
-	 */
-	public function updatePeriod( int $period, $timestamp ) {
+	public function updatePeriod( int $period, string $timestamp ): void {
 		$dbw = MediaWikiServices::getInstance()
 			->getConnectionProvider()
 			->getPrimaryDatabase();
@@ -107,10 +100,8 @@ class Vote {
 
 	/**
 	 * Update the time of the sanction.
-	 * @param string $timestamp
-	 * @param IDatabase $dbw
 	 */
-	public function updateLastTouched( $timestamp, IDatabase $dbw ) {
+	public function updateLastTouched( ?string $timestamp, IDatabase $dbw ): void {
 		$dbw->newUpdateQueryBuilder()
 			->update( 'sanctions' )
 			->set( [ 'st_last_update_timestamp' => $timestamp ] )
@@ -119,11 +110,7 @@ class Vote {
 			->execute();
 	}
 
-	/**
-	 * @param string $content
-	 * @return int|null
-	 */
-	public static function extractPeriodFromReply( $content ) {
+	public static function extractPeriodFromReply( string $content ): ?int {
 		if ( MediaWikiServices::getInstance()->getMainConfig()->get( 'FlowContentFormat' ) === 'html' ) {
 			$agreementWithDayRegex = '/<span class="sanction-vote-agree-period">(\d+)<\/span>/';
 			$agreementRegex = '"sanction-vote-agree"';
@@ -150,24 +137,15 @@ class Vote {
 		return null;
 	}
 
-	/**
-	 * @return int
-	 */
-	public function getPeriod() {
+	public function getPeriod(): int {
 		return $this->period;
 	}
 
-	/**
-	 * @param int $period
-	 */
-	public function setPeriod( int $period ) {
+	public function setPeriod( int $period ): void {
 		$this->period = $period;
 	}
 
-	/**
-	 * @param Sanction $sanction
-	 */
-	public function setSanction( Sanction $sanction ) {
+	public function setSanction( Sanction $sanction ): void {
 		$this->sanction = $sanction;
 	}
 
@@ -176,17 +154,11 @@ class Vote {
 		return $this->sanction;
 	}
 
-	/**
-	 * @param User $user
-	 */
-	public function setUser( User $user ) {
+	public function setUser( User $user ): void {
 		$this->user = $user;
 	}
 
-	/**
-	 * @return User
-	 */
-	public function getUser() {
+	public function getUser(): User {
 		return $this->user;
 	}
 

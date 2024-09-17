@@ -18,50 +18,30 @@ class Sanction {
 	/** The namespace of Flow topics, which does not need Flow to be installed. */
 	public const FLOW_TOPIC_NAMESPACE = 2600;
 
-	/** @var int */
-	public $mId;
-
-	/** @var User */
-	protected $mAuthor;
+	public ?int $mId = null;
+	protected User $mAuthor;
 
 	/** @var string|null The binary UUID of the Flow topic of a sanction discussed on Flow */
-	protected $mTopic;
+	protected ?string $mTopic = null;
 
 	/** @var int|null The page of a sanction discussed with DiscussionTools */
-	protected $mPageId;
+	protected ?int $mPageId = null;
 
-	/** @var User */
-	protected $mTarget;
-
-	/** @var string */
-	protected $mTargetOriginalName;
-
-	/** @var string */
-	protected $mExpiry;
-
-	/** @var bool */
-	protected $mIsHandled;
-
-	/** @var bool */
-	protected $mIsEmergency;
-
-	/** @var array|null */
-	protected $mVotes = null;
+	protected User $mTarget;
+	protected string $mTargetOriginalName = '';
+	protected string $mExpiry;
+	protected bool $mIsHandled = false;
+	protected bool $mIsEmergency = false;
+	protected ?array $mVotes = null;
 
 	/** @var bool $mIsPassed, $mVoteNumber and $mAgreeVote are valid when $mCounted is true. */
-	protected $mCounted = false;
-
-	/** @var bool */
-	protected $mIsPassed;
-
-	/** @var int */
-	protected $mVoteNumber;
-
-	/** @var int */
-	protected $mAgreeVote;
+	protected bool $mCounted = false;
+	protected bool $mIsPassed;
+	protected int $mVoteNumber;
+	protected int $mAgreeVote;
 
 	/** @var string TS_MW timestamp from the DB */
-	public $mTouched;
+	public ?string $mTouched = null;
 
 	/**
 	 * Create a new sanction and write it to database
@@ -72,7 +52,7 @@ class Sanction {
 	 * @param string $content Description of the sanction(written in wikitext)
 	 * @return Sanction|bool
 	 */
-	public static function write( User $author, User $target, $forInsultingName, $content ) {
+	public static function write( User $author, User $target, bool $forInsultingName, string $content ) {
 		$targetId = $target->getId();
 		$targetName = $target->getName();
 
@@ -187,7 +167,7 @@ class Sanction {
 	 * @param User|null $user
 	 * @return bool
 	 */
-	public function toggleEmergency( $user = null ) {
+	public function toggleEmergency( ?User $user = null ): bool {
 		// Prevent expired sanctions changes
 		if ( $this->isExpired() ) {
 			return false;
@@ -238,7 +218,7 @@ class Sanction {
 	 * @param AbstractBlock|null $oldBlock
 	 * @return bool true when success.
 	 */
-	public function justTakeMeasure( $oldBlock = null ) {
+	public function justTakeMeasure( ?AbstractBlock $oldBlock = null ): bool {
 		$target = $this->mTarget;
 		$isForInsultingName = $this->isForInsultingName();
 		$reason = wfMessage(
@@ -291,7 +271,7 @@ class Sanction {
 	 * @param AbstractBlock|null $oldBlock
 	 * @return bool Return true when success
 	 */
-	public function replaceTemporaryMeasure( $oldBlock ) {
+	public function replaceTemporaryMeasure( ?AbstractBlock $oldBlock ): bool {
 		$target = $this->mTarget;
 		$isForInsultingName = $this->isForInsultingName();
 		$reason = wfMessage( 'sanctions-log-take-measure-page', $this->getDiscussionPage()->getPrefixedText() )
@@ -320,7 +300,7 @@ class Sanction {
 	 * @param User|null $user
 	 * @return bool
 	 */
-	public function takeTemporaryMeasure( $user = null ) {
+	public function takeTemporaryMeasure( ?User $user = null ): bool {
 		$target = $this->mTarget;
 		$insultingName = $this->isForInsultingName();
 		$reason = wfMessage(
@@ -363,7 +343,7 @@ class Sanction {
 	 *
 	 * @return bool
 	 */
-	public function removeTemporaryMeasure( $reason, $user = null, $block = null ) {
+	public function removeTemporaryMeasure( string $reason, ?User $user = null, ?AbstractBlock $block = null ): bool {
 		$target = $this->mTarget;
 		$isForInsultingName = $this->isForInsultingName();
 
@@ -395,7 +375,7 @@ class Sanction {
 	/**
 	 * Called when there is a vote for the sanction, or when an existing voter changes opinion.
 	 */
-	public function onVotesChanged() {
+	public function onVotesChanged(): void {
 		$this->countVotes( true );
 		if ( $this->isNeededToImmediateRejection() ) {
 			$this->execute( true );
@@ -421,7 +401,7 @@ class Sanction {
 	 * Examine opposition of three or more negative terms.
 	 * @return bool
 	 */
-	public function isNeededToImmediateRejection() {
+	public function isNeededToImmediateRejection(): bool {
 		$agree = $this->mAgreeVote;
 		$count = $this->mVoteNumber;
 
@@ -432,6 +412,7 @@ class Sanction {
 				&& $this->mVotes[$this->mAuthor->getId()] == 0 ) ) {
 			return true;
 		}
+		return false;
 	}
 
 	/**
@@ -440,7 +421,7 @@ class Sanction {
 	 * @param AbstractBlock|null $oldBlock
 	 * @return bool
 	 */
-	public function execute( bool $force = false, $oldBlock = null ) {
+	public function execute( bool $force = false, ?AbstractBlock $oldBlock = null ): bool {
 		if ( !$force && ( !$this->isExpired() || $this->mIsHandled ) ) {
 			return false;
 		}
@@ -503,7 +484,7 @@ class Sanction {
 	 *   expiration would not be done.
 	 * @return bool
 	 */
-	public function updateTopicSummary( bool $done = false ) {
+	public function updateTopicSummary( bool $done = false ): bool {
 		if ( $this->mPageId !== null ) {
 			// The status on the page is rendered from the database. See Hooks\DiscussionTools.
 			$this->purgeDiscussionPage();
@@ -512,10 +493,14 @@ class Sanction {
 		if ( !Utils::isFlowLoaded() ) {
 			return false;
 		}
+		$workflowId = $this->getWorkflowId();
+		if ( !$workflowId ) {
+			return false;
+		}
 
 		return FlowUtil::updateSummary(
 			$this->getDiscussionPage(),
-			$this->getWorkflowId(),
+			$workflowId,
 			Utils::getBot(),
 			$this->getStatusWikitext( $done )
 		);
@@ -526,7 +511,7 @@ class Sanction {
 	 *   expiration would not be done.
 	 * @return string wikitext list of the status, the reason and the deadline.
 	 */
-	public function getStatusWikitext( bool $done = false ) {
+	public function getStatusWikitext( bool $done = false ): string {
 		$this->countVotes();
 
 		$agree = $this->mAgreeVote;
@@ -615,7 +600,7 @@ class Sanction {
 	 *
 	 * @deprecated Use self::loadFromRow() instead
 	 */
-	public function loadFrom( $name, $value ) {
+	public function loadFrom( string $name, string $value ): bool {
 		$store = MediaWikiServices::getInstance()->getService( 'SanctionStore' );
 		'@phan-var SanctionStore $store';
 		$row = $store->newSelectQueryBuilder()
@@ -634,7 +619,7 @@ class Sanction {
 	 * @param stdClass $row
 	 * @return Sanction
 	 */
-	public static function newFromRow( stdClass $row ) {
+	public static function newFromRow( stdClass $row ): self {
 		$sanction = new Sanction();
 		$sanction->loadFromRow( $row );
 		return $sanction;
@@ -644,11 +629,11 @@ class Sanction {
 	 * @param stdClass $row
 	 * @return bool
 	 */
-	protected function loadFromRow( stdClass $row ) {
+	protected function loadFromRow( stdClass $row ): bool {
 		$userFactory = MediaWikiServices::getInstance()->getUserFactory();
 
 		if ( isset( $row->st_id ) ) {
-			$this->mId = $row->st_id;
+			$this->mId = (int)$row->st_id;
 		}
 		if ( isset( $row->st_author ) ) {
 			$this->mAuthor = $userFactory->newFromId( (int)$row->st_author );
@@ -681,7 +666,7 @@ class Sanction {
 	/**
 	 * @return int|null ID of the sanction
 	 */
-	public function insert() {
+	public function insert(): ?int {
 		$dbw = MediaWikiServices::getInstance()
 			->getConnectionProvider()
 			->getPrimaryDatabase();
@@ -715,7 +700,7 @@ class Sanction {
 	 * it is approved or rejected.
 	 * @return int
 	 */
-	public function getPeriod( $getAnyway = false ) {
+	public function getPeriod( bool $getAnyway = false ): int {
 		$votes = $this->getVotes();
 		$count = count( $votes );
 
@@ -754,7 +739,7 @@ class Sanction {
 	/**
 	 * @param bool $reset
 	 */
-	protected function countVotes( $reset = false ) {
+	protected function countVotes( bool $reset = false ): void {
 		if ( $this->mCounted && !$reset ) {
 			return;
 		}
@@ -785,7 +770,7 @@ class Sanction {
 		$this->mVoteNumber = $count;
 	}
 
-	public function isPassed() {
+	public function isPassed(): bool {
 		$this->countVotes();
 
 		$agree = $this->mAgreeVote;
@@ -795,61 +780,52 @@ class Sanction {
 		|| ( $count > 0 && $count < 3 && $agree === $count );
 	}
 
-	public function isExpired() {
+	public function isExpired(): bool {
 		// return false;
 		return $this->mExpiry <= wfTimestamp( TS_MW );
 	}
 
-	public function isHandled() {
+	public function isHandled(): bool {
 		return $this->mIsHandled;
 	}
 
-	public function isEmergency() {
+	public function isEmergency(): bool {
 		return $this->mIsEmergency;
 	}
 
-	/** @return int */
-	public function getId() {
+	public function getId(): ?int {
 		return $this->mId;
 	}
 
-	/** @param int $id */
-	public function setId( $id ) {
+	public function setId( int $id ): void {
 		$this->mId = $id;
 	}
 
-	/** @return User */
-	public function getAuthor() {
+	public function getAuthor(): User {
 		return $this->mAuthor;
 	}
 
-	/** @param User $user */
-	public function setAuthor( User $user ) {
+	public function setAuthor( User $user ): void {
 		$this->mAuthor = $user;
 	}
 
-	/** @return string */
-	public function getExpiry() {
+	public function getExpiry(): string {
 		return $this->mExpiry;
 	}
 
-	/** @param string $expiry */
-	public function setExpiry( $expiry ) {
-		$this->mExpiry = (string)$expiry;
+	public function setExpiry( string $expiry ): void {
+		$this->mExpiry = $expiry;
 	}
 
-	/** @return User */
-	public function getTarget() {
+	public function getTarget(): User {
 		return $this->mTarget;
 	}
 
-	/** @param User $user */
-	public function setTarget( User $user ) {
+	public function setTarget( User $user ): void {
 		$this->mTarget = $user;
 	}
 
-	/** @return array */
-	public function getVotes() {
+	public function getVotes(): array {
 		if ( $this->mVotes === null ) {
 			$this->mVotes = [];
 
@@ -868,25 +844,22 @@ class Sanction {
 		return $this->mVotes;
 	}
 
-	/** @return bool */
-	public function isForInsultingName() {
-		return $this->mTargetOriginalName !== null && $this->mTargetOriginalName !== '';
+	public function isForInsultingName(): bool {
+		return $this->mTargetOriginalName !== '';
 	}
 
-	/** @return string */
-	public function getTargetOriginalName() {
+	public function getTargetOriginalName(): string {
 		return $this->mTargetOriginalName;
 	}
 
-	/** @param string $name */
-	public function setTargetOriginalName( $name ) {
+	public function setTargetOriginalName( string $name ): void {
 		$this->mTargetOriginalName = $name;
 	}
 
 	/**
 	 * @return Title The page of the discussion, either a Flow topic or a page for DiscussionTools.
 	 */
-	public function getDiscussionPage() {
+	public function getDiscussionPage(): Title {
 		if ( $this->mPageId !== null ) {
 			// The page may be too new for the replica.
 			$title = Title::newFromID( $this->mPageId ) ??
@@ -919,13 +892,11 @@ class Sanction {
 		return ucfirst( $alphadecimal );
 	}
 
-	/** @return int|null */
-	public function getPageId() {
+	public function getPageId(): ?int {
 		return $this->mPageId;
 	}
 
-	/** @param int $pageId */
-	public function setPageId( int $pageId ) {
+	public function setPageId( int $pageId ): void {
 		$this->mPageId = $pageId;
 	}
 
@@ -934,17 +905,16 @@ class Sanction {
 	 *
 	 * @return UUID|null
 	 */
-	public function getWorkflowId() {
+	public function getWorkflowId(): ?UUID {
 		return $this->mTopic === null ? null : UUID::create( $this->mTopic );
 	}
 
-	/** @param UUID $uuid */
-	public function setWorkflowId( UUID $uuid ) {
+	public function setWorkflowId( UUID $uuid ): void {
 		$this->mTopic = (string)$uuid->getBinary();
 	}
 
 	/** @return string|null The binary UUID of the Flow topic */
-	public function getTopic() {
+	public function getTopic(): ?string {
 		return $this->mTopic;
 	}
 }

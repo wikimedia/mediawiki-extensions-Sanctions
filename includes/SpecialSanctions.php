@@ -11,17 +11,10 @@ use MediaWiki\SpecialPage\SpecialPage;
 use MediaWiki\User\UserFactory;
 
 class SpecialSanctions extends SpecialPage {
-	/** @var string */
-	protected $targetName;
-
-	/** @var int */
-	protected $mTargetId;
-
-	/** @var int|null */
-	protected $mOldRevisionId;
-
-	/** @var int|null */
-	protected $mNewRevisionId;
+	protected ?string $targetName = null;
+	protected int $mTargetId;
+	protected ?int $mOldRevisionId = null;
+	protected ?int $mNewRevisionId = null;
 
 	private readonly TemplateParser $templateParser;
 
@@ -42,7 +35,7 @@ class SpecialSanctions extends SpecialPage {
 	}
 
 	/**
-	 * @param string $subpage
+	 * @param string|null $subpage
 	 */
 	public function execute( $subpage ) {
 		$output = $this->getOutput();
@@ -114,10 +107,7 @@ class SpecialSanctions extends SpecialPage {
 		$output->addHTML( $this->templateParser->processTemplate( 'SpecialSanctions', $data ) );
 	}
 
-	/**
-	 * @param string $subpage
-	 */
-	private function setParameter( $subpage ) {
+	private function setParameter( ?string $subpage ): void {
 		$revLookup = $this->revisionLookup;
 
 		if ( $subpage === null ) {
@@ -201,7 +191,7 @@ class SpecialSanctions extends SpecialPage {
 	 * @return bool true를 반환하면 다른 내용을 보여주지 않습니다.
 	 * @suppress SecurityCheck-XSS
 	 */
-	private function handleRequestsIfExist( $output ) {
+	private function handleRequestsIfExist( OutputPage $output ): bool {
 		$request = $this->getRequest();
 
 		if ( $request->getVal( 'showResult' ) == true ) {
@@ -214,7 +204,7 @@ class SpecialSanctions extends SpecialPage {
 						$this->makeErrorMessage(
 							(int)$request->getVal( 'errorCode' ),
 							$request->getInt( 'sanction' ) ?: null,
-							$request->getVal( 'targetName' )
+							$request->getVal( 'targetName' ) ?? ''
 						)
 					)
 				);
@@ -372,7 +362,7 @@ class SpecialSanctions extends SpecialPage {
 	 * @param string $targetName
 	 * @return string Error Message
 	 */
-	protected function makeErrorMessage( $errorCode, $sanctionId, $targetName ) {
+	protected function makeErrorMessage( int $errorCode, ?int $sanctionId, string $targetName ): string {
 		$link = $this->makeSanctionLink( $sanctionId );
 		switch ( $errorCode ) {
 			case 0:
@@ -403,7 +393,7 @@ class SpecialSanctions extends SpecialPage {
 	 * @param int|null $sanctionId
 	 * @return string Message
 	 */
-	protected function makeMessage( $code, $sanctionId ) {
+	protected function makeMessage( int $code, ?int $sanctionId ): string {
 		$link = $this->makeSanctionLink( $sanctionId );
 		switch ( $code ) {
 			case 0:
@@ -423,12 +413,12 @@ class SpecialSanctions extends SpecialPage {
 	 * @param int|null $sanctionId
 	 * @return string HTML link to the discussion of the sanction.
 	 */
-	private function makeSanctionLink( $sanctionId ) {
+	private function makeSanctionLink( ?int $sanctionId ): string {
 		$sanction = $sanctionId ? $this->sanctionStore->newFromId( $sanctionId ) : null;
 		return $sanction ? $this->linkRenderer->makeLink( $sanction->getDiscussionPage() ) : '';
 	}
 
-	protected function makeDiffLink() {
+	protected function makeDiffLink(): string {
 		$newRevisionId = $this->mNewRevisionId;
 
 		if ( $newRevisionId === null ) {

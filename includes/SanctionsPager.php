@@ -14,8 +14,7 @@ use MediaWiki\Utils\MWTimestamp;
 use stdClass;
 
 class SanctionsPager extends IndexPager {
-	/** @var bool|null */
-	protected $userHasVoteRight = null;
+	protected ?bool $userHasVoteRight = null;
 
 	private readonly TemplateParser $templateParser;
 
@@ -274,7 +273,7 @@ class SanctionsPager extends IndexPager {
 	/**
 	 * @return bool
 	 */
-	protected function getUserHasVoteRight() {
+	protected function getUserHasVoteRight(): bool {
 		if ( $this->userHasVoteRight === null ) {
 			$this->userHasVoteRight = Utils::hasVoteRight( $this->getUser() );
 		}

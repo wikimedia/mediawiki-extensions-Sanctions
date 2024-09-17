@@ -26,7 +26,7 @@ class FlowUtil {
 	 * @param UUID $uuid
 	 * @return PostRevision|null
 	 */
-	public static function findPostRevisionFromUUID( UUID $uuid ) {
+	public static function findPostRevisionFromUUID( UUID $uuid ): ?PostRevision {
 		$storage = self::getStorage();
 		if ( !$storage ) {
 			return null;
@@ -45,7 +45,7 @@ class FlowUtil {
 	 * @param UUID $workflow the UUID of the workflow to find.
 	 * @return PostSummary|null
 	 */
-	public static function findSummaryOfTopic( $workflow ) {
+	public static function findSummaryOfTopic( UUID $workflow ): ?PostSummary {
 		$summaryCollection = PostSummaryCollection::newFromId( $workflow );
 		try {
 			$rev = $summaryCollection->getLastRevision();
@@ -65,7 +65,7 @@ class FlowUtil {
 	 * @param string $content wikitext.
 	 * @return UUID|null
 	 */
-	public static function createTopic( Title $title, User $user, string $topic, string $content ) {
+	public static function createTopic( Title $title, User $user, string $topic, string $content ): ?UUID {
 		$factory = self::getWorkflowLoaderFactory();
 		if ( !$factory ) {
 			return null;
@@ -100,7 +100,7 @@ class FlowUtil {
 	 * @param Title $title
 	 * @return bool
 	 */
-	public static function convertToFlow( $title ) {
+	public static function convertToFlow( Title $title ): bool {
 		$logger = new NullLogger;
 		$user = Utils::getBot();
 		if ( $title->exists( IDBAccessObject::READ_LATEST ) ) {
@@ -176,7 +176,7 @@ class FlowUtil {
 	 * @param string $content wikitext.
 	 * @return bool
 	 */
-	public static function updateSummary( Title $title, UUID $workflow, User $user, string $content ) {
+	public static function updateSummary( Title $title, UUID $workflow, User $user, string $content ): bool {
 		$summary = self::findSummaryOfTopic( $workflow );
 		return self::action(
 			'edit-topic-summary',
@@ -201,7 +201,7 @@ class FlowUtil {
 	 * @param string $content wikitext.
 	 * @return bool
 	 */
-	public static function replyTo( PostRevision $post, User $user, string $content ) {
+	public static function replyTo( PostRevision $post, User $user, string $content ): bool {
 		return self::action(
 			'reply',
 			[
@@ -226,7 +226,13 @@ class FlowUtil {
 	 * @param UUID|null $workflow
 	 * @return array|null
 	 */
-	protected static function action( string $action, array $params, User $user, Title $title, ?UUID $workflow = null ) {
+	protected static function action(
+		string $action,
+		array $params,
+		User $user,
+		Title $title,
+		?UUID $workflow = null
+	): ?array {
 		$factory = self::getWorkflowLoaderFactory();
 		if ( !$factory ) {
 			return null;
@@ -261,7 +267,7 @@ class FlowUtil {
 	}
 
 	/** @return ManagerGroup|null */
-	public static function getStorage() {
+	public static function getStorage(): ?ManagerGroup {
 		$storage = Container::get( 'storage' );
 		if ( $storage instanceof ManagerGroup ) {
 			return $storage;
@@ -270,7 +276,7 @@ class FlowUtil {
 	}
 
 	/** @return WorkflowLoaderFactory|null */
-	public static function getWorkflowLoaderFactory() {
+	public static function getWorkflowLoaderFactory(): ?WorkflowLoaderFactory {
 		$storage = Container::get( 'factory.loader.workflow' );
 		if ( $storage instanceof WorkflowLoaderFactory ) {
 			return $storage;

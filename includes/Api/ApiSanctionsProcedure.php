@@ -35,7 +35,7 @@ class ApiSanctionsProcedure extends ApiBase {
 		}
 
 		$emergency = $params['procedure'] === 'emergency';
-		if ( (bool)$sanction->isEmergency() !== $emergency &&
+		if ( $sanction->isEmergency() !== $emergency &&
 			!$sanction->toggleEmergency( $this->getUser() )
 		) {
 			$this->dieWithError( 'apierror-sanctions-procedure-failed' );

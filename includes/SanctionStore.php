@@ -40,11 +40,7 @@ class SanctionStore {
 			->from( 'sanctions' );
 	}
 
-	/**
-	 * @param int $id
-	 * @return Sanction|null
-	 */
-	public function newFromId( $id ) {
+	public function newFromId( int $id ): ?Sanction {
 		$row = $this->newSelectQueryBuilder()
 			->where( [ 'st_id' => $id ] )
 			->caller( __METHOD__ )
@@ -62,7 +58,12 @@ class SanctionStore {
 	 * @param bool|null $handled
 	 * @return Sanction[]
 	 */
-	public function findByTarget( User $user, $forInsertingName = null, $expired = null, $handled = null ) {
+	public function findByTarget(
+		User $user,
+		?bool $forInsertingName = null,
+		?bool $expired = null,
+		?bool $handled = null
+	): array {
 		$db = $this->dbProvider->getReplicaDatabase();
 		$queryBuilder = $this->newSelectQueryBuilder( $db )
 			->where( [ 'st_target' => $user->getId() ] );
@@ -97,7 +98,7 @@ class SanctionStore {
 	/**
 	 * @return Sanction[]
 	 */
-	public function findNotHandledExpired() {
+	public function findNotHandledExpired(): array {
 		$db = $this->dbProvider->getReplicaDatabase();
 		$rows = $this->newSelectQueryBuilder( $db )
 			->where( [
@@ -130,11 +131,7 @@ class SanctionStore {
 		return Sanction::newFromRow( $row );
 	}
 
-	/**
-	 * @param UUID $uuid
-	 * @return Sanction|null
-	 */
-	public function newFromWorkflowId( UUID $uuid ) {
+	public function newFromWorkflowId( UUID $uuid ): ?Sanction {
 		$row = $this->newSelectQueryBuilder()
 			->where( [ 'st_topic' => $uuid->getBinary() ] )
 			->caller( __METHOD__ )

@@ -49,11 +49,7 @@ class Notification implements
 		];
 	}
 
-	/**
-	 * @param User $user
-	 * @return bool
-	 */
-	private static function isSanctionBot( User $user ) {
+	private static function isSanctionBot( User $user ): bool {
 		return $user->getName() === wfMessage( 'sanctions-bot-name' )->inContentLanguage()->text();
 	}
 }

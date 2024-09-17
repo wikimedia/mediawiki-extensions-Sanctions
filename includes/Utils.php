@@ -28,7 +28,7 @@ class Utils {
 	 * @param bool $contentLang
 	 * @return bool
 	 */
-	public static function hasVoteRight( UserIdentity $user, &$reasons = false, $contentLang = false ) {
+	public static function hasVoteRight( UserIdentity $user, &$reasons = false, bool $contentLang = false ): bool {
 		$userFactory = MediaWikiServices::getInstance()->getUserFactory();
 		$user = $userFactory->newFromUserIdentity( $user );
 
@@ -140,7 +140,7 @@ class Utils {
 	 * @param array &$reasons
 	 * @param bool $contentLang
 	 */
-	private static function addReason( Message $msg, &$reasons, $contentLang ) {
+	private static function addReason( Message $msg, array &$reasons, bool $contentLang ): void {
 		if ( $contentLang ) {
 			$msg = $msg->inContentLanguage();
 		}
@@ -158,7 +158,13 @@ class Utils {
 	 * @param string $reason
 	 * @return bool
 	 */
-	public static function doRename( $oldName, $newName, $target, $renamer, $reason ) {
+	public static function doRename(
+		string $oldName,
+		string $newName,
+		User $target,
+		User $renamer,
+		string $reason
+	): bool {
 		$userFactory = MediaWikiServices::getInstance()->getUserFactory();
 
 		$bot = self::getBot();
@@ -259,12 +265,12 @@ class Utils {
 	 * @return bool
 	 */
 	public static function doBlock(
-			$target,
-			$expiry,
-			$reason,
-			$preventEditOwnUserTalk = true,
-			$user = null
-		) {
+		User $target,
+		string $expiry,
+		string $reason,
+		bool $preventEditOwnUserTalk = true,
+		?User $user = null
+	): bool {
 		$bot = self::getBot();
 		$services = MediaWikiServices::getInstance();
 		$blockStore = $services->getDatabaseBlockStore();
@@ -319,7 +325,13 @@ class Utils {
 	 *   it is not given.
 	 * @return bool
 	 */
-	public static function unblock( $target, $withLog = false, $reason = null, $user = null, $block = null ) {
+	public static function unblock(
+		User $target,
+		bool $withLog = false,
+		?string $reason = null,
+		?User $user = null,
+		?AbstractBlock $block = null
+	): bool {
 		$blockStore = MediaWikiServices::getInstance()->getDatabaseBlockStore();
 
 		$block ??= $blockStore->newFromTarget( $target );
@@ -377,10 +389,7 @@ class Utils {
 		return $logger;
 	}
 
-	/**
-	 * @return User
-	 */
-	public static function getBot() {
+	public static function getBot(): User {
 		$botName = wfMessage( 'sanctions-bot-name' )->inContentLanguage()->text();
 		$bot = User::newSystemUser( $botName, [ 'steal' => true ] );
 

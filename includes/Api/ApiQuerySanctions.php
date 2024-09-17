@@ -134,8 +134,8 @@ class ApiQuerySanctions extends ApiQueryBase {
 		}
 		if ( isset( $prop['flags'] ) ) {
 			$vals['expired'] = $sanction->isExpired();
-			$vals['handled'] = (bool)$sanction->isHandled();
-			$vals['emergency'] = (bool)$sanction->isEmergency();
+			$vals['handled'] = $sanction->isHandled();
+			$vals['emergency'] = $sanction->isEmergency();
 		}
 		if ( isset( $prop['page'] ) ) {
 			self::addTitleInfo( $vals, $sanction->getDiscussionPage() );
@@ -146,7 +146,7 @@ class ApiQuerySanctions extends ApiQueryBase {
 			$vals['votes'] = count( $votes );
 			$vals['agree'] = count( array_filter( $votes, static fn ( $period ) => $period > 0 ) );
 			$vals['passed'] = $sanction->isPassed();
-			$vals['period'] = (int)$sanction->getPeriod();
+			$vals['period'] = $sanction->getPeriod();
 		}
 		return $vals;
 	}
