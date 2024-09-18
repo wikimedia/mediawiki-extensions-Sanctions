@@ -10,7 +10,7 @@ use MediaWiki\Tests\HookContainer\HookRunnerTestBase;
  */
 class SanctionsHookRunnerTest extends HookRunnerTestBase {
 
-	public function provideHookRunners() {
+	public static function provideHookRunners() {
 		yield SanctionsHookRunner::class => [ SanctionsHookRunner::class ];
 	}
 }
