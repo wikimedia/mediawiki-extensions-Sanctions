@@ -21,7 +21,7 @@ class SpecialSanctions extends SpecialPage {
 	/** @var int|null */
 	protected $mOldRevisionId;
 
-	/** @var int */
+	/** @var int|null */
 	protected $mNewRevisionId;
 
 	/** @var SanctionStore */
@@ -118,7 +118,7 @@ class SpecialSanctions extends SpecialPage {
 				'action' => $this->getPageTitle()->getFullURL(),
 				'target-label' => $this->msg( 'sanctions-form-target' )->text(),
 				'target-name' => $this->targetName,
-				'is-for-insulting-name' => $this->mNewRevisionId == null && $this->targetName != null,
+				'is-for-insulting-name' => $this->mNewRevisionId === null && $this->targetName !== null,
 				'label-insulting-name' => $this->msg( 'sanctions-form-for-insulting-name' )->text(),
 				'textarea-placeholder' => $this->msg( 'sanctions-content-placeholder' )->text(),
 				'submit-label' => $this->msg( 'sanctions-submit' )->text(),
@@ -183,7 +183,7 @@ class SpecialSanctions extends SpecialPage {
 		$this->targetName = $targetName;
 		$this->mTargetId = $targetId;
 
-		if ( count( $parts ) == 1 ) {
+		if ( count( $parts ) === 1 ) {
 			return;
 		}
 
@@ -197,7 +197,7 @@ class SpecialSanctions extends SpecialPage {
 		}
 
 		// Fetch oldRevisionId
-		if ( count( $parts ) == 3 ) {
+		if ( count( $parts ) === 3 ) {
 			$oldRevisionId = (int)$parts[1];
 			$oldRevision = $revLookup->getRevisionById( $oldRevisionId );
 			if ( !$oldRevision ) {
@@ -451,7 +451,7 @@ class SpecialSanctions extends SpecialPage {
 	protected function makeDiffLink() {
 		$newRevisionId = $this->mNewRevisionId;
 
-		if ( $newRevisionId == null ) {
+		if ( $newRevisionId === null ) {
 			return '';
 		}
 
@@ -459,7 +459,7 @@ class SpecialSanctions extends SpecialPage {
 		$oldRevisionId = $this->mOldRevisionId;
 
 		$rt = '';
-		if ( $oldRevisionId != null ) {
+		if ( $oldRevisionId !== null ) {
 			$rt = $this->msg( 'sanctions-topic-diff', [
 				(string)$oldRevisionId,
 				(string)$newRevisionId,

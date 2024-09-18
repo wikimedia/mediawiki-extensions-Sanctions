@@ -138,7 +138,7 @@ class Vote {
 		if ( strpos( $content, $disagreementRegex ) !== false ) {
 			return 0;
 		}
-		if ( preg_match( $agreementWithDayRegex, $content, $matches ) == 1 ) {
+		if ( preg_match( $agreementWithDayRegex, $content, $matches ) ) {
 			return (int)$matches[1];
 		}
 		// If the affirmative opinion is without explicit length, it would be considered as a day.

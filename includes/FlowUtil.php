@@ -70,7 +70,7 @@ class FlowUtil {
 		if ( !$factory ) {
 			return null;
 		}
-		if ( $title->getContentModel() != CONTENT_MODEL_FLOW_BOARD ) {
+		if ( !$title->hasContentModel( CONTENT_MODEL_FLOW_BOARD ) ) {
 			if ( !self::convertToFlow( $title ) ) {
 				return null;
 			}

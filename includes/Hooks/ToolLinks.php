@@ -44,7 +44,7 @@ class ToolLinks implements
 	 */
 	public function onUserToolLinksEdit( $userId, $userText, &$items ) {
 		$viewer = RequestContext::getMain()->getUser();
-		if ( $viewer == null || !Utils::hasVoteRight( $viewer ) ) {
+		if ( !Utils::hasVoteRight( $viewer ) ) {
 			return true;
 		}
 
@@ -68,7 +68,7 @@ class ToolLinks implements
 		}
 
 		$ids = '';
-		if ( $oldRevRecord != null ) {
+		if ( $oldRevRecord ) {
 			$ids .= $oldRevRecord->getId() . '/';
 		}
 		$ids .= $newRevRecord->getId();

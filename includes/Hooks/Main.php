@@ -53,7 +53,7 @@ class Main implements
 	 */
 	public function onFlowAddModules( OutputPage $out ) {
 		$title = $out->getTitle();
-		if ( $title == null ) {
+		if ( !$title ) {
 			return true;
 		}
 

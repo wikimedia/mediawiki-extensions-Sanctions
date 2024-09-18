@@ -180,7 +180,7 @@ class Sanction {
 			$targetName = $target->getName();
 			$originalName = $this->mTargetOriginalName;
 
-			if ( $targetName != $originalName ) {
+			if ( $targetName !== $originalName ) {
 				return true;
 			}
 
@@ -261,7 +261,7 @@ class Sanction {
 		if ( $insultingName ) {
 			$originalName = $this->mTargetOriginalName;
 
-			if ( $target->getName() == $originalName ) {
+			if ( $target->getName() === $originalName ) {
 				Utils::doRename(
 					$target->getName(),
 					wfMessage( 'sanctions-temporary-username', wfTimestamp( TS_MW ) )
@@ -301,7 +301,7 @@ class Sanction {
 			$targetName = $target->getName();
 			$originalName = $this->mTargetOriginalName;
 
-			if ( $targetName == $originalName ) {
+			if ( $targetName === $originalName ) {
 				return true;
 			} else {
 				if ( !Utils::doRename( $targetName, $originalName, $target, $user, $reason ) ) {
@@ -315,8 +315,8 @@ class Sanction {
 			// other words, look at the block record and if there is a block record that is not related to
 			// this sanction, compare the time periods and reduce the block period if the expiry
 			// of this sanction is later than the unblock time.
-			if ( $block && $block->getExpiry() == $this->mExpiry ) {
-				Utils::unblock( $target, true, $reason, $user == null ? Utils::getBot() : $user, $block );
+			if ( $block && $block->getExpiry() === $this->mExpiry ) {
+				Utils::unblock( $target, true, $reason, $user ?? Utils::getBot(), $block );
 			}
 			return true;
 		}
@@ -345,7 +345,7 @@ class Sanction {
 		Utils::getLogger()->debug( "agree: $agree, count: $count" );
 
 		if ( $count - $agree >= 3 ||
-			( $agree == 0 && array_key_exists( $this->mAuthor->getId(), $this->mVotes )
+			( $agree === 0 && array_key_exists( $this->mAuthor->getId(), $this->mVotes )
 				&& $this->mVotes[$this->mAuthor->getId()] == 0 ) ) {
 			return true;
 		}
@@ -416,15 +416,15 @@ class Sanction {
 		$count = $this->mVoteNumber;
 		$done = $done || $this->isExpired();
 
-		if ( $count == 0 ) {
+		if ( $count === 0 ) {
 			$statusText = wfMessage( 'sanctions-topic-summary-status-rejected' );
 			$reasonText = wfMessage( 'sanctions-topic-summary-reason-no-participants' );
 		} elseif ( $count < 3 ) {
-			if ( $agree == 0 && array_key_exists( $this->mAuthor->getId(), $this->mVotes )
+			if ( $agree === 0 && array_key_exists( $this->mAuthor->getId(), $this->mVotes )
 				&& $this->mVotes[$this->mAuthor->getId()] == 0 ) {
 				$statusText = wfMessage( 'sanctions-topic-summary-status-rejected' );
 				$reasonText = wfMessage( 'sanctions-topic-summary-reason-canceled-by-author' );
-			} elseif ( $agree == $count ) {
+			} elseif ( $agree === $count ) {
 				$statusText = wfMessage( 'sanctions-topic-summary-status-passed' );
 				$reasonText = wfMessage( 'sanctions-topic-summary-reason-less-than-three-and-all-agreed' );
 			} else {
@@ -432,7 +432,7 @@ class Sanction {
 				$reasonText = wfMessage( 'sanctions-topic-summary-reason-less-than-three-and-not-all-agreed' );
 			}
 		} else {
-			if ( $count == 3 && $agree == 0 ) {
+			if ( $count === 3 && $agree === 0 ) {
 				$statusText = wfMessage( 'sanctions-topic-summary-status-immediate-rejection' );
 				$reasonText = wfMessage( 'sanctions-topic-summary-reason-immediate-rejection' );
 
@@ -474,7 +474,7 @@ class Sanction {
 				wfMessage( 'sanctions-topic-summary-status-label', $statusText )
 					->inContentLanguage()->text()
 			)->inContentLanguage()->text() . $reasonText;
-			if ( !( $count == 3 && $agree == 0 ) ) {
+			if ( !( $count === 3 && $agree === 0 ) ) {
 				$lines[] .= wfMessage(
 					'sanctions-topic-summary-deadline',
 					MediaWikiServices::getInstance()->getContentLanguage()->formatExpiry( $this->mExpiry )
@@ -632,7 +632,7 @@ class Sanction {
 		// - If at least one person and less than three people express their opinions and have no
 		// objections
 		$passed = ( $count >= 3 && $agree >= $count * 2 / 3 )
-		|| ( $count < 3 && $agree == $count );
+		|| ( $count < 3 && $agree === $count );
 
 		if ( $passed ) {
 			return ceil( $sumPeriod / $count );
@@ -669,7 +669,7 @@ class Sanction {
 
 		$this->mIsPassed =
 			( $count >= 3 && $agree >= $count * 2 / 3 ) ||
-			( $count < 3 && $agree == $count );
+			( $count < 3 && $agree === $count );
 		$this->mAgreeVote = $agree;
 		$this->mVoteNumber = $count;
 	}
@@ -681,7 +681,7 @@ class Sanction {
 		$count = $this->mVoteNumber;
 
 		return ( $count >= 3 && $agree >= $count * 2 / 3 )
-		|| ( $count > 0 && $count < 3 && $agree == $count );
+		|| ( $count > 0 && $count < 3 && $agree === $count );
 	}
 
 	public function isExpired() {
@@ -764,7 +764,7 @@ class Sanction {
 
 	/** @return bool */
 	public function isForInsultingName() {
-		return $this->mTargetOriginalName != null;
+		return $this->mTargetOriginalName !== null && $this->mTargetOriginalName !== '';
 	}
 
 	/** @return string */

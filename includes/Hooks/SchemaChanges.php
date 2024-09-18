@@ -14,7 +14,7 @@ class SchemaChanges implements \MediaWiki\Installer\Hook\LoadExtensionSchemaUpda
 	public function onLoadExtensionSchemaUpdates( $updater ) {
 		$dir = __DIR__;
 
-		if ( $updater->getDB()->getType() == 'mysql' ) {
+		if ( $updater->getDB()->getType() === 'mysql' ) {
 			$updater->addExtensionUpdate(
 				[ 'addTable', 'sanctions',
 				"$dir/../../sql/sanctions.tables.sql", true ]

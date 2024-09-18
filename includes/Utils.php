@@ -114,7 +114,7 @@ class Utils {
 		}
 
 		$block = $user->getBlock();
-		if ( $block !== null ) {
+		if ( $block ) {
 			$blockExpiry = $block->getExpiry();
 			if ( $blockExpiry && wfTimestampNow() < $blockExpiry ) {
 				if ( $reasons !== false ) {
@@ -135,7 +135,7 @@ class Utils {
 		}
 
 		if ( is_array( $reasons ) ) {
-			return count( $reasons ) == 0;
+			return count( $reasons ) === 0;
 		}
 		return true;
 	}
@@ -306,7 +306,7 @@ class Utils {
 		$logEntry = new ManualLogEntry( 'block', 'block' );
 		$logEntry->setTarget( Title::makeTitle( NS_USER, $target->getName() ) );
 		$logEntry->setComment( $reason );
-		$logEntry->setPerformer( $user == null ? $bot : $user );
+		$logEntry->setPerformer( $user ?? $bot );
 		$logEntry->setParameters( $logParams );
 		$blockIds = array_merge( [ $success['id'] ], $success['autoIds'] );
 		$logEntry->setRelations( [ 'ipb_id' => $blockIds ] );
@@ -327,7 +327,7 @@ class Utils {
 	public static function unblock( $target, $withLog = false, $reason = null, $user = null, $block = null ) {
 		$blockStore = MediaWikiServices::getInstance()->getDatabaseBlockStore();
 
-		if ( $block != null ) {
+		if ( $block ) {
 			if ( $block instanceof CompositeBlock ) {
 				foreach ( $block->getOriginalBlocks() as $originalBlock ) {
 					if ( $originalBlock instanceof DatabaseBlock ) {
@@ -351,7 +351,7 @@ class Utils {
 				$logEntry->setTarget( $page );
 			}
 			$logEntry->setComment( $reason );
-			$logEntry->setPerformer( $user == null ? $bot : $user );
+			$logEntry->setPerformer( $user ?? $bot );
 			$logId = $logEntry->insert();
 			$logEntry->publish( $logId );
 		}

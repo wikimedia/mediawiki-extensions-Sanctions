@@ -14,10 +14,10 @@ use MediaWiki\Utils\MWTimestamp;
 use stdClass;
 
 class SanctionsPager extends IndexPager {
-	/** @var bool */
+	/** @var bool|null */
 	protected $userHasVoteRight = null;
 
-	/** @var string */
+	/** @var string|null */
 	private $targetName;
 
 	/** @var UserFactory */
@@ -97,7 +97,7 @@ class SanctionsPager extends IndexPager {
 			]
 		];
 
-		if ( $this->targetName ) {
+		if ( $this->targetName !== null ) {
 			$query['conds'][] = 'st_target = ' . $this->userFactory->newFromName( $this->targetName )->getId();
 		} else {
 			$query['conds']['st_handled'] = 0;
@@ -283,7 +283,7 @@ class SanctionsPager extends IndexPager {
 	public function getEmptyBody() {
 		$text = $this->msg( 'sanctions-empty' )->text();
 
-		if ( $this->targetName == null ) {
+		if ( $this->targetName === null ) {
 			$text = $this->msg( 'sanctions-empty-now' )->text();
 		} else {
 			$text = $this->msg( 'sanctions-empty-about-now', $this->targetName )->text();
