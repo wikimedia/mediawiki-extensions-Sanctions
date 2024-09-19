@@ -2,11 +2,13 @@
 
 namespace MediaWiki\Extension\Sanctions\Tests\Integration;
 
-use InvalidArgumentException;
 use MediaWiki\Extension\Sanctions\Vote;
 use MediaWikiIntegrationTestCase;
 
-/** @covers \MediaWiki\Extension\Sanctions\Vote */
+/**
+ * @covers \MediaWiki\Extension\Sanctions\Vote
+ * @group Database
+ */
 class VoteTest extends MediaWikiIntegrationTestCase {
 
 	/**
@@ -14,15 +16,13 @@ class VoteTest extends MediaWikiIntegrationTestCase {
 	 * @covers \MediaWiki\Extension\Sanctions\Vote::loadFromRow
 	 */
 	public function testNewFromRow() {
-		$this->expectException( InvalidArgumentException::class );
-		Vote::newFromRow( null );
 		$actual = Vote::newFromRow( (object)[
 			'stv_user' => 0,
 			'stv_sanction' => 0,
 			'stv_period' => 1,
 		] );
 		$this->assertInstanceOf( Vote::class, $actual );
-		$this->assertNull( $actual->getSanction() );
+		$this->assertSame( 1, $actual->getPeriod() );
 	}
 
 	public static function provideReplies() {

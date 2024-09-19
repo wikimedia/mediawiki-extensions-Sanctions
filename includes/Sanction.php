@@ -634,7 +634,7 @@ class Sanction {
 	 * @param stdClass $row
 	 * @return Sanction
 	 */
-	public static function newFromRow( $row ) {
+	public static function newFromRow( stdClass $row ) {
 		$sanction = new Sanction();
 		$sanction->loadFromRow( $row );
 		return $sanction;
@@ -644,11 +644,7 @@ class Sanction {
 	 * @param stdClass $row
 	 * @return bool
 	 */
-	protected function loadFromRow( $row ) {
-		if ( !is_object( $row ) ) {
-			throw new \InvalidArgumentException( '$row must be an object' );
-		}
-
+	protected function loadFromRow( stdClass $row ) {
 		$userFactory = MediaWikiServices::getInstance()->getUserFactory();
 
 		if ( isset( $row->st_id ) ) {

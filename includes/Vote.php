@@ -4,7 +4,6 @@ namespace MediaWiki\Extension\Sanctions;
 
 use BadMethodCallException;
 use Flow\Model\PostRevision;
-use InvalidArgumentException;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\User\User;
 use stdClass;
@@ -12,20 +11,20 @@ use Wikimedia\Rdbms\IDatabase;
 
 class Vote {
 
-	/** @var Sanction */
+	/** @var Sanction|null */
 	private $sanction;
 
-	/** @var User */
+	/** @var User|null */
 	private $user;
 
-	/** @var int */
+	/** @var int|null */
 	private $period;
 
 	/**
 	 * @param stdClass $row A row from the sanctions_vote table
 	 * @return Vote
 	 */
-	public static function newFromRow( $row ) {
+	public static function newFromRow( stdClass $row ) {
 		$vote = new Vote();
 		$vote->loadFromRow( $row );
 		return $vote;
@@ -36,11 +35,7 @@ class Vote {
 	 *
 	 * @param stdClass $row Row from the user table to load.
 	 */
-	protected function loadFromRow( $row ) {
-		if ( !is_object( $row ) ) {
-			throw new InvalidArgumentException( '$row must be an object' );
-		}
-
+	protected function loadFromRow( stdClass $row ) {
 		if ( isset( $row->stv_user ) ) {
 			$userFactory = MediaWikiServices::getInstance()->getUserFactory();
 			$this->user = $userFactory->newFromId( (int)$row->stv_user );
