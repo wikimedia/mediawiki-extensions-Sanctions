@@ -11,7 +11,7 @@ use MediaWiki\User\UserFactory;
 use OutputPage;
 use SpecialPage;
 
-class SpacialSanctions extends SpecialPage {
+class SpecialSanctions extends SpecialPage {
 	/** @var string */
 	protected $targetName;
 

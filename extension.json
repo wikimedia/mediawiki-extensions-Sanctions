@@ -22,7 +22,7 @@
 	"ServiceWiringFiles": [ "includes/ServiceWiring.php" ],
 	"ResourceModules": {
 		"ext.sanctions.special.sanctions.styles": {
-			"styles": [ "styles/spacial-sanctions.less" ]
+			"styles": [ "styles/special-sanctions.less" ]
 		},
 		"ext.sanctions.special.sanctions": {
 			"scripts": [ "ext.sanctions.specialSanctions.js" ]
@@ -125,7 +125,7 @@
 	},
 	"SpecialPages": {
 		"Sanctions": {
-			"class": "MediaWiki\\Extension\\Sanctions\\SpacialSanctions",
+			"class": "MediaWiki\\Extension\\Sanctions\\SpecialSanctions",
 			"services": [
 				"SanctionStore",
 				"UserFactory",
