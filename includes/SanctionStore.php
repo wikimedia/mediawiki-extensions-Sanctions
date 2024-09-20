@@ -24,7 +24,8 @@ class SanctionStore {
 		$row = $db->selectRow(
 			'sanctions',
 			'*',
-			[ 'st_id' => $id ]
+			[ 'st_id' => $id ],
+			__METHOD__
 		);
 		if ( !$row ) {
 			return null;
@@ -94,7 +95,8 @@ class SanctionStore {
 			[
 				'st_expiry <= ' . wfTimestamp( TS_MW ),
 				'st_handled' => 0,
-			]
+			],
+			__METHOD__
 		);
 		if ( !$rows ) {
 			return [];
@@ -118,7 +120,8 @@ class SanctionStore {
 		$row = $db->selectRow(
 			'sanctions',
 			'*',
-			[ 'st_topic' => $uuid->getBinary() ]
+			[ 'st_topic' => $uuid->getBinary() ],
+			__METHOD__
 		);
 		if ( !$row ) {
 			return null;

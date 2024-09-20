@@ -30,7 +30,8 @@ class VoteStore {
 			[
 				'stv_topic' => $sanction->getWorkflowId()->getBinary(),
 				'stv_user' => $user->getId(),
-			]
+			],
+			__METHOD__
 		);
 		if ( !$row ) {
 			return null;
