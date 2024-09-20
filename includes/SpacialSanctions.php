@@ -9,7 +9,6 @@ use MediaWiki\Linker\LinkRenderer;
 use MediaWiki\Revision\RevisionLookup;
 use MediaWiki\User\UserFactory;
 use OutputPage;
-use RequestContext;
 use SpecialPage;
 
 class SpacialSanctions extends SpecialPage {
@@ -123,7 +122,7 @@ class SpacialSanctions extends SpecialPage {
 				'label-insulting-name' => $this->msg( 'sanctions-form-for-insulting-name' )->text(),
 				'textarea-placeholder' => $this->msg( 'sanctions-content-placeholder' )->text(),
 				'submit-label' => $this->msg( 'sanctions-submit' )->text(),
-				'token' => RequestContext::getMain()->getCsrfTokenSet()->getToken( 'sanctions' )->toString(),
+				'token' => $this->getContext()->getCsrfTokenSet()->getToken( 'sanctions' )->toString(),
 			];
 		} else {
 			if ( $this->getUser()->isAnon() ) {
@@ -283,7 +282,7 @@ class SpacialSanctions extends SpecialPage {
 		// 100    사용자명 미입력
 		// 101 사용자 없음
 		// 102 중복된 부적절한 사용자명 변경 건의
-		if ( !RequestContext::getMain()->getCsrfTokenSet()->getToken( 'sanctions' )->match(
+		if ( !$this->getContext()->getCsrfTokenSet()->getToken( 'sanctions' )->match(
 			$request->getVal( 'token' ) ) ) {
 			[ $query['showResult'], $query['errorCode'] ] = [ true, 0 ];
 			// '토큰이 일치하지 않습니다.'

@@ -10,7 +10,6 @@ use MediaWiki\Linker\LinkRenderer;
 use MediaWiki\Title\Title;
 use MediaWiki\User\UserFactory;
 use MWTimestamp;
-use RequestContext;
 use stdClass;
 use User;
 
@@ -189,7 +188,7 @@ class SanctionsPager extends IndexPager {
 					$data['data-toggle-process'] = [
 						'action' => $this->getContext()->getTitle()->getFullURL(),
 						'label' => $this->msg( 'sanctions-row-button-toggle-emergency' )->text(),
-						'token' => RequestContext::getMain()->getCsrfTokenSet()->getToken( 'sanctions' )->toString(),
+						'token' => $this->getContext()->getCsrfTokenSet()->getToken( 'sanctions' )->toString(),
 						'sanction-id' => (string)$row->st_id,
 					];
 				}
