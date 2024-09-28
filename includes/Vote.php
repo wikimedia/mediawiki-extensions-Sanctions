@@ -72,7 +72,8 @@ class Vote {
 				'stv_user' => $this->getUser()->getId(),
 				'stv_period' => $this->getPeriod(),
 				'stv_last_update_timestamp' => $timestamp ?? $dbw->timestamp(),
-			]
+			],
+			__METHOD__
 		);
 		$this->updateLastTouched( $timestamp, $dbw );
 	}
@@ -96,7 +97,8 @@ class Vote {
 			[
 				'stv_topic' => $this->getSanction()->getWorkflowId()->getBinary(),
 				'stv_user' => $this->user->getId(),
-			]
+			],
+			__METHOD__
 		);
 		$this->updateLastTouched( $timestamp, $dbw );
 	}
@@ -110,7 +112,8 @@ class Vote {
 		$dbw->update(
 			'sanctions',
 			[ 'st_last_update_timestamp' => $timestamp ],
-			[ 'st_id' => $this->sanction->getId() ]
+			[ 'st_id' => $this->sanction->getId() ],
+			__METHOD__
 		);
 	}
 

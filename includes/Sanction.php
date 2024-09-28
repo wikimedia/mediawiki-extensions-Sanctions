@@ -156,7 +156,8 @@ class Sanction {
 				'st_emergency' => $emergency ? 1 : 0,
 				'st_last_update_timestamp' => $now
 			],
-			[ 'st_id' => $id ]
+			[ 'st_id' => $id ],
+			__METHOD__
 		);
 
 		return true;
@@ -510,7 +511,8 @@ class Sanction {
 		$row = $db->selectRow(
 			'sanctions',
 			'*',
-			[ $name => $value ]
+			[ $name => $value ],
+			__METHOD__
 		);
 
 		if ( $row === false ) {
@@ -748,7 +750,8 @@ class Sanction {
 				'*',
 				[
 					'stv_topic' => $this->mWorkflowId->getBinary()
-				]
+				],
+				__METHOD__
 			);
 			// Convert the wrapped result to an array
 			foreach ( $res as $row ) {
