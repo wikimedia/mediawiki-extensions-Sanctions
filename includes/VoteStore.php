@@ -3,7 +3,6 @@
 namespace MediaWiki\Extension\Sanctions;
 
 use User;
-use Wikimedia\Rdbms\DBConnRef;
 use Wikimedia\Rdbms\IDatabase;
 use Wikimedia\Rdbms\ILoadBalancer;
 
@@ -25,7 +24,7 @@ class VoteStore {
 	 * @return Vote|null
 	 */
 	public function getVoteBySanction( Sanction $sanction, User $user ) {
-		$db = $this->getDBConnectionRef( DB_REPLICA );
+		$db = $this->getDBConnection( DB_REPLICA );
 		$row = $db->selectRow(
 			'sanctions_vote',
 			[
@@ -50,7 +49,7 @@ class VoteStore {
 	 * @return bool
 	 */
 	public function deleteOn( Sanction $sanction, $dbw = null ) {
-		$dbw = $dbw ?: $this->getDBConnectionRef( DB_PRIMARY );
+		$dbw = $dbw ?: $this->getDBConnection( DB_PRIMARY );
 
 		$dbw->delete(
 			'sanctions_vote',
@@ -73,13 +72,12 @@ class VoteStore {
 
 	/**
 	 * @param int $mode DB_PRIMARY or DB_REPLICA
-	 *
 	 * @param array $groups
-	 * @return DBConnRef
+	 * @return IDatabase|false
 	 */
-	private function getDBConnectionRef( $mode, $groups = [] ) {
+	private function getDBConnection( $mode, $groups = [] ) {
 		$lb = $this->getDBLoadBalancer();
-		return $lb->getConnectionRef( $mode, $groups );
+		return $lb->getConnection( $mode, $groups );
 	}
 
 }

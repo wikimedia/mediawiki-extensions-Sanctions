@@ -9,6 +9,7 @@ use MediaWikiIntegrationTestCase;
 
 /**
  * @covers \MediaWiki\Extension\Sanctions\FlowUtil
+ * @group Database
  */
 class FlowUtilTest extends MediaWikiIntegrationTestCase {
 

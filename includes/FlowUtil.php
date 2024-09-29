@@ -105,7 +105,9 @@ class FlowUtil {
 		$user = Utils::getBot();
 		if ( $title->exists( IDBAccessObject::READ_LATEST ) ) {
 			$converter = new Converter(
-				wfGetDB( DB_PRIMARY ),
+				MediaWikiServices::getInstance()
+					->getDBLoadBalancer()
+					->getMaintenanceConnectionRef( DB_PRIMARY ),
 				Container::get( 'importer' ),
 				$logger,
 				$user,
