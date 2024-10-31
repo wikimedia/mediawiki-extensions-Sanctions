@@ -56,6 +56,8 @@ class SanctionsPagerTest extends MediaWikiIntegrationTestCase {
 		$user->expects( $this->any() )
 			->method( 'getBlock' )
 			->willReturn( null );
+		$user->method( 'getName' )
+			->willReturn( 'votableUser' );
 
 		return $user;
 	}
