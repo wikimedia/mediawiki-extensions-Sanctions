@@ -5,6 +5,7 @@ namespace MediaWiki\Extension\Sanctions\Hooks;
 use MediaWiki\Extension\Sanctions\Utils;
 use MediaWiki\Linker\LinkRenderer;
 use MediaWiki\Revision\RevisionRecord;
+use MediaWiki\Skin\SkinComponentUtils;
 use MediaWiki\User\UserFactory;
 use MediaWiki\User\UserIdentity;
 use RequestContext;
@@ -116,7 +117,7 @@ class ToolLinks implements
 		$sanctionsLink = [
 			'sanctions' => [
 				'text' => $skin->msg( 'sanctions-link-on-user-page' )->text(),
-				'href' => $skin::makeSpecialUrlSubpage( 'Sanctions', $rootUser ),
+				'href' => SkinComponentUtils::makeSpecialUrlSubpage( 'Sanctions', $rootUser ),
 				'id' => 't-sanctions'
 			]
 		];
