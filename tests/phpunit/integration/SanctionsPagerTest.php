@@ -17,7 +17,7 @@ use Wikimedia\TestingAccessWrapper;
  */
 class SanctionsPagerTest extends MediaWikiIntegrationTestCase {
 
-	private function getSanctionsPager( User $viewer = null, string $targetName = null ) {
+	private function getSanctionsPager( ?User $viewer = null, ?string $targetName = null ) {
 		$request = new RequestContext();
 		if ( $viewer ) {
 			$request->setUser( $viewer );

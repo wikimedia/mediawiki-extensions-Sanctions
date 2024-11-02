@@ -45,7 +45,7 @@ class SanctionsPager extends IndexPager {
 		SanctionStore $sanctionStore,
 		UserFactory $userFactory,
 		LinkRenderer $linkRenderer,
-		string $targetName = null
+		?string $targetName = null
 	) {
 		parent::__construct( $context );
 		$this->targetName = $targetName;
