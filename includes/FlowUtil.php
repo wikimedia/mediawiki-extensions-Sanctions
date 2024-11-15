@@ -226,7 +226,9 @@ class FlowUtil {
 	 * @param UUID|null $workflow
 	 * @return array|null
 	 */
-	protected static function action( string $action, array $params, User $user, Title $title, UUID $workflow = null ) {
+	protected static function action(
+		string $action, array $params, User $user, Title $title, ?UUID $workflow = null
+	) {
 		$factory = self::getWorkflowLoaderFactory();
 		if ( !$factory ) {
 			return null;
