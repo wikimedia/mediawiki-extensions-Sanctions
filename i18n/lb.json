@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Les Meloures",
-			"Robby"
+			"Robby",
+			"Volvox"
 		]
 	},
 	"sanctions-type-block": "Ufro fir ze spären",
@@ -20,5 +21,5 @@
 	"sanctions-link-on-user-contributes": "Sanktiounen",
 	"sanctions-ve-vote-agree-tool-title": "Ënnerstëtzung",
 	"sanctions-ve-agree-days-inspector-remove-label": "Ewechhuelen",
-	"sanctions-ve-agree-days-inspector-invalid-value": "\"$1\" ass net valabel."
+	"sanctions-ve-agree-days-inspector-invalid-value": "„$1“ ass ongülteg."
 }
