@@ -3,13 +3,14 @@
 		"authors": [
 			"Suleiman the Magnificent Television",
 			"Ykhwong",
-			"렌즈"
+			"렌즈",
+			"아라"
 		]
 	},
 	"sanctions-desc": "사용자가 제재안을 관리할 수 있게 합니다",
 	"sanctions-discussion-page-name": "Project Talk:제재안에 대한 의결",
 	"sanctions-bot-name": "제재안",
-	"sanctions-type-insulting-name": "사용자명 변경 건의",
+	"sanctions-type-insulting-name": "사용자 이름 변경 건의",
 	"sanctions-type-block": "편집 차단 건의",
 	"sanctions-temporary-username": "임시사용자명$1",
 	"sanctions": "제재안 목록",
@@ -33,7 +34,7 @@
 	"sanctions-submit-error-failed-to-execute": "제재안 집행에 실패하였습니다.",
 	"sanctions-submit-error-no-username": "사용자명이 비어 있습니다.",
 	"sanctions-submit-error-invaild-username": "$1 사용자는 존재하지 않습니다.",
-	"sanctions-submit-error-insulting-report-already-exist": "$1 님에 대한 부적절한 사용자명 변경 건의($2)가 이미 존재합니다.",
+	"sanctions-submit-error-insulting-report-already-exist": "$1 님에 대한 부적절한 사용자 이름 변경 건의($2)가 이미 존재합니다.",
 	"sanctions-submit-error-other": "오류 코드 $1",
 	"sanctions-submit-massage-added-topic": "제재안($1)을 만들었습니다.",
 	"sanctions-submit-massage-switched-emergency": "제재안($1)을 긴급 절차로 바꾸었습니다.",
@@ -98,6 +99,6 @@
 	"sanctions-ve-agree-days-inspector-invalid-value": "$1 입력은 올바른 값이 아닙니다.",
 	"echo-category-title-sanctions-against-me": "나에 대한 제재안",
 	"sanctions-pref-tooltip-sanctions-against-me": "나에 대한 제재안이 발의됐거나 집행되었을 때 내게 알립니다.",
-	"notification-header-sanctions-proposed-against-insulting-name": "{{GENDER:$2|내}} 사용자명에 대한 변경 건의가 있습니다.",
+	"notification-header-sanctions-proposed-against-insulting-name": "{{GENDER:$2|내}} 사용자 이름에 대한 변경 건의가 있습니다.",
 	"notification-header-sanctions-proposed": "{{GENDER:$2|나에}} 대한 편집 차단 건의가 있습니다."
 }
