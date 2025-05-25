@@ -3,14 +3,14 @@
 namespace MediaWiki\Extension\Sanctions;
 
 use Flow\Model\UUID;
-use Html;
+use MediaWiki\Html\Html;
+use MediaWiki\Html\TemplateParser;
 use MediaWiki\Linker\LinkRenderer;
 use MediaWiki\Revision\RevisionLookup;
 use MediaWiki\User\UserFactory;
 use OutputPage;
 use RequestContext;
 use SpecialPage;
-use TemplateParser;
 
 class SpacialSanctions extends SpecialPage {
 	/** @var string */

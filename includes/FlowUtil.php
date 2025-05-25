@@ -15,9 +15,9 @@ use Flow\WorkflowLoaderFactory;
 use IDBAccessObject;
 use MediaWiki\Context\DerivativeContext;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Title\Title;
 use Psr\Log\NullLogger;
 use RequestContext;
-use Title;
 use User;
 
 class FlowUtil {
