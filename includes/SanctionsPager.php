@@ -2,16 +2,16 @@
 
 namespace MediaWiki\Extension\Sanctions;
 
-use Html;
 use IContextSource;
 use IndexPager;
+use MediaWiki\Html\Html;
+use MediaWiki\Html\TemplateParser;
 use MediaWiki\Linker\LinkRenderer;
+use MediaWiki\Title\Title;
 use MediaWiki\User\UserFactory;
 use MWTimestamp;
 use RequestContext;
 use stdClass;
-use TemplateParser;
-use Title;
 use User;
 
 class SanctionsPager extends IndexPager {

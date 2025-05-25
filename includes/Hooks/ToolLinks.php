@@ -6,11 +6,11 @@ use MediaWiki\Extension\Sanctions\Utils;
 use MediaWiki\Linker\LinkRenderer;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Skin\SkinComponentUtils;
+use MediaWiki\Title\Title;
 use MediaWiki\User\UserFactory;
 use MediaWiki\User\UserIdentity;
 use RequestContext;
 use SpecialPage;
-use Title;
 
 class ToolLinks implements
 	\MediaWiki\Diff\Hook\DiffToolsHook,

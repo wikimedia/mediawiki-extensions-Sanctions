@@ -1,6 +1,7 @@
 <?php
 
 use MediaWiki\Extension\Sanctions\Utils;
+use MediaWiki\Title\Title;
 
 require_once getenv( 'MW_INSTALL_PATH' ) !== false
 	? getenv( 'MW_INSTALL_PATH' ) . '/maintenance/Maintenance.php'

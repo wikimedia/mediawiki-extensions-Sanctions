@@ -10,10 +10,10 @@ use MediaWiki\Extension\Sanctions\SanctionStore;
 use MediaWiki\Extension\Sanctions\Utils;
 use MediaWiki\Extension\Sanctions\Vote;
 use MediaWiki\Extension\Sanctions\VoteStore;
+use MediaWiki\Title\Title;
 use MediaWiki\User\UserFactory;
 use OutputPage;
 use SpecialPage;
-use Title;
 use User;
 
 class Main implements
