@@ -3,7 +3,8 @@
 		"authors": [
 			"Meno25",
 			"Michel Bakni",
-			"ديفيد"
+			"ديفيد",
+			"Mohammed Qays"
 		]
 	},
 	"sanctions-desc": "جعل المستخدمين يتعاملون مع العقوبات",
@@ -49,7 +50,7 @@
 	"sanctions-row-label-pending": "قيد الانتظار",
 	"sanctions-row-label-my-sanction": "جزائي",
 	"sanctions-row-label-voted": "صَوَّت",
-	"sanctions-row-label-not-voted": "لم يتم التصويت عليها",
+	"sanctions-row-label-not-voted": "لم يُتصوت عليها",
 	"sanctions-row-label-expiry": "متبقي $1",
 	"sanctions-row-button-execute": "نفذ",
 	"sanctions-row-button-toggle-emergency": "تغيير الأولوية",
