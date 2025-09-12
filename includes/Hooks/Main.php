@@ -3,6 +3,7 @@
 namespace MediaWiki\Extension\Sanctions\Hooks;
 
 use Config;
+use Flow\Data\Listener\RecentChangesListener;
 use Flow\Exception\InvalidInputException;
 use Flow\Model\UUID;
 use MediaWiki\Extension\Sanctions\FlowUtil;
@@ -122,7 +123,7 @@ class Main implements
 	 * phpcs:disable MediaWiki.NamingConventions.LowerCamelFunctionsName.FunctionName
 	 */
 	public function onRecentChange_save( $recentChange ) {
-		if ( $recentChange->getAttribute( 'rc_type' ) != RC_FLOW ) {
+		if ( $recentChange->getAttribute( 'rc_source' ) != RecentChangesListener::SRC_FLOW ) {
 			return;
 		}
 
