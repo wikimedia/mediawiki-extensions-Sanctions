@@ -15,9 +15,9 @@ class Sanction {
 	 * @return {string} lower-cased uuid of the workflow for the sanction.
 	 */
 	async create(
-		target = browser.config.mwUser,
-		username = browser.config.mwUser,
-		password = browser.config.mwPwd
+		target = browser.options.capabilities[ 'mw:user' ],
+		username = browser.options.capabilities[ 'mw:user' ],
+		password = browser.options.capabilities[ 'mw:pwd' ]
 	) {
 		await UserLoginPage.login( username, password );
 
