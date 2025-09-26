@@ -272,10 +272,12 @@ class Utils {
 			$user = null
 		) {
 		$bot = self::getBot();
-		$blockStore = MediaWikiServices::getInstance()->getDatabaseBlockStore();
+		$services = MediaWikiServices::getInstance();
+		$blockStore = $services->getDatabaseBlockStore();
+		$blockTargetFactory = $services->getBlockTargetFactory();
 
 		$block = new DatabaseBlock();
-		$block->setTarget( $target );
+		$block->setTarget( $blockTargetFactory->newFromUser( $target ) );
 		$block->setBlocker( $bot );
 		$block->setReason( $reason );
 		$block->isHardblock( true );
