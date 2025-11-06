@@ -20,6 +20,7 @@
 	"sanctions-log-immediate-rejection": "[[Topic:$1|Sankcija]] zavrnjena.",
 	"sanctions-reason-not-logged-in": "Niste prijavljeni.",
 	"sanctions-reason-failed-to-load-registration": "Pridobivanje datuma registracije računa ni uspela.",
+	"sanctions-ve-agree-days-inspector-remove-label": "Odstrani",
 	"echo-category-title-sanctions-against-me": "Sankcija zoper mene",
 	"sanctions-pref-tooltip-sanctions-against-me": "Obvesti me, ko je zoper mene predlagana ali uvedena sankcija."
 }
