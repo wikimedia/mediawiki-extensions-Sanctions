@@ -79,7 +79,7 @@ class Main implements
 		$uuid = null;
 		try {
 			$uuid = UUID::create( strtolower( $title->getText() ) );
-		} catch ( InvalidInputException $e ) {
+		} catch ( InvalidInputException ) {
 			return true;
 		}
 

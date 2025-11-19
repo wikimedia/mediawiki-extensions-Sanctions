@@ -84,7 +84,6 @@ class SanctionStore {
 	}
 
 	/**
-	 *
 	 * @return Sanction[]
 	 */
 	public function findNotHandledExpired() {

@@ -52,7 +52,7 @@ class FlowUtil {
 			if ( $rev instanceof PostSummary ) {
 				return $rev;
 			}
-		} catch ( \Exception $e ) {
+		} catch ( \Exception ) {
 			// no summary - that's ok!
 		}
 		return null;
@@ -121,7 +121,7 @@ class FlowUtil {
 
 			try {
 				$converter->convert( $title );
-			} catch ( \Exception $e ) {
+			} catch ( \Exception ) {
 				return false;
 			}
 		} else {
