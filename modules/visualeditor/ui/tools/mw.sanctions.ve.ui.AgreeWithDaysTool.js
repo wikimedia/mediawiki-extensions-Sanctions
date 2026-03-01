@@ -14,9 +14,9 @@
 
 	mw.sanctions.ve.ui.AgreeWithDaysTool =
 	function SanctionsVeUiAgreeWithDaysInspectorTool() {
-		var self = this;
-		$( function () {
-			var title = self.$element
+		const self = this;
+		$( () => {
+			const title = self.$element
 				.closest( '.flow-topic' )
 				.find( '.flow-topic-title' )
 				.text();

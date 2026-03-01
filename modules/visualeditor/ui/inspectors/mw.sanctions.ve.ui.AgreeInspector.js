@@ -65,11 +65,11 @@
 	 */
 	mw.sanctions.ve.ui.AgreeInspector.prototype.onExpirationInputChange =
 	function () {
-		var templateModel, parameterModel, key, value, inspector;
+		let templateModel, parameterModel;
 
-		key = mw.sanctions.ve.ui.AgreeInspector.static.templateParameterKey;
-		value = this.expirationInput.getValue();
-		inspector = this;
+		const key = mw.sanctions.ve.ui.AgreeInspector.static.templateParameterKey;
+		const value = this.expirationInput.getValue();
+		const inspector = this;
 
 		if ( this.expirationInput.getValue() ) {
 			// After the updates are done, we'll get onTransclusionModelChange
@@ -96,15 +96,13 @@
 	 */
 	mw.sanctions.ve.ui.AgreeInspector.prototype.onTransclusionReady =
 	function () {
-		var templateModel, key;
-
-		key = mw.sanctions.ve.ui.AgreeInspector.static.templateParameterKey;
+		const key = mw.sanctions.ve.ui.AgreeInspector.static.templateParameterKey;
 
 		this.loaded = true;
 		this.$element.addClass( 'sanctions-ve-ui-agreeInspector-ready' );
 		this.popPending();
 
-		templateModel = this.transclusionModel.getParts()[ 0 ];
+		const templateModel = this.transclusionModel.getParts()[ 0 ];
 		if ( templateModel.hasParameter( key ) ) {
 			this.expirationInput.setValue(
 				templateModel.getParameter( key ).getValue()
@@ -131,7 +129,7 @@
 	 */
 	mw.sanctions.ve.ui.AgreeInspector.prototype.setApplicableStatus =
 	function () {
-		var parts = this.transclusionModel.getParts(),
+		const parts = this.transclusionModel.getParts(),
 			templateModel = parts[ 0 ],
 			key = mw.sanctions.ve.ui.AgreeInspector.static.templateParameterKey,
 			inspector = this;
@@ -154,8 +152,6 @@
 	 * Initialize UI of inspector
 	 */
 	mw.sanctions.ve.ui.AgreeInspector.prototype.initialize = function () {
-		var overlay;
-
 		// Parent method
 		mw.sanctions.ve.ui.AgreeInspector.super.prototype.initialize.apply(
 			this,
@@ -163,7 +159,7 @@
 		);
 
 		// Properties
-		overlay = this.manager.getOverlay();
+		const overlay = this.manager.getOverlay();
 
 		this.expirationInput = new OO.ui.TextInputWidget( {
 			$overlay: overlay ? overlay.$element : this.$frame,
@@ -187,10 +183,10 @@
 	mw.sanctions.ve.ui.AgreeInspector.prototype.getActionProcess = function (
 		action
 	) {
-		var deferred,
+		let deferred,
 			inspector,
-			transclusionModelPlain,
-			surfaceModel = this.getFragment().getSurface();
+			transclusionModelPlain;
+		const surfaceModel = this.getFragment().getSurface();
 
 		if ( action === 'done' ) {
 			deferred = $.Deferred();
@@ -270,7 +266,7 @@
 		return mw.sanctions.ve.ui.AgreeInspector.super.prototype.getSetupProcess
 			.apply( this, arguments )
 			.next( function () {
-				var templateModel, promise, atFragment;
+				let templateModel, promise, atFragment;
 
 				this.loaded = false;
 				this.altered = false;
@@ -356,7 +352,7 @@
 	 */
 	mw.sanctions.ve.ui.AgreeInspector.prototype.getSelectedNode = function () {
 		// Parent method
-		var node =
+		const node =
 	mw.sanctions.ve.ui.AgreeInspector.super.prototype.getSelectedNode.apply(
 		this,
 		arguments
