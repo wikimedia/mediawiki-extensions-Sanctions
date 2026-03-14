@@ -158,7 +158,7 @@ class FlowUtil {
 					$errors = $block->getErrors();
 
 					foreach ( $errors as $errorKey ) {
-						Utils::getLogger()->warning( $block->getErrorMessage( $errorKey ) );
+						Utils::getLogger()->warning( $block->getErrorMessage( $errorKey )->text() );
 					}
 					return false;
 				}
