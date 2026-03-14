@@ -297,14 +297,14 @@ class Utils {
 		// Even if done as below, it comes out in local time.
 		$logParams['5::duration'] = $time->getTimestamp( TS_ISO_8601 );
 		$flags = [ 'nocreate' ];
-		if ( !$block->isAutoblocking() && !IPUtils::isIPAddress( $target ) ) {
+		if ( !$block->isAutoblocking() && !IPUtils::isIPAddress( $target->getName() ) ) {
 			// Conditionally added same as SpecialBlock
 			$flags[] = 'noautoblock';
 		}
 		$logParams['6::flags'] = implode( ',', $flags );
 
 		$logEntry = new ManualLogEntry( 'block', 'block' );
-		$logEntry->setTarget( Title::makeTitle( NS_USER, $target ) );
+		$logEntry->setTarget( Title::makeTitle( NS_USER, $target->getName() ) );
 		$logEntry->setComment( $reason );
 		$logEntry->setPerformer( $user == null ? $bot : $user );
 		$logEntry->setParameters( $logParams );
