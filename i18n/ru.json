@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Engineer56",
-			"PlushBoy"
+			"PlushBoy",
+			"Shabe"
 		]
 	},
 	"sanctions-desc": "Позвольте пользователям управлять санкциями",
@@ -74,7 +75,7 @@
 	"sanctions-log-take-measure": "[[Topic:$1|Санкция]] принята.",
 	"sanctions-log-immediate-rejection": "[[Topic:$1|Санкция]] отклонена.",
 	"sanctions-reason-not-logged-in": "Не выполнен вход в систему.",
-	"sanctions-reason-failed-to-load-registration": "Не удалось получить дату регистрации учетной записи.",
+	"sanctions-reason-failed-to-load-registration": "Не удалось получить дату регистрации учётной записи.",
 	"sanctions-reason-no-edit-permission": "Нет права на редактирование.",
 	"sanctions-reason-unsatisfying-verification-period": "$1 не истек с момента создания аккаунта. (создано в $2)",
 	"sanctions-reason-unsatisfying-verification-edits": "Количество правок за последний $1 дней составляет $2, что меньше $3.",
