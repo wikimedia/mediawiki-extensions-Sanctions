@@ -4,7 +4,8 @@
 			"Suleiman the Magnificent Television",
 			"Ykhwong",
 			"렌즈",
-			"아라"
+			"아라",
+			"Tensama0415"
 		]
 	},
 	"sanctions-desc": "사용자가 제재안을 관리할 수 있게 합니다",
@@ -71,8 +72,8 @@
 	"sanctions-topic-summary-deadline": "의결 종료 예정 시각: $1",
 	"sanctions-topic-auto-reply-no-count": "이 의견은 다음 이유로 집계되지 않습니다.",
 	"sanctions-topic-auto-reply-unable-self-agree": "자신의 제재안에는 투표할 수 없습니다.",
-	"sanctions-log-take-temporary-measure": "[[주제:$1|제재안]]의 긴급 절차 전환",
-	"sanctions-log-remove-temporary-measure": "[[주제:$1|제재안]] 일반 절차 전환에 따른 임시 조치 해제",
+	"sanctions-log-take-temporary-measure": "[[Topic:$1|제재안]]의 긴급 절차 전환",
+	"sanctions-log-remove-temporary-measure": "[[Topic:$1|제재안]] 일반 절차 전환에 따른 임시 조치 해제",
 	"sanctions-log-take-measure": "[[Topic:$1|제재안]]이 가결되었습니다.",
 	"sanctions-log-immediate-rejection": "[[Topic:$1|제재안]]이 부결되었습니다.",
 	"sanctions-reason-not-logged-in": "로그인을 하지 않음.",
