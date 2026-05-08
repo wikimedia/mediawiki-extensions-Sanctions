@@ -4,7 +4,8 @@
 			"Elroy",
 			"Mainframe98",
 			"McDutchie",
-			"Romaine"
+			"Romaine",
+			"Siebrand"
 		]
 	},
 	"sanctions-desc": "Laat gebruikers sancties afhandelen",
@@ -27,7 +28,7 @@
 	"sanctions-topic-no-description": "Geen beschrijving opgegeven.",
 	"sanctions-topic-revision": "* [[Special:Redirect/revision/$1|$2 (nieuwe pagina)]]",
 	"sanctions-topic-diff": "* [[Special:Diff/$1/$2|verschillen op pagina $3]]",
-	"sanctions-submit-error-invalid-token": "Ongeldig token.",
+	"sanctions-submit-error-invalid-token": "Onjuist token.",
 	"sanctions-submit-error-no-permission": "Niet toegestaan.",
 	"sanctions-submit-error-failed-to-add-topic": "Het is niet gelukt een sanctie aan te maken.",
 	"sanctions-submit-error-failed-to-toggle-process": "Kan het type sanctie niet wijzigen.",
