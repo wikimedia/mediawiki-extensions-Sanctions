@@ -11,6 +11,7 @@ use MediaWiki\User\UserFactory;
 use MediaWiki\User\UserIdentity;
 use RequestContext;
 use SpecialPage;
+use Wikimedia\ArrayUtils\ArrayUtils;
 
 class ToolLinks implements
 	\MediaWiki\Diff\Hook\DiffToolsHook,
@@ -127,11 +128,20 @@ class ToolLinks implements
 		} else {
 			$toolbox = $sidebar['TOOLBOX'];
 
-			$sidebar['TOOLBOX'] = wfArrayInsertAfter(
-				$toolbox,
-				$sanctionsLink,
-				isset( $toolbox['blockip'] ) ? 'blockip' : 'log'
-			);
+			if ( method_exists( ArrayUtils::class, 'insertAfter' ) ) {
+				// MW 1.46+
+				$sidebar['TOOLBOX'] = ArrayUtils::insertAfter(
+					$toolbox,
+					$sanctionsLink,
+					isset( $toolbox['blockip'] ) ? 'blockip' : 'log'
+				);
+			} else {
+				$sidebar['TOOLBOX'] = wfArrayInsertAfter(
+					$toolbox,
+					$sanctionsLink,
+					isset( $toolbox['blockip'] ) ? 'blockip' : 'log'
+				);
+			}
 		}
 	}
 
