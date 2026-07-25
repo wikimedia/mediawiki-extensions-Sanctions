@@ -1,11 +1,9 @@
-'use strict';
-
-const Api = require( 'wdio-mediawiki/Api' );
-const Page = require( 'wdio-mediawiki/Page' );
-const UserLoginPage = require( 'wdio-mediawiki/LoginPage' );
-const Util = require( 'wdio-mediawiki/Util' );
-const SanctionsPage = require( './pageobjects/sanctions.page' );
-const Config = require( './config' );
+import { createApiClient } from 'wdio-mediawiki/Api.js';
+import Page from 'wdio-mediawiki/Page.js';
+import LoginPage from 'wdio-mediawiki/LoginPage.js';
+import { getTestString } from 'wdio-mediawiki/Util.js';
+import SanctionsPage from './pageobjects/sanctions.page.js';
+import Config from './config.js';
 
 class Sanction {
 	/**
@@ -19,11 +17,11 @@ class Sanction {
 		username = browser.options.capabilities[ 'mw:user' ],
 		password = browser.options.capabilities[ 'mw:pwd' ]
 	) {
-		await UserLoginPage.login( username, password );
+		await LoginPage.login( username, password );
 
-		const bot = await Api.bot( username, password );
+		const apiClient = await createApiClient( { username, password } );
 		for ( let count = 0; count < Config.VERIFICATION_EDITS; count++ ) {
-			await bot.edit( 'Sanctions-dummy-edit', Util.getTestString() );
+			await apiClient.edit( 'Sanctions-dummy-edit', getTestString() );
 		}
 
 		await SanctionsPage.open();
@@ -43,13 +41,13 @@ class Sanction {
 		await new Page().openTitle( 'Topic:' + uuid );
 	}
 
-	async createVoters( bot, size = 3 ) {
+	async createVoters( apiClient, size = 3 ) {
 		const voters = [];
 		for ( let count = 0; count < size; count++ ) {
-			const username = Util.getTestString( `Sanction-voter${ count }-` );
-			const password = Util.getTestString();
-			await Api.createAccount( bot, username, password );
-			const voter = await Api.bot( username, password );
+			const username = getTestString( `Sanction-voter${ count }-` );
+			const password = getTestString();
+			await apiClient.createAccount( username, password );
+			const voter = await createApiClient( { username, password } );
 			voters.push( voter );
 		}
 		await browser.pause( Config.VERIFICATION_PERIOD * 1000 );
@@ -57,4 +55,4 @@ class Sanction {
 	}
 }
 
-module.exports = new Sanction();
+export default new Sanction();

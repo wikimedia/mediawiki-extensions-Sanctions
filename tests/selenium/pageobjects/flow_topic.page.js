@@ -1,5 +1,4 @@
-'use strict';
-const Page = require( 'wdio-mediawiki/Page' );
+import Page from 'wdio-mediawiki/Page.js';
 
 class FlowTopic extends Page {
 	get replyButton() {
@@ -31,4 +30,5 @@ class FlowTopic extends Page {
 		await super.openTitle( 'Special:Sanctions/' + subpage, { uselang: 'qqx' } );
 	}
 }
-module.exports = new FlowTopic();
+
+export default new FlowTopic();

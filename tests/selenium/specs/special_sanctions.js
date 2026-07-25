@@ -1,22 +1,19 @@
-'use strict';
-
-const Api = require( 'wdio-mediawiki/Api' );
-const assert = require( 'assert' );
-const Config = require( '../config' );
-const FlowApi = require( '../flow_api' );
-const Sanction = require( '../sanction' );
-const SanctionsPage = require( '../pageobjects/sanctions.page' );
-const UserLoginPage = require( 'wdio-mediawiki/LoginPage' );
-const Util = require( 'wdio-mediawiki/Util' );
+import { createApiClient } from 'wdio-mediawiki/Api.js';
+import Config from '../config.js';
+import FlowApi from '../flow_api.js';
+import Sanction from '../sanction.js';
+import SanctionsPage from '../pageobjects/sanctions.page.js';
+import LoginPage from 'wdio-mediawiki/LoginPage.js';
+import { getTestString } from 'wdio-mediawiki/Util.js';
 
 describe( 'Special:Sanctions', () => {
 	let voters;
-	let bot;
+	let apiClient;
 
 	before( async () => {
 		await new Config().setup();
-		bot = await Api.bot();
-		voters = await Sanction.createVoters( bot );
+		apiClient = await createApiClient();
+		voters = await Sanction.createVoters( apiClient );
 	} );
 
 	describe( 'should show', () => {
@@ -25,66 +22,63 @@ describe( 'Special:Sanctions', () => {
 			await browser.deleteAllCookies();
 			await SanctionsPage.open();
 
-			assert.ok( await SanctionsPage.reasonsDisabledParticipation.isExisting() );
-			assert.strictEqual(
-				'(sanctions-reason-not-logged-in)',
-				await SanctionsPage.reasonsDisabledParticipation.getText()
+			await expect( SanctionsPage.reasonsDisabledParticipation ).toExist();
+			await expect( SanctionsPage.reasonsDisabledParticipation ).toHaveText(
+				'(sanctions-reason-not-logged-in)'
 			);
 		} );
 
 		it( 'a newly registered user that you are too new', async () => {
-			const username = Util.getTestString( 'Sanction-newcomer-' );
-			const password = Util.getTestString();
-			await Api.createAccount( bot, username, password );
+			const username = getTestString( 'Sanction-newcomer-' );
+			const password = getTestString();
+			await apiClient.createAccount( username, password );
 
-			await UserLoginPage.login( username, password );
+			await LoginPage.login( username, password );
 			await SanctionsPage.open();
 
-			assert.ok(
-				/\(sanctions-reason-unsatisfying-verification-period: \d+\.?\d*, .+\)/.test(
-					await SanctionsPage.reasonsDisabledParticipation.getText()
+			await expect( SanctionsPage.reasonsDisabledParticipation ).toHaveText(
+				expect.stringMatching(
+					/\(sanctions-reason-unsatisfying-verification-period: \d+\.?\d*, .+\)/
 				)
 			);
 		} );
 	} );
 
 	it( 'should hide and show the form as the conditions change', async () => {
-		const username = Util.getTestString( 'Sanction-user-' );
-		const password = Util.getTestString();
-		await Api.createAccount( bot, username, password );
-		await UserLoginPage.login( username, password );
+		const username = getTestString( 'Sanction-user-' );
+		const password = getTestString();
+		await apiClient.createAccount( username, password );
+		await LoginPage.login( username, password );
 
 		await SanctionsPage.open();
-		const warnings = await SanctionsPage.reasonsDisabledParticipation.getText();
-		assert.ok(
-			/sanctions-reason-unsatisfying-verification-period/.test( warnings ),
-			'There should be warning about the creation time. ' + warnings
+		await expect( SanctionsPage.reasonsDisabledParticipation ).toHaveText(
+			expect.stringContaining( 'sanctions-reason-unsatisfying-verification-period' )
 		);
 
 		await SanctionsPage.waitUntilUserIsNotNew();
 
 		await browser.refresh();
 		const warning = await SanctionsPage.reasonsDisabledParticipation.getText();
-		assert.ok( warning === '', 'There should be no warnings, but: ' + warning );
+		expect( warning ).toBe( '' );
 	} );
 
 	it( 'should add voted tag on a sanction', async () => {
 		// Creates a sanction
-		const username = Util.getTestString( 'Sanction-another-' );
-		const password = Util.getTestString();
-		await Api.createAccount( bot, username, password );
+		const username = getTestString( 'Sanction-another-' );
+		const password = getTestString();
+		await apiClient.createAccount( username, password );
 		const uuid = await Sanction.create( username, username, password );
 
-		await UserLoginPage.loginAdmin();
+		await LoginPage.loginAdmin();
 		await SanctionsPage.open();
-		assert.ok( await $( `#sanction-${ uuid }` ).isExisting() );
+		await expect( $( `#sanction-${ uuid }` ) ).toExist();
 
 		// Votes
-		await FlowApi.reply( '{{Oppose}}', uuid, bot );
+		await FlowApi.reply( '{{Oppose}}', uuid, apiClient );
 		await browser.pause( 500 );
 		await browser.refresh();
 
-		assert.ok( await $( `#sanction-${ uuid }.voted` ).isExisting() );
+		await expect( $( `#sanction-${ uuid }.voted` ) ).toExist();
 
 		// Closes the sanction
 		for ( let count = 0; count < 2; count++ ) {

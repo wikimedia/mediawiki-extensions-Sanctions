@@ -1,6 +1,5 @@
-'use strict';
+import { createApiClient } from 'wdio-mediawiki/Api.js';
 
-const Api = require( 'wdio-mediawiki/Api' );
 const SECONDS_IN_DAY = 86400;
 
 /** In seconds */
@@ -25,25 +24,25 @@ class Config {
 	}
 
 	async setup() {
-		const bot = await Api.bot();
+		const apiClient = await createApiClient();
 		try {
-			await bot.edit(
+			await apiClient.edit(
 				'MediaWiki:sanctions-voting-right-verification-period',
 				VERIFICATION_PERIOD / SECONDS_IN_DAY
 			);
-			await bot.edit(
+			await apiClient.edit(
 				'MediaWiki:sanctions-voting-right-verification-edits',
 				VERIFICATION_EDITS
 			);
-			await bot.edit(
+			await apiClient.edit(
 				'MediaWiki:sanctions-voting-period',
 				VOTING_PERIOD / SECONDS_IN_DAY
 			);
-			await bot.edit( 'MediaWiki:sanctions-autoblock', '0' );
+			await apiClient.edit( 'MediaWiki:sanctions-autoblock', '0' );
 		} catch ( e ) {
 			// Ignore Error: edit-already-exists
 		}
 	}
 }
 
-module.exports = Config;
+export default Config;

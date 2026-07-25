@@ -1,20 +1,18 @@
-'use strict';
-
 class FlowApi {
-	async reply( msg, uuid, bot ) {
-		await bot.request( {
+	async reply( msg, uuid, apiClient ) {
+		await apiClient.request( {
 			action: 'flow',
 			submodule: 'reply',
 			page: `Topic:${ uuid }`,
 			repreplyTo: uuid,
 			repcontent: msg,
 			repformat: 'wikitext',
-			token: bot.editToken
+			token: await apiClient.getEditToken()
 		} );
 	}
 
-	async editTopicSummary( msg, uuid, bot ) {
-		const res = await bot.request( {
+	async editTopicSummary( msg, uuid, apiClient ) {
+		const res = await apiClient.request( {
 			action: 'flow',
 			submodule: 'view-topic-summary',
 			page: `Topic:${ uuid }`,
@@ -23,7 +21,7 @@ class FlowApi {
 		const prevRev =
       res.flow[ 'view-topic-summary' ].result.topicsummary.revision.revisionId;
 
-		await bot.request( {
+		await apiClient.request( {
 			action: 'flow',
 			submodule: 'edit-topic-summary',
 			page: `Topic:${ uuid }`,
@@ -31,9 +29,9 @@ class FlowApi {
 			etsprev_revision: prevRev,
 			etssummary: msg,
 			etsformat: 'wikitext',
-			token: bot.editToken
+			token: await apiClient.getEditToken()
 		} );
 	}
 }
 
-module.exports = new FlowApi();
+export default new FlowApi();

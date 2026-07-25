@@ -1,5 +1,4 @@
-'use strict';
-const Page = require( 'wdio-mediawiki/Page' );
+import Page from 'wdio-mediawiki/Page.js';
 
 class SanctionsPage extends Page {
 	get reasonsDisabledParticipation() {
@@ -50,4 +49,5 @@ class SanctionsPage extends Page {
 		await this.submitButton.click();
 	}
 }
-module.exports = new SanctionsPage();
+
+export default new SanctionsPage();

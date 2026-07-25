@@ -1,17 +1,14 @@
-'use strict';
-
-const Api = require( 'wdio-mediawiki/Api' );
-const assert = require( 'assert' );
-const Config = require( '../config' );
-const FlowApi = require( '../flow_api' );
-const FlowTopic = require( '../pageobjects/flow_topic.page' );
-const Sanction = require( '../sanction' );
-const UserLoginPage = require( 'wdio-mediawiki/LoginPage' );
-const Util = require( 'wdio-mediawiki/Util' );
+import { createApiClient } from 'wdio-mediawiki/Api.js';
+import Config from '../config.js';
+import FlowApi from '../flow_api.js';
+import FlowTopic from '../pageobjects/flow_topic.page.js';
+import Sanction from '../sanction.js';
+import LoginPage from 'wdio-mediawiki/LoginPage.js';
+import { getTestString } from 'wdio-mediawiki/Util.js';
 
 async function queryBlocks() {
-	const bot = await Api.bot();
-	const result = await bot.request( {
+	const apiClient = await createApiClient();
+	const result = await apiClient.request( {
 		action: 'query',
 		list: 'blocks',
 		bkprop: 'user'
@@ -24,17 +21,17 @@ async function queryBlocks() {
 
 describe( 'Sanction', () => {
 	/* eslint-disable mocha/no-setup-in-describe */
-	const targetName = Util.getTestString( 'Sanction-target-' );
-	const targetPassword = Util.getTestString();
+	const targetName = getTestString( 'Sanction-target-' );
+	const targetPassword = getTestString();
 	/* eslint-enable mocha/no-setup-in-describe */
 	let voters;
-	let bot;
+	let apiClient;
 
 	before( async () => {
 		await new Config().setup();
-		bot = await Api.bot();
-		await Api.createAccount( bot, targetName, targetPassword );
-		voters = await Sanction.createVoters( bot );
+		apiClient = await createApiClient();
+		await apiClient.createAccount( targetName, targetPassword );
+		voters = await Sanction.createVoters( apiClient );
 	} );
 
 	async function createPassedSanction( support = 3, logout = false ) {
@@ -51,11 +48,8 @@ describe( 'Sanction', () => {
 
 		await Sanction.open( uuid );
 
-		await FlowTopic.topicSummary.waitForDisplayed();
-		const summaryText = await FlowTopic.topicSummary.getText();
-		assert.ok(
-			summaryText.includes( 'Status: Passed to block 1 day(s) (prediction)' ),
-			summaryText
+		await expect( FlowTopic.topicSummary ).toHaveText(
+			expect.stringContaining( 'Status: Passed to block 1 day(s) (prediction)' )
 		);
 
 		if ( logout ) {
@@ -71,13 +65,12 @@ describe( 'Sanction', () => {
 	it( 'should be canceled by the author', async () => {
 		const uuid = await Sanction.create( targetName );
 		await Sanction.open( uuid );
-		await FlowApi.reply( '{{Oppose}}', uuid, bot );
+		await FlowApi.reply( '{{Oppose}}', uuid, apiClient );
 
 		await browser.pause( 500 );
 		await browser.refresh();
-		assert.strictEqual(
-			"Status: Rejected (Canceled by the sanction's author.)",
-			await FlowTopic.topicSummary.getText()
+		await expect( FlowTopic.topicSummary ).toHaveText(
+			"Status: Rejected (Canceled by the sanction's author.)"
 		);
 	} );
 
@@ -90,9 +83,8 @@ describe( 'Sanction', () => {
 
 		await browser.pause( 500 );
 		await Sanction.open( uuid );
-		assert.strictEqual(
-			'Status: Immediately rejected (Rejected by first three participants.)',
-			await FlowTopic.topicSummary.getText()
+		await expect( FlowTopic.topicSummary ).toHaveText(
+			'Status: Immediately rejected (Rejected by first three participants.)'
 		);
 	} );
 
@@ -101,17 +93,17 @@ describe( 'Sanction', () => {
 		await browser.refresh();
 
 		const blocks = await queryBlocks();
-		assert.ok( blocks.includes( targetName ), 'Block list: ' + blocks );
-		await Api.unblockUser( bot, targetName );
+		expect( blocks ).toContain( targetName );
+		await apiClient.unblockUser( targetName );
 	} );
 
 	it( 'should block the target user of the passed sanction when logged in', async () => {
 		await createPassedSanction();
-		await UserLoginPage.login( targetName, targetPassword );
+		await LoginPage.login( targetName, targetPassword );
 
 		const blocks = await queryBlocks();
-		assert.ok( blocks.includes( targetName ), 'Block list: ' + blocks );
-		await Api.unblockUser( bot, targetName );
+		expect( blocks ).toContain( targetName );
+		await apiClient.unblockUser( targetName );
 	} );
 
 	// This tests https://github.com/femiwiki/Sanctions/issues/223
@@ -120,25 +112,21 @@ describe( 'Sanction', () => {
 		const uuid = await createPassedSanction( 1, true );
 
 		// Log in as the target user
-		await UserLoginPage.login( targetName, targetPassword );
+		await LoginPage.login( targetName, targetPassword );
 
 		await Sanction.open( uuid );
-		let summary = await FlowTopic.topicSummary.getText();
-		assert.ok(
-			summary.includes( 'Status: Passed to block 1 day(s)' ),
-			'The summary does not have expected value: ' + summary
+		await expect( FlowTopic.topicSummary ).toHaveText(
+			expect.stringContaining( 'Status: Passed to block 1 day(s)' )
 		);
 
 		const manualSum = 'Manually touched summary.';
-		await FlowApi.editTopicSummary( manualSum, uuid, bot );
-		await FlowApi.reply( 'An additional comment.', uuid, bot );
+		await FlowApi.editTopicSummary( manualSum, uuid, apiClient );
+		await FlowApi.reply( 'An additional comment.', uuid, apiClient );
 
 		await browser.refresh();
-		summary = await FlowTopic.topicSummary.getText();
-		assert.ok(
-			summary.includes( manualSum ),
-			'The summary does not have expected value: ' + summary
+		await expect( FlowTopic.topicSummary ).toHaveText(
+			expect.stringContaining( manualSum )
 		);
-		await Api.unblockUser( bot, targetName );
+		await apiClient.unblockUser( targetName );
 	} );
 } );
