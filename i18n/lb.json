@@ -17,6 +17,7 @@
 	"sanctions-row-label-normal": "Normal",
 	"sanctions-row-button-execute": "Maachen",
 	"sanctions-topic-title": "$2 vu(n) $1",
+	"sanctions-topic-summary-status-label": "Status: $1",
 	"sanctions-topic-summary-deadline": "Schlussdatum: $1",
 	"sanctions-reason-not-logged-in": "Net ageloggt.",
 	"sanctions-link-on-user-contributes": "Sanktiounen",
