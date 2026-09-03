@@ -5,8 +5,9 @@ namespace MediaWiki\Extension\Sanctions;
 use Flow\Model\UUID;
 use MediaWiki\Block\AbstractBlock;
 use MediaWiki\Cache\HTMLCacheUpdater;
-use MediaWiki\Extension\Notifications\Model\Event;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Notification\RecipientSet;
+use MediaWiki\Notification\Types\WikiNotification;
 use MediaWiki\Title\Title;
 use MediaWiki\User\User;
 use stdClass;
@@ -101,15 +102,12 @@ class Sanction {
 			$sanction->updateTopicSummary();
 		}
 
-		Event::create( [
-			'type' => 'sanctions-proposed',
-			'title' => $sanction->getDiscussionPage(),
-			'extra' => [
-				'target-id' => $targetId,
+		MediaWikiServices::getInstance()->getNotificationService()->notify(
+			new WikiNotification( 'sanctions-proposed', $sanction->getDiscussionPage(), $author, [
 				'is-for-insulting-name' => $forInsultingName,
-			],
-			'agent' => $author,
-		] );
+			] ),
+			new RecipientSet( $target )
+		);
 
 		SanctionExpireJob::schedule( $sanction );
 

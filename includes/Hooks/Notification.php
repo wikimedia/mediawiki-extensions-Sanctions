@@ -2,7 +2,6 @@
 
 namespace MediaWiki\Extension\Sanctions\Hooks;
 
-use MediaWiki\Extension\Notifications\UserLocator;
 use MediaWiki\Extension\Sanctions\Notifications\ProposedPresentationModel;
 use MediaWiki\User\User;
 
@@ -45,7 +44,6 @@ class Notification implements
 			'group' => 'negative',
 			'section' => 'alert',
 			'presentation-model' => ProposedPresentationModel::class,
-			'user-locators' => [ [ UserLocator::class . '::locateFromEventExtra', [ 'target-id' ] ] ],
 		];
 	}
 
