@@ -6,8 +6,8 @@ use Flow\Model\UUID;
 use MediaWiki\Extension\Sanctions\Sanction;
 use MediaWiki\Extension\Sanctions\Vote;
 use MediaWiki\Extension\Sanctions\VoteStore;
+use MediaWiki\User\User;
 use MediaWikiIntegrationTestCase;
-use User;
 
 /**
  * @covers \MediaWiki\Extension\Sanctions\VoteStore

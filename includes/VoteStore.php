@@ -2,7 +2,7 @@
 
 namespace MediaWiki\Extension\Sanctions;
 
-use User;
+use MediaWiki\User\User;
 use Wikimedia\Rdbms\IConnectionProvider;
 
 class VoteStore {

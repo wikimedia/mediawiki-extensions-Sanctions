@@ -2,13 +2,13 @@
 
 namespace MediaWiki\Extension\Sanctions;
 
-use EchoEvent;
 use Flow\Model\UUID;
 use MediaWiki\Block\AbstractBlock;
+use MediaWiki\Extension\Notifications\Model\Event;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Title\Title;
+use MediaWiki\User\User;
 use stdClass;
-use User;
 use Wikimedia\LightweightObjectStore\ExpirationAwareness;
 use Wikimedia\Rdbms\DBError;
 
@@ -104,7 +104,7 @@ class Sanction {
 		}
 		$sanction->updateTopicSummary();
 
-		EchoEvent::create( [
+		Event::create( [
 			'type' => 'sanctions-proposed',
 			'title' => $sanction->getWorkflow(),
 			'extra' => [

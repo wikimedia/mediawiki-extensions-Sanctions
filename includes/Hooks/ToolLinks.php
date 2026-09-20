@@ -2,15 +2,15 @@
 
 namespace MediaWiki\Extension\Sanctions\Hooks;
 
+use MediaWiki\Context\RequestContext;
 use MediaWiki\Extension\Sanctions\Utils;
 use MediaWiki\Linker\LinkRenderer;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Skin\SkinComponentUtils;
+use MediaWiki\SpecialPage\SpecialPage;
 use MediaWiki\Title\Title;
 use MediaWiki\User\UserFactory;
 use MediaWiki\User\UserIdentity;
-use RequestContext;
-use SpecialPage;
 use Wikimedia\ArrayUtils\ArrayUtils;
 
 class ToolLinks implements

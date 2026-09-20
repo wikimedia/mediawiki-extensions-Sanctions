@@ -5,8 +5,8 @@ namespace MediaWiki\Extension\Sanctions\Tests\Integration;
 use Flow\Model\UUID;
 use MediaWiki\Extension\Sanctions\Sanction;
 use MediaWiki\Extension\Sanctions\SanctionStore;
+use MediaWiki\User\User;
 use MediaWikiIntegrationTestCase;
-use User;
 
 /**
  * @covers \MediaWiki\Extension\Sanctions\SanctionStore

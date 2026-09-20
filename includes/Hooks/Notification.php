@@ -2,7 +2,9 @@
 
 namespace MediaWiki\Extension\Sanctions\Hooks;
 
-use User;
+use MediaWiki\Extension\Notifications\UserLocator;
+use MediaWiki\Extension\Sanctions\Notifications\ProposedPresentationModel;
+use MediaWiki\User\User;
 
 class Notification implements
 	\MediaWiki\User\Hook\EmailConfirmedHook
@@ -42,8 +44,8 @@ class Notification implements
 			'category' => 'sanctions-against-me',
 			'group' => 'negative',
 			'section' => 'alert',
-			'presentation-model' => \MediaWiki\Extension\Sanctions\Notifications\ProposedPresentationModel::class,
-			'user-locators' => [ [ 'EchoUserLocator::locateFromEventExtra', [ 'target-id' ] ] ],
+			'presentation-model' => ProposedPresentationModel::class,
+			'user-locators' => [ [ UserLocator::class . '::locateFromEventExtra', [ 'target-id' ] ] ],
 		];
 	}
 

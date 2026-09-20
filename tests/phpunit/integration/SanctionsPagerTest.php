@@ -3,12 +3,12 @@
 namespace MediaWiki\Extension\Sanctions\Tests\Integration;
 
 use Flow\Model\UUID;
+use MediaWiki\Context\RequestContext;
 use MediaWiki\Extension\Sanctions\SanctionsPager;
 use MediaWiki\Extension\Sanctions\SanctionStore;
+use MediaWiki\User\User;
 use MediaWikiIntegrationTestCase;
 use MessageCache;
-use RequestContext;
-use User;
 use Wikimedia\TestingAccessWrapper;
 
 /**

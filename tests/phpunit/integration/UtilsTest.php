@@ -3,9 +3,9 @@
 namespace MediaWiki\Extension\Sanctions\Tests\Integration;
 
 use MediaWiki\Extension\Sanctions\Utils;
+use MediaWiki\User\User;
 use MediaWikiIntegrationTestCase;
 use Psr\Log\LoggerInterface;
-use User;
 
 /**
  * @covers \MediaWiki\Extension\Sanctions\Utils

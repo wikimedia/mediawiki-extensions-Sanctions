@@ -12,13 +12,13 @@ use Flow\Model\PostRevision;
 use Flow\Model\PostSummary;
 use Flow\Model\UUID;
 use Flow\WorkflowLoaderFactory;
-use IDBAccessObject;
 use MediaWiki\Context\DerivativeContext;
+use MediaWiki\Context\RequestContext;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Title\Title;
+use MediaWiki\User\User;
 use Psr\Log\NullLogger;
-use RequestContext;
-use User;
+use Wikimedia\Rdbms\IDBAccessObject;
 
 class FlowUtil {
 

@@ -2,21 +2,21 @@
 
 namespace MediaWiki\Extension\Sanctions;
 
-use ManualLogEntry;
 use MediaWiki\Block\AbstractBlock;
 use MediaWiki\Block\CompositeBlock;
 use MediaWiki\Block\DatabaseBlock;
 use MediaWiki\Extension\Sanctions\Hooks\SanctionsHookRunner;
 use MediaWiki\Logger\LoggerFactory;
+use MediaWiki\Logging\ManualLogEntry;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Message\Message;
 use MediaWiki\Renameuser\RenameuserSQL;
 use MediaWiki\Title\Title;
+use MediaWiki\Title\TitleValue;
+use MediaWiki\User\User;
 use MediaWiki\User\UserIdentity;
-use Message;
-use MWTimestamp;
+use MediaWiki\Utils\MWTimestamp;
 use Psr\Log\LoggerInterface;
-use TitleValue;
-use User;
 use Wikimedia\IPUtils;
 
 class Utils {

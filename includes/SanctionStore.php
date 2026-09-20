@@ -3,7 +3,7 @@
 namespace MediaWiki\Extension\Sanctions;
 
 use Flow\Model\UUID;
-use User;
+use MediaWiki\User\User;
 use Wikimedia\Rdbms\IConnectionProvider;
 
 class SanctionStore {

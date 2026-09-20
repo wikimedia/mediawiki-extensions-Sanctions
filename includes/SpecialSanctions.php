@@ -6,10 +6,10 @@ use Flow\Model\UUID;
 use MediaWiki\Html\Html;
 use MediaWiki\Html\TemplateParser;
 use MediaWiki\Linker\LinkRenderer;
+use MediaWiki\Output\OutputPage;
 use MediaWiki\Revision\RevisionLookup;
+use MediaWiki\SpecialPage\SpecialPage;
 use MediaWiki\User\UserFactory;
-use OutputPage;
-use SpecialPage;
 
 class SpecialSanctions extends SpecialPage {
 	/** @var string */

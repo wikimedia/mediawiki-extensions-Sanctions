@@ -7,8 +7,8 @@ use Flow\Model\PostRevision;
 use Flow\Model\UUID;
 use InvalidArgumentException;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\User\User;
 use stdClass;
-use User;
 use Wikimedia\Rdbms\IDatabase;
 
 class Vote {

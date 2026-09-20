@@ -2,20 +2,20 @@
 
 namespace MediaWiki\Extension\Sanctions\Hooks;
 
-use Config;
 use Flow\Data\Listener\RecentChangesListener;
 use Flow\Exception\InvalidInputException;
 use Flow\Model\UUID;
+use MediaWiki\Config\Config;
 use MediaWiki\Extension\Sanctions\FlowUtil;
 use MediaWiki\Extension\Sanctions\SanctionStore;
 use MediaWiki\Extension\Sanctions\Utils;
 use MediaWiki\Extension\Sanctions\Vote;
 use MediaWiki\Extension\Sanctions\VoteStore;
+use MediaWiki\Output\OutputPage;
+use MediaWiki\SpecialPage\SpecialPage;
 use MediaWiki\Title\Title;
+use MediaWiki\User\User;
 use MediaWiki\User\UserFactory;
-use OutputPage;
-use SpecialPage;
-use User;
 
 class Main implements
 	\Flow\Hooks\FlowAddModulesHook,

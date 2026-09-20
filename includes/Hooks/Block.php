@@ -4,9 +4,9 @@ namespace MediaWiki\Extension\Sanctions\Hooks;
 
 use MediaWiki\Extension\Sanctions\Sanction;
 use MediaWiki\Extension\Sanctions\SanctionStore;
-use Message;
-use MWTimestamp;
-use WANObjectCache;
+use MediaWiki\Message\Message;
+use MediaWiki\Utils\MWTimestamp;
+use Wikimedia\ObjectCache\WANObjectCache;
 
 class Block implements \MediaWiki\Block\Hook\GetUserBlockHook {
 
