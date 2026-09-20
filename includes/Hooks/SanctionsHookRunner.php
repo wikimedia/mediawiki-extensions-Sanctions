@@ -7,16 +7,9 @@ use MediaWiki\HookContainer\HookContainer;
 class SanctionsHookRunner implements
 	\MediaWiki\Renameuser\Hook\RenameUserAbortHook
 {
-	/**
-	 * @var HookContainer
-	 */
-	private $container;
-
-	/**
-	 * @param HookContainer $container
-	 */
-	public function __construct( HookContainer $container ) {
-		$this->container = $container;
+	public function __construct(
+		private readonly HookContainer $container,
+	) {
 	}
 
 	/**

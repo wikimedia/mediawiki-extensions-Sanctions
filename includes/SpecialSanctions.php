@@ -24,39 +24,15 @@ class SpecialSanctions extends SpecialPage {
 	/** @var int|null */
 	protected $mNewRevisionId;
 
-	/** @var SanctionStore */
-	protected $sanctionStore;
+	private readonly TemplateParser $templateParser;
 
-	/** @var UserFactory */
-	protected $userFactory;
-
-	/** @var RevisionLookup */
-	protected $revLookup;
-
-	/** @var LinkRenderer */
-	private $linkRenderer;
-
-	/** @var TemplateParser */
-	private $templateParser;
-
-	/**
-	 * @param SanctionStore $sanctionStore
-	 * @param UserFactory $userFactory
-	 * @param RevisionLookup $revisionLookup
-	 * @param LinkRenderer $linkRenderer
-	 */
 	public function __construct(
-		SanctionStore $sanctionStore,
-		UserFactory $userFactory,
-		RevisionLookup $revisionLookup,
-		LinkRenderer $linkRenderer
+		private readonly SanctionStore $sanctionStore,
+		private readonly UserFactory $userFactory,
+		private readonly RevisionLookup $revisionLookup,
+		private readonly LinkRenderer $linkRenderer,
 	) {
 		parent::__construct( 'Sanctions' );
-
-		$this->sanctionStore = $sanctionStore;
-		$this->userFactory = $userFactory;
-		$this->revLookup = $revisionLookup;
-		$this->linkRenderer = $linkRenderer;
 
 		$this->templateParser = new TemplateParser( __DIR__ . '/templates' );
 	}
@@ -143,7 +119,7 @@ class SpecialSanctions extends SpecialPage {
 	 * @param string $subpage
 	 */
 	private function setParameter( $subpage ) {
-		$revLookup = $this->revLookup;
+		$revLookup = $this->revisionLookup;
 
 		if ( $subpage === null ) {
 			return;
@@ -455,7 +431,7 @@ class SpecialSanctions extends SpecialPage {
 			return '';
 		}
 
-		$newRevision = $this->revLookup->getRevisionById( $newRevisionId );
+		$newRevision = $this->revisionLookup->getRevisionById( $newRevisionId );
 		$oldRevisionId = $this->mOldRevisionId;
 
 		$rt = '';

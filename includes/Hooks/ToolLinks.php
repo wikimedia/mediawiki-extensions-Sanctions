@@ -20,19 +20,10 @@ class ToolLinks implements
 	\MediaWiki\Hook\SidebarBeforeOutputHook,
 	\MediaWiki\Hook\UserToolLinksEditHook
 {
-	/** @var UserFactory */
-	private $userFactory;
-
-	/** @var LinkRenderer */
-	private $linkRenderer;
-
-	/**
-	 * @param UserFactory $userFactory
-	 * @param LinkRenderer $linkRenderer
-	 */
-	public function __construct( UserFactory $userFactory, LinkRenderer $linkRenderer ) {
-		$this->userFactory = $userFactory;
-		$this->linkRenderer = $linkRenderer;
+	public function __construct(
+		private readonly UserFactory $userFactory,
+		private readonly LinkRenderer $linkRenderer,
+	) {
 	}
 
 	/**

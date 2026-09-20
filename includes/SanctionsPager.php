@@ -17,40 +17,16 @@ class SanctionsPager extends IndexPager {
 	/** @var bool|null */
 	protected $userHasVoteRight = null;
 
-	/** @var string|null */
-	private $targetName;
+	private readonly TemplateParser $templateParser;
 
-	/** @var UserFactory */
-	private $userFactory;
-
-	/** @var SanctionStore */
-	private $sanctionStore;
-
-	/** @var LinkRenderer */
-	private $linkRenderer;
-
-	/** @var TemplateParser */
-	private $templateParser;
-
-	/**
-	 * @param IContextSource $context
-	 * @param SanctionStore $sanctionStore
-	 * @param UserFactory $userFactory
-	 * @param LinkRenderer $linkRenderer
-	 * @param string|null $targetName
-	 */
 	public function __construct(
 		IContextSource $context,
-		SanctionStore $sanctionStore,
-		UserFactory $userFactory,
-		LinkRenderer $linkRenderer,
-		?string $targetName = null
+		private readonly SanctionStore $sanctionStore,
+		private readonly UserFactory $userFactory,
+		private readonly LinkRenderer $linkRenderer,
+		private readonly ?string $targetName = null,
 	) {
 		parent::__construct( $context );
-		$this->targetName = $targetName;
-		$this->sanctionStore = $sanctionStore;
-		$this->userFactory = $userFactory;
-		$this->linkRenderer = $linkRenderer;
 
 		$this->templateParser = new TemplateParser( __DIR__ . '/templates' );
 	}

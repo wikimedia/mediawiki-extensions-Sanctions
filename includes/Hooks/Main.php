@@ -23,28 +23,11 @@ class Main implements
 	\MediaWiki\ResourceLoader\Hook\ResourceLoaderGetConfigVarsHook
 {
 
-	/** @var UserFactory */
-	private $userFactory;
-
-	/** @var SanctionStore */
-	private $sanctionStore;
-
-	/** @var VoteStore */
-	private $voteStore;
-
-	/**
-	 * @param SanctionStore $sanctionStore
-	 * @param VoteStore $voteStore
-	 * @param UserFactory $userFactory
-	 */
 	public function __construct(
-		SanctionStore $sanctionStore,
-		VoteStore $voteStore,
-		UserFactory $userFactory
+		private readonly SanctionStore $sanctionStore,
+		private readonly VoteStore $voteStore,
+		private readonly UserFactory $userFactory,
 	) {
-		$this->sanctionStore = $sanctionStore;
-		$this->voteStore = $voteStore;
-		$this->userFactory = $userFactory;
 	}
 
 	/**

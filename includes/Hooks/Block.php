@@ -10,18 +10,10 @@ use Wikimedia\ObjectCache\WANObjectCache;
 
 class Block implements \MediaWiki\Block\Hook\GetUserBlockHook {
 
-	/** @var SanctionStore */
-	private $sanctionStore;
-
-	/** @var WANObjectCache */
-	private $wanCache;
-
 	public function __construct(
-		SanctionStore $sanctionStore,
-		WANObjectCache $wanCache
+		private readonly SanctionStore $sanctionStore,
+		private readonly WANObjectCache $wanCache,
 	) {
-		$this->sanctionStore = $sanctionStore;
-		$this->wanCache = $wanCache;
 	}
 
 	/** @inheritDoc */
