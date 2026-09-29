@@ -81,8 +81,10 @@ describe( 'Sanction', () => {
 			await FlowApi.reply( '{{Oppose}}', uuid, voters[ count ] );
 		}
 
-		await browser.pause( 500 );
-		await Sanction.open( uuid );
+		await browser.waitUntil( async () => {
+			await Sanction.open( uuid );
+			return ( await FlowTopic.topicSummary.getText() ).includes( 'Immediately rejected' );
+		} );
 		await expect( FlowTopic.topicSummary ).toHaveText(
 			'Status: Immediately rejected (Rejected by first three participants.)'
 		);
