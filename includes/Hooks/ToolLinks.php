@@ -58,13 +58,18 @@ class ToolLinks implements
 			return true;
 		}
 
+		$user = $newRevRecord->getUser();
+		if ( !$user ) {
+			return true;
+		}
+
 		$ids = '';
 		if ( $oldRevRecord ) {
 			$ids .= $oldRevRecord->getId() . '/';
 		}
 		$ids .= $newRevRecord->getId();
 
-		$titleText = $newRevRecord->getUser()->getName() . '/' . $ids;
+		$titleText = $user->getName() . '/' . $ids;
 		$links[] = $this->linkRenderer->makeLink(
 			SpecialPage::getTitleFor( 'Sanctions', $titleText ),
 			wfMessage( 'sanctions-link-on-diff' )->text()
