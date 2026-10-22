@@ -65,16 +65,16 @@ class Vote {
 			->getConnectionProvider()
 			->getPrimaryDatabase();
 
-		$dbw->insert(
-			'sanctions_vote',
-			[
+		$dbw->newInsertQueryBuilder()
+			->insertInto( 'sanctions_vote' )
+			->row( [
 				'stv_topic' => $this->getSanction()->getWorkflowId()->getBinary(),
 				'stv_user' => $this->getUser()->getId(),
 				'stv_period' => $this->getPeriod(),
 				'stv_last_update_timestamp' => $timestamp ?? $dbw->timestamp(),
-			],
-			__METHOD__
-		);
+			] )
+			->caller( __METHOD__ )
+			->execute();
 		$this->updateLastTouched( $timestamp, $dbw );
 	}
 
@@ -88,18 +88,18 @@ class Vote {
 			->getPrimaryDatabase();
 		$period = self::extractPeriodFromReply( $post->getContentRaw() );
 
-		$dbw->update(
-			'sanctions_vote',
-			[
+		$dbw->newUpdateQueryBuilder()
+			->update( 'sanctions_vote' )
+			->set( [
 				'stv_period' => $period,
 				'stv_last_update_timestamp' => $timestamp,
-			],
-			[
+			] )
+			->where( [
 				'stv_topic' => $this->getSanction()->getWorkflowId()->getBinary(),
 				'stv_user' => $this->user->getId(),
-			],
-			__METHOD__
-		);
+			] )
+			->caller( __METHOD__ )
+			->execute();
 		$this->updateLastTouched( $timestamp, $dbw );
 	}
 
@@ -109,12 +109,12 @@ class Vote {
 	 * @param IDatabase $dbw
 	 */
 	public function updateLastTouched( $timestamp, IDatabase $dbw ) {
-		$dbw->update(
-			'sanctions',
-			[ 'st_last_update_timestamp' => $timestamp ],
-			[ 'st_id' => $this->sanction->getId() ],
-			__METHOD__
-		);
+		$dbw->newUpdateQueryBuilder()
+			->update( 'sanctions' )
+			->set( [ 'st_last_update_timestamp' => $timestamp ] )
+			->where( [ 'st_id' => $this->sanction->getId() ] )
+			->caller( __METHOD__ )
+			->execute();
 	}
 
 	/**

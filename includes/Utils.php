@@ -18,6 +18,8 @@ use MediaWiki\User\UserIdentity;
 use MediaWiki\Utils\MWTimestamp;
 use Psr\Log\LoggerInterface;
 use Wikimedia\IPUtils;
+use Wikimedia\Rdbms\IExpression;
+use Wikimedia\Rdbms\LikeValue;
 
 class Utils {
 	/**
@@ -208,20 +210,19 @@ class Utils {
 			$dbr = MediaWikiServices::getInstance()
 			->getConnectionProvider()
 			->getReplicaDatabase();
-			$pages = $dbr->select(
-				'page',
-				[ 'page_namespace', 'page_title' ],
-				[
+			$pages = $dbr->newSelectQueryBuilder()
+				->select( [ 'page_namespace', 'page_title' ] )
+				->from( 'page' )
+				->where( [
 					'page_namespace' => [ NS_USER, NS_USER_TALK ],
-					$dbr->makeList(
-						[
-							'page_title ' . $dbr->buildLike( $oldUserPageTitle->getDBkey() . '/', $dbr->anyString() ),
-							'page_title = ' . $dbr->addQuotes( $oldUserPageTitle->getDBkey() ),
-						], LIST_OR
-					),
-				],
-				__METHOD__
-			);
+					$dbr->expr(
+						'page_title',
+						IExpression::LIKE,
+						new LikeValue( $oldUserPageTitle->getDBkey() . '/', $dbr->anyString() )
+					)->or( 'page_title', '=', $oldUserPageTitle->getDBkey() ),
+				] )
+				->caller( __METHOD__ )
+				->fetchResultSet();
 			$movePageFactory = MediaWikiServices::getInstance()->getMovePageFactory();
 			foreach ( $pages as $row ) {
 				$oldPage = Title::makeTitleSafe( $row->page_namespace, $row->page_title );

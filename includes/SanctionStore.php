@@ -5,6 +5,8 @@ namespace MediaWiki\Extension\Sanctions;
 use Flow\Model\UUID;
 use MediaWiki\User\User;
 use Wikimedia\Rdbms\IConnectionProvider;
+use Wikimedia\Rdbms\IReadableDatabase;
+use Wikimedia\Rdbms\SelectQueryBuilder;
 
 class SanctionStore {
 
@@ -14,18 +16,38 @@ class SanctionStore {
 	}
 
 	/**
+	 * Return a query builder that selects the fields of sanctions which Sanction::newFromRow()
+	 * takes.
+	 *
+	 * @param IReadableDatabase|null $db The replica database is used when it is not given.
+	 * @return SelectQueryBuilder
+	 */
+	public function newSelectQueryBuilder( ?IReadableDatabase $db = null ): SelectQueryBuilder {
+		$db ??= $this->dbProvider->getReplicaDatabase();
+		return $db->newSelectQueryBuilder()
+			->select( [
+				'st_id',
+				'st_author',
+				'st_topic',
+				'st_target',
+				'st_original_name',
+				'st_expiry',
+				'st_handled',
+				'st_emergency',
+				'st_last_update_timestamp',
+			] )
+			->from( 'sanctions' );
+	}
+
+	/**
 	 * @param int $id
 	 * @return Sanction|null
 	 */
 	public function newFromId( $id ) {
-		$db = $this->dbProvider->getReplicaDatabase();
-
-		$row = $db->selectRow(
-			'sanctions',
-			'*',
-			[ 'st_id' => $id ],
-			__METHOD__
-		);
+		$row = $this->newSelectQueryBuilder()
+			->where( [ 'st_id' => $id ] )
+			->caller( __METHOD__ )
+			->fetchRow();
 		if ( !$row ) {
 			return null;
 		}
@@ -41,38 +63,27 @@ class SanctionStore {
 	 */
 	public function findByTarget( User $user, $forInsertingName = null, $expired = null, $handled = null ) {
 		$db = $this->dbProvider->getReplicaDatabase();
-
-		$conds = [
-			'st_target' => $user->getId(),
-		];
+		$queryBuilder = $this->newSelectQueryBuilder( $db )
+			->where( [ 'st_target' => $user->getId() ] );
 
 		if ( $expired !== null ) {
 			$operator = $expired ? '<=' : '>';
-			$now = wfTimestamp( TS_MW );
-			$conds[] = "st_expiry $operator $now";
+			$queryBuilder->andWhere( $db->expr( 'st_expiry', $operator, wfTimestamp( TS_MW ) ) );
 		}
 
 		if ( $forInsertingName !== null ) {
 			if ( $forInsertingName ) {
-				$conds[] = "st_original_name <> ''";
+				$queryBuilder->andWhere( $db->expr( 'st_original_name', '!=', '' ) );
 			} else {
 				// TODO
 			}
 		}
 
 		if ( $handled !== null ) {
-			$conds['st_handled'] = $handled ? 1 : 0;
+			$queryBuilder->andWhere( [ 'st_handled' => $handled ? 1 : 0 ] );
 		}
 
-		$rows = $db->select(
-			'sanctions',
-			'*',
-			$conds,
-			__METHOD__
-		);
-		if ( !$rows ) {
-			return [];
-		}
+		$rows = $queryBuilder->caller( __METHOD__ )->fetchResultSet();
 
 		$sanctions = [];
 		foreach ( $rows as $row ) {
@@ -87,18 +98,13 @@ class SanctionStore {
 	 */
 	public function findNotHandledExpired() {
 		$db = $this->dbProvider->getReplicaDatabase();
-		$rows = $db->select(
-			'sanctions',
-			'*',
-			[
-				'st_expiry <= ' . wfTimestamp( TS_MW ),
+		$rows = $this->newSelectQueryBuilder( $db )
+			->where( [
+				$db->expr( 'st_expiry', '<=', wfTimestamp( TS_MW ) ),
 				'st_handled' => 0,
-			],
-			__METHOD__
-		);
-		if ( !$rows ) {
-			return [];
-		}
+			] )
+			->caller( __METHOD__ )
+			->fetchResultSet();
 
 		$sanctions = [];
 		foreach ( $rows as $row ) {
@@ -113,14 +119,10 @@ class SanctionStore {
 	 * @return Sanction|null
 	 */
 	public function newFromWorkflowId( UUID $uuid ) {
-		$db = $this->dbProvider->getReplicaDatabase();
-
-		$row = $db->selectRow(
-			'sanctions',
-			'*',
-			[ 'st_topic' => $uuid->getBinary() ],
-			__METHOD__
-		);
+		$row = $this->newSelectQueryBuilder()
+			->where( [ 'st_topic' => $uuid->getBinary() ] )
+			->caller( __METHOD__ )
+			->fetchRow();
 		if ( !$row ) {
 			return null;
 		}

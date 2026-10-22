@@ -150,15 +150,15 @@ class Sanction {
 			->getConnectionProvider()
 			->getPrimaryDatabase();
 		$now = wfTimestamp( TS_MW );
-		$db->update(
-			'sanctions',
-			[
+		$db->newUpdateQueryBuilder()
+			->update( 'sanctions' )
+			->set( [
 				'st_emergency' => $emergency ? 1 : 0,
 				'st_last_update_timestamp' => $now
-			],
-			[ 'st_id' => $id ],
-			__METHOD__
-		);
+			] )
+			->where( [ 'st_id' => $id ] )
+			->caller( __METHOD__ )
+			->execute();
 
 		return true;
 	}
@@ -386,15 +386,15 @@ class Sanction {
 		$dbw = MediaWikiServices::getInstance()
 			->getConnectionProvider()
 			->getPrimaryDatabase();
-		$dbw->update(
-			'sanctions',
-			[
+		$dbw->newUpdateQueryBuilder()
+			->update( 'sanctions' )
+			->set( [
 				'st_handled' => 1,
 				'st_last_update_timestamp' => wfTimestamp( TS_MW )
-			],
-			[ 'st_id' => $id ],
-			__METHOD__
-		);
+			] )
+			->where( [ 'st_id' => $id ] )
+			->caller( __METHOD__ )
+			->execute();
 		/** @var VoteStore $voteStore */
 		$voteStore = MediaWikiServices::getInstance()->getService( 'VoteStore' );
 		if ( !$voteStore->deleteOn( $this ) ) {
@@ -504,16 +504,12 @@ class Sanction {
 	 * @deprecated Use self::loadFromRow() instead
 	 */
 	public function loadFrom( $name, $value ) {
-		$db = MediaWikiServices::getInstance()
-			->getConnectionProvider()
-			->getReplicaDatabase();
-
-		$row = $db->selectRow(
-			'sanctions',
-			'*',
-			[ $name => $value ],
-			__METHOD__
-		);
+		$store = MediaWikiServices::getInstance()->getService( 'SanctionStore' );
+		'@phan-var SanctionStore $store';
+		$row = $store->newSelectQueryBuilder()
+			->where( [ $name => $value ] )
+			->caller( __METHOD__ )
+			->fetchRow();
 
 		if ( $row === false ) {
 			return false;
@@ -590,7 +586,11 @@ class Sanction {
 		];
 
 		try {
-			$dbw->insert( 'sanctions', $data, __METHOD__ );
+			$dbw->newInsertQueryBuilder()
+				->insertInto( 'sanctions' )
+				->row( $data )
+				->caller( __METHOD__ )
+				->execute();
 		} catch ( DBError $e ) {
 			Utils::getLogger()->warning( $e->getMessage() );
 			return null;
@@ -742,17 +742,12 @@ class Sanction {
 		if ( $this->mVotes === null ) {
 			$this->mVotes = [];
 
-			$db = MediaWikiServices::getInstance()
-			->getConnectionProvider()
-			->getReplicaDatabase();
-			$res = $db->select(
-				'sanctions_vote',
-				'*',
-				[
-					'stv_topic' => $this->mWorkflowId->getBinary()
-				],
-				__METHOD__
-			);
+			$voteStore = MediaWikiServices::getInstance()->getService( 'VoteStore' );
+			'@phan-var VoteStore $voteStore';
+			$res = $voteStore->newSelectQueryBuilder()
+				->where( [ 'stv_topic' => $this->mWorkflowId->getBinary() ] )
+				->caller( __METHOD__ )
+				->fetchResultSet();
 			// Convert the wrapped result to an array
 			foreach ( $res as $row ) {
 				$this->mVotes[$row->stv_user] = $row->stv_period;
