@@ -199,7 +199,7 @@ class SanctionsPager extends IndexPager {
 				[ 'class' => 'sanction-target' ]
 			),
 			$this->linkRenderer->makeLink(
-				$sanction->getWorkflow(),
+				$sanction->getDiscussionPage(),
 				$this->msg( 'sanctions-type-' . ( $isForInsultingName ? 'insulting-name' : 'block' ) )
 					->text(),
 				[ 'class' => 'sanction-type' ]

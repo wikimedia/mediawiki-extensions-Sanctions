@@ -425,7 +425,7 @@ class SpecialSanctions extends SpecialPage {
 	 */
 	private function makeSanctionLink( $sanctionId ) {
 		$sanction = $sanctionId ? $this->sanctionStore->newFromId( $sanctionId ) : null;
-		return $sanction ? $this->linkRenderer->makeLink( $sanction->getWorkflow() ) : '';
+		return $sanction ? $this->linkRenderer->makeLink( $sanction->getDiscussionPage() ) : '';
 	}
 
 	protected function makeDiffLink() {

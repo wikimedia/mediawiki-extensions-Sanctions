@@ -106,7 +106,7 @@ class Sanction {
 
 		Event::create( [
 			'type' => 'sanctions-proposed',
-			'title' => $sanction->getWorkflow(),
+			'title' => $sanction->getDiscussionPage(),
 			'extra' => [
 				'target-id' => $targetId,
 				'is-for-insulting-name' => $forInsultingName,
@@ -136,8 +136,8 @@ class Sanction {
 			$this->takeTemporaryMeasure( $user );
 		} else {
 			$reason = wfMessage(
-					'sanctions-log-remove-temporary-measure',
-					$this->mWorkflowId->getAlphadecimal()
+					'sanctions-log-remove-temporary-measure-page',
+					$this->getDiscussionPage()->getPrefixedText()
 				)->inContentLanguage()->text();
 
 			$this->removeTemporaryMeasure( $reason, $user );
@@ -174,8 +174,8 @@ class Sanction {
 		$target = $this->mTarget;
 		$isForInsultingName = $this->isForInsultingName();
 		$reason = wfMessage(
-			'sanctions-log-take-measure',
-			$this->mWorkflowId->getAlphadecimal()
+			'sanctions-log-take-measure-page',
+			$this->getDiscussionPage()->getPrefixedText()
 		)->inContentLanguage()->text();
 
 		if ( $isForInsultingName ) {
@@ -226,7 +226,7 @@ class Sanction {
 	public function replaceTemporaryMeasure( $oldBlock ) {
 		$target = $this->mTarget;
 		$isForInsultingName = $this->isForInsultingName();
-		$reason = wfMessage( 'sanctions-log-take-measure', $this->mWorkflowId->getAlphadecimal() )
+		$reason = wfMessage( 'sanctions-log-take-measure-page', $this->getDiscussionPage()->getPrefixedText() )
 			->inContentLanguage()->text();
 
 		if ( $isForInsultingName ) {
@@ -256,8 +256,8 @@ class Sanction {
 		$target = $this->mTarget;
 		$insultingName = $this->isForInsultingName();
 		$reason = wfMessage(
-			'sanctions-log-take-temporary-measure',
-			$this->mWorkflowId->getAlphadecimal()
+			'sanctions-log-take-temporary-measure-page',
+			$this->getDiscussionPage()->getPrefixedText()
 		)->inContentLanguage()->text();
 
 		if ( $insultingName ) {
@@ -389,8 +389,8 @@ class Sanction {
 			$this->justTakeMeasure( $oldBlock );
 		} elseif ( !$passed && $emergency ) {
 			$reason = wfMessage(
-					'sanctions-log-immediate-rejection',
-					$this->getWorkflowId()->getAlphadecimal()
+					'sanctions-log-immediate-rejection-page',
+					$this->getDiscussionPage()->getPrefixedText()
 				)->inContentLanguage()->text();
 			$this->removeTemporaryMeasure( $reason, Utils::getBot(), $oldBlock );
 		} elseif ( $passed && $emergency ) {
@@ -415,6 +415,20 @@ class Sanction {
 	 * @return bool
 	 */
 	public function updateTopicSummary( bool $done = false ) {
+		return FlowUtil::updateSummary(
+			$this->getDiscussionPage(),
+			$this->getWorkflowId(),
+			Utils::getBot(),
+			$this->getStatusWikitext( $done )
+		);
+	}
+
+	/**
+	 * @param bool $done if it is true, the sanction would be considered to be done and check for
+	 *   expiration would not be done.
+	 * @return string wikitext list of the status, the reason and the deadline.
+	 */
+	public function getStatusWikitext( bool $done = false ) {
 		$this->countVotes();
 
 		$agree = $this->mAgreeVote;
@@ -492,12 +506,7 @@ class Sanction {
 			$summary .= "* $line\n";
 		}
 
-		return FlowUtil::updateSummary(
-			$this->getWorkflow(),
-			$this->getWorkflowId(),
-			Utils::getBot(),
-			$summary
-		);
+		return $summary;
 	}
 
 	/**
@@ -777,8 +786,10 @@ class Sanction {
 		$this->mTargetOriginalName = $name;
 	}
 
-	/** @return Title */
-	public function getWorkflow() {
+	/**
+	 * @return Title The page of the discussion.
+	 */
+	public function getDiscussionPage() {
 		$UUIDText = $this->mWorkflowId->getAlphadecimal();
 
 		// TODO Maybe there is a better way?
