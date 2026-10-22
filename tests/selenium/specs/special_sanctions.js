@@ -68,17 +68,18 @@ describe( 'Special:Sanctions', () => {
 		const password = getTestString();
 		await apiClient.createAccount( username, password );
 		const uuid = await Sanction.create( username, username, password );
+		const id = new URL( await browser.getUrl() ).searchParams.get( 'sanction' );
 
 		await LoginPage.loginAdmin();
 		await SanctionsPage.open();
-		await expect( $( `#sanction-${ uuid }` ) ).toExist();
+		await expect( $( `#sanction-${ id }` ) ).toExist();
 
 		// Votes
 		await FlowApi.reply( '{{Oppose}}', uuid, apiClient );
 		await browser.pause( 500 );
 		await browser.refresh();
 
-		await expect( $( `#sanction-${ uuid }.voted` ) ).toExist();
+		await expect( $( `#sanction-${ id }.voted` ) ).toExist();
 
 		// Closes the sanction
 		for ( let count = 0; count < 2; count++ ) {

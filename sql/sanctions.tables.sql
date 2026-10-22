@@ -18,12 +18,14 @@ CREATE TABLE /*$wgDBprefix*/sanctions (
 
 CREATE TABLE /*$wgDBprefix*/sanctions_vote (
     stv_id BIGINT unsigned NOT NULL AUTO_INCREMENT,
-    stv_topic binary(11) NOT null,
+    stv_sanction INT unsigned DEFAULT NULL,
+    stv_topic binary(11) DEFAULT NULL,
     stv_user BIGINT unsigned NOT NULL,
     stv_period int unsigned,
     stv_last_update_timestamp binary(14) NOT NULL,
 
     PRIMARY KEY (stv_id),
     KEY (stv_topic,stv_user),
+    KEY stv_sanction_user (stv_sanction,stv_user),
     KEY (stv_id)
 ) /*$wgDBTableOptions*/;

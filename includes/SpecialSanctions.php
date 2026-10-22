@@ -2,7 +2,6 @@
 
 namespace MediaWiki\Extension\Sanctions;
 
-use Flow\Model\UUID;
 use MediaWiki\Html\Html;
 use MediaWiki\Html\TemplateParser;
 use MediaWiki\Linker\LinkRenderer;
@@ -214,7 +213,7 @@ class SpecialSanctions extends SpecialPage {
 						[ 'class' => 'sanction-execute-result' ],
 						$this->makeErrorMessage(
 							(int)$request->getVal( 'errorCode' ),
-							$request->getVal( 'uuid' ) ? UUID::create( $request->getVal( 'uuid' ) ) : null,
+							$request->getInt( 'sanction' ) ?: null,
 							$request->getVal( 'targetName' )
 						)
 					)
@@ -226,7 +225,7 @@ class SpecialSanctions extends SpecialPage {
 						[ 'class' => 'sanction-execute-result' ],
 						$this->makeMessage(
 							(int)$request->getVal( 'code' ),
-							$request->getVal( 'uuid' ) ? UUID::create( $request->getVal( 'uuid' ) ) : null
+							$request->getInt( 'sanction' ) ?: null
 						)
 					)
 				);
@@ -241,7 +240,7 @@ class SpecialSanctions extends SpecialPage {
 
 		$action = $request->getVal( 'sanction-action' );
 
-		// showResult, code, errorCode, uuid, targetName
+		// showResult, code, errorCode, sanction, targetName
 		$query = [];
 		// code
 		// 0    작성 성공
@@ -296,12 +295,12 @@ class SpecialSanctions extends SpecialPage {
 								$query['showResult'],
 								$query['errorCode'],
 								$query['targetName'],
-								$query['uuid']
+								$query['sanction']
 							] = [
 								true,
 								102,
 								$targetName,
-								$existingSanction->getWorkflowId()->getAlphaDecimal()
+								$existingSanction->getId()
 							];
 							break;
 						}
@@ -315,8 +314,8 @@ class SpecialSanctions extends SpecialPage {
 						break;
 					}
 
-					[ $query['showResult'], $query['code'], $query['uuid'] ]
-						= [ true, 0, $sanction->getWorkflowId()->getAlphaDecimal() ];
+					[ $query['showResult'], $query['code'], $query['sanction'] ]
+						= [ true, 0, $sanction->getId() ];
 					// '제재안 '.Linker::link( $sanction->getTopic() ).'가 작성되었습니다.'
 					break;
 				case 'toggle-emergency':
@@ -334,18 +333,18 @@ class SpecialSanctions extends SpecialPage {
 					$sanction = $this->sanctionStore->newFromId( $sanctionId );
 
 					if ( !$sanction || !$sanction->toggleEmergency( $user ) ) {
-						[ $query['showResult'], $query['errorCode'], $query['uuid'] ]
-							= [ true, 3, $sanction->getWorkflowId()->getAlphaDecimal() ];
+						[ $query['showResult'], $query['errorCode'], $query['sanction'] ]
+							= [ true, 3, $sanction?->getId() ];
 						// '절차 변경에 실패하였습니다.'
 						break;
 					}
 					if ( $sanction->isEmergency() ) {
-						[ $query['showResult'], $query['code'], $query['uuid'] ]
-							= [ true, 1, $sanction->getWorkflowId()->getAlphaDecimal() ];
+						[ $query['showResult'], $query['code'], $query['sanction'] ]
+							= [ true, 1, $sanction->getId() ];
 						// '절차를 긴급으로 바꾸었습니다.'
 					} else {
-						[ $query['showResult'], $query['code'], $query['uuid'] ]
-						= [ true, 2, $sanction->getWorkflowId()->getAlphaDecimal() ];
+						[ $query['showResult'], $query['code'], $query['sanction'] ]
+						= [ true, 2, $sanction->getId() ];
 						// '절차를 일반으로 바꾸었습니다.'
 					}
 					break;
@@ -369,14 +368,12 @@ class SpecialSanctions extends SpecialPage {
 
 	/**
 	 * @param int $errorCode
-	 * @param UUID|null $uuid
+	 * @param int|null $sanctionId
 	 * @param string $targetName
 	 * @return string Error Message
 	 */
-	protected function makeErrorMessage( $errorCode, $uuid, $targetName ) {
-		$link = $uuid ?
-			$this->linkRenderer->makeLink( $this->sanctionStore->newFromWorkflowId( $uuid )->getWorkflow() ) :
-			'';
+	protected function makeErrorMessage( $errorCode, $sanctionId, $targetName ) {
+		$link = $this->makeSanctionLink( $sanctionId );
 		switch ( $errorCode ) {
 			case 0:
 				return $this->msg( "sanctions-submit-error-invalid-token" )->text();
@@ -403,13 +400,11 @@ class SpecialSanctions extends SpecialPage {
 
 	/**
 	 * @param int $code
-	 * @param UUID|null $uuid
+	 * @param int|null $sanctionId
 	 * @return string Message
 	 */
-	protected function makeMessage( $code, $uuid ) {
-		$link = $uuid ?
-			$this->linkRenderer->makeLink( $this->sanctionStore->newFromWorkflowId( $uuid )->getWorkflow() ) :
-			'';
+	protected function makeMessage( $code, $sanctionId ) {
+		$link = $this->makeSanctionLink( $sanctionId );
 		switch ( $code ) {
 			case 0:
 				return $this->msg( "sanctions-submit-massage-added-topic", $link )->text();
@@ -422,6 +417,15 @@ class SpecialSanctions extends SpecialPage {
 			default:
 				return $this->msg( "sanctions-submit-massage-other", (string)$code )->text();
 		}
+	}
+
+	/**
+	 * @param int|null $sanctionId
+	 * @return string HTML link to the discussion of the sanction.
+	 */
+	private function makeSanctionLink( $sanctionId ) {
+		$sanction = $sanctionId ? $this->sanctionStore->newFromId( $sanctionId ) : null;
+		return $sanction ? $this->linkRenderer->makeLink( $sanction->getWorkflow() ) : '';
 	}
 
 	protected function makeDiffLink() {

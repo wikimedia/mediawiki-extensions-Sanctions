@@ -4,7 +4,6 @@ namespace MediaWiki\Extension\Sanctions;
 
 use BadMethodCallException;
 use Flow\Model\PostRevision;
-use Flow\Model\UUID;
 use InvalidArgumentException;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\User\User;
@@ -46,11 +45,10 @@ class Vote {
 			$userFactory = MediaWikiServices::getInstance()->getUserFactory();
 			$this->user = $userFactory->newFromId( (int)$row->stv_user );
 		}
-		if ( isset( $row->stv_topic ) ) {
-			$uuid = UUID::create( $row->stv_topic );
+		if ( isset( $row->stv_sanction ) ) {
 			/** @var SanctionStore $store */
 			$store = MediaWikiServices::getInstance()->getService( 'SanctionStore' );
-			$this->sanction = $store->newFromWorkflowId( $uuid );
+			$this->sanction = $store->newFromId( (int)$row->stv_sanction );
 		}
 		if ( isset( $row->stv_period ) ) {
 			$this->period = (int)$row->stv_period;
@@ -68,7 +66,8 @@ class Vote {
 		$dbw->newInsertQueryBuilder()
 			->insertInto( 'sanctions_vote' )
 			->row( [
-				'stv_topic' => $this->getSanction()->getWorkflowId()->getBinary(),
+				'stv_sanction' => $this->getSanction()->getId(),
+				'stv_topic' => $this->getSanction()->getWorkflowId()?->getBinary(),
 				'stv_user' => $this->getUser()->getId(),
 				'stv_period' => $this->getPeriod(),
 				'stv_last_update_timestamp' => $timestamp ?? $dbw->timestamp(),
@@ -95,7 +94,7 @@ class Vote {
 				'stv_last_update_timestamp' => $timestamp,
 			] )
 			->where( [
-				'stv_topic' => $this->getSanction()->getWorkflowId()->getBinary(),
+				'stv_sanction' => $this->getSanction()->getId(),
 				'stv_user' => $this->user->getId(),
 			] )
 			->caller( __METHOD__ )

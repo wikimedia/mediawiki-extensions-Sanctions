@@ -85,7 +85,7 @@ class SanctionsPager extends IndexPager {
 			$query['join_conds']['sanctions_vote'] = [
 				'LEFT JOIN',
 				[
-					'stv_topic = st_topic',
+					'stv_sanction = st_id',
 					'stv_user' => $this->getUser()->getId(),
 				]
 			];
@@ -125,7 +125,7 @@ class SanctionsPager extends IndexPager {
 
 		$data = [
 			'class' => implode( ' ', $this->getClasses( $row, $this->getUser() ) ),
-			'id' => 'sanction-' . $sanction->getWorkflowId()->getAlphadecimal(),
+			'id' => 'sanction-' . $sanction->getId(),
 			'is-expired' => $expired,
 			'is-handled' => $handled,
 			'can-vote' => $this->getUserHasVoteRight(),

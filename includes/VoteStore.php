@@ -25,7 +25,7 @@ class VoteStore {
 		return $db->newSelectQueryBuilder()
 			->select( [
 				'stv_user',
-				'stv_topic',
+				'stv_sanction',
 				'stv_period',
 			] )
 			->from( 'sanctions_vote' );
@@ -39,7 +39,7 @@ class VoteStore {
 	public function getVoteBySanction( Sanction $sanction, User $user ) {
 		$row = $this->newSelectQueryBuilder()
 			->where( [
-				'stv_topic' => $sanction->getWorkflowId()->getBinary(),
+				'stv_sanction' => $sanction->getId(),
 				'stv_user' => $user->getId(),
 			] )
 			->caller( __METHOD__ )
@@ -59,7 +59,7 @@ class VoteStore {
 
 		$dbw->newDeleteQueryBuilder()
 			->deleteFrom( 'sanctions_vote' )
-			->where( [ 'stv_topic' => $sanction->getWorkflowId()->getBinary() ] )
+			->where( [ 'stv_sanction' => $sanction->getId() ] )
 			->caller( __METHOD__ )
 			->execute();
 

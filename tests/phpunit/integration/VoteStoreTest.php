@@ -39,6 +39,7 @@ class VoteStoreTest extends MediaWikiIntegrationTestCase {
 		$user = new User();
 		$user->setId( 1 );
 		$sanction = new Sanction();
+		$sanction->setId( 1 );
 		$sanction->setWorkflowId( $uuid );
 
 		$vote = Vote::newFromRow( (object)[

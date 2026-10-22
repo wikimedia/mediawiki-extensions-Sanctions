@@ -745,7 +745,7 @@ class Sanction {
 			$voteStore = MediaWikiServices::getInstance()->getService( 'VoteStore' );
 			'@phan-var VoteStore $voteStore';
 			$res = $voteStore->newSelectQueryBuilder()
-				->where( [ 'stv_topic' => $this->mWorkflowId->getBinary() ] )
+				->where( [ 'stv_sanction' => $this->mId ] )
 				->caller( __METHOD__ )
 				->fetchResultSet();
 			// Convert the wrapped result to an array
