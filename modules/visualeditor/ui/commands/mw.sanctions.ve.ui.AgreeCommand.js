@@ -36,7 +36,7 @@
 			.getFragment()
 			.insertContent( [
 				{
-					type: 'mwTransclusionBlock',
+					type: 'mwTransclusionInline',
 					attributes: {
 						mw: {
 							parts: [
@@ -53,7 +53,7 @@
 						}
 					}
 				},
-				{ type: '/mwTransclusionBlock' }
+				{ type: '/mwTransclusionInline' }
 			] )
 			.collapseToEnd()
 			.select();

@@ -16,15 +16,7 @@
 	function SanctionsVeUiAgreeWithDaysInspectorTool() {
 		const self = this;
 		$( () => {
-			const title = self.$element
-				.closest( '.flow-topic' )
-				.find( '.flow-topic-title' )
-				.text();
-			if (
-				title.match(
-					new RegExp( mw.config.get( 'wgSanctionsInsultingNameTopicTitle' ) )
-				)
-			) {
+			if ( mw.sanctions.ve.isForInsultingName( self.$element ) ) {
 				self.destroy();
 			}
 		} );
@@ -38,6 +30,9 @@
 	mw.sanctions.ve.ui.AgreeWithDaysTool.static.commandName =
 	'sanctions-agreewithdays';
 	mw.sanctions.ve.ui.AgreeWithDaysTool.static.name = 'sanctions-agreewithdays';
+	// Only the toolbars of sanctions show the tool, not any toolbar that includes all tools.
+	mw.sanctions.ve.ui.AgreeWithDaysTool.static.autoAddToCatchall = false;
+	mw.sanctions.ve.ui.AgreeWithDaysTool.static.autoAddToGroup = false;
 	mw.sanctions.ve.ui.AgreeWithDaysTool.static.icon = 'support';
 	mw.sanctions.ve.ui.AgreeWithDaysTool.static.title = OO.ui.deferMsg(
 		'sanctions-ve-vote-agree-tool-title'

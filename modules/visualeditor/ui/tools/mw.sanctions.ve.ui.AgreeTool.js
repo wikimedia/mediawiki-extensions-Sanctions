@@ -15,15 +15,7 @@
 	mw.sanctions.ve.ui.AgreeTool = function SanctionsVeUiAgreeTool() {
 		const self = this;
 		$( () => {
-			const title = self.$element
-				.closest( '.flow-topic' )
-				.find( '.flow-topic-title' )
-				.text();
-			if (
-				!title.match(
-					new RegExp( mw.config.get( 'wgSanctionsInsultingNameTopicTitle' ) )
-				)
-			) {
+			if ( !mw.sanctions.ve.isForInsultingName( self.$element ) ) {
 				self.destroy();
 			}
 		} );
@@ -36,6 +28,9 @@
 	// Static
 	mw.sanctions.ve.ui.AgreeTool.static.commandName = 'sanctions-agree';
 	mw.sanctions.ve.ui.AgreeTool.static.name = 'sanctions-agree';
+	// Only the toolbars of sanctions show the tool, not any toolbar that includes all tools.
+	mw.sanctions.ve.ui.AgreeTool.static.autoAddToCatchall = false;
+	mw.sanctions.ve.ui.AgreeTool.static.autoAddToGroup = false;
 	mw.sanctions.ve.ui.AgreeTool.static.icon = 'support';
 	mw.sanctions.ve.ui.AgreeTool.static.group = 'textStyle';
 	mw.sanctions.ve.ui.AgreeTool.static.title = OO.ui.deferMsg(

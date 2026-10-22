@@ -30,11 +30,11 @@
 		"ext.sanctions.flow-board": {
 			"scripts": [ "ext.flowBoard.js" ],
 			"styles": [ "styles/flow-board.less" ],
-			"dependencies": [ "ext.sanctions.visualEditor" ]
+			"dependencies": [ "ext.flow.visualEditor", "ext.sanctions.visualEditor" ]
 		},
 		"ext.sanctions.flow-topic": {
 			"scripts": [ "ext.flowTopic.js" ],
-			"dependencies": [ "ext.sanctions.visualEditor" ]
+			"dependencies": [ "ext.flow.visualEditor", "ext.sanctions.visualEditor" ]
 		},
 		"ext.sanctions": {
 			"scripts": [ "sanctions/mw.sanctions.js" ]
@@ -59,7 +59,6 @@
 			],
 			"dependencies": [
 				"ext.visualEditor.core",
-				"ext.flow.visualEditor",
 				"ext.sanctions",
 				"ext.sanctions.visualEditor.icons"
 			]

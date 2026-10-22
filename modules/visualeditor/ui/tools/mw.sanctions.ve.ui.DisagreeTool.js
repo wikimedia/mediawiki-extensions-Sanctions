@@ -22,6 +22,9 @@
 	// Static
 	mw.sanctions.ve.ui.DisagreeTool.static.commandName = 'sanctions-disagree';
 	mw.sanctions.ve.ui.DisagreeTool.static.name = 'sanctions-disagree';
+	// Only the toolbars of sanctions show the tool, not any toolbar that includes all tools.
+	mw.sanctions.ve.ui.DisagreeTool.static.autoAddToCatchall = false;
+	mw.sanctions.ve.ui.DisagreeTool.static.autoAddToGroup = false;
 	mw.sanctions.ve.ui.DisagreeTool.static.icon = 'oppose';
 	mw.sanctions.ve.ui.DisagreeTool.static.title = OO.ui.deferMsg(
 		'sanctions-ve-vote-disagree-tool-title'
