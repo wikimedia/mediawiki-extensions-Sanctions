@@ -10,6 +10,7 @@ use MediaWiki\Extension\Sanctions\FlowUtil;
 use MediaWiki\Extension\Sanctions\SanctionStore;
 use MediaWiki\Extension\Sanctions\Utils;
 use MediaWiki\Extension\Sanctions\Vote;
+use MediaWiki\Extension\Sanctions\VoteHandler;
 use MediaWiki\Extension\Sanctions\VoteStore;
 use MediaWiki\Output\OutputPage;
 use MediaWiki\SpecialPage\SpecialPage;
@@ -143,41 +144,15 @@ class Main implements
 			return;
 		}
 
-		// Reply as the bot.
-		if ( $sanction->getAuthor()->equals( $user ) && $period > 0 ) {
-			$content = wfMessage( 'sanctions-topic-auto-reply-no-count' )->inContentLanguage()->text() .
-				PHP_EOL . '* ' .
-				wfMessage( 'sanctions-topic-auto-reply-unable-self-agree' )->inContentLanguage()->text();
-			FlowUtil::replyTo(
-				$post,
-				Utils::getBot(),
-				$content
-			);
-			return;
-		}
-		if ( !Utils::hasVoteRight( $user, $reasons, true ) ) {
-			$content = wfMessage( 'sanctions-topic-auto-reply-no-count' )->inContentLanguage()->text() .
-				PHP_EOL . '* ' . implode( PHP_EOL . '* ', $reasons ?? [] );
-			FlowUtil::replyTo(
-				$post,
-				Utils::getBot(),
-				$content
-			);
-			return;
-		}
-
-		$lastVote = $this->voteStore->getVoteBySanction( $sanction, $user );
-		$timestamp = $post->getPostId()->getTimestamp();
-		if ( $lastVote ) {
-			$lastVote->updateByPostRevision( $post, $timestamp );
-		} else {
-			$vote = new Vote();
-			// TODO call $vote->loadFromPost( $post ) instead.
-			$vote->setSanction( $sanction );
-			$vote->setUser( $user );
-			$vote->setPeriod( Vote::extractPeriodFromReply( $post->getContentRaw() ) );
-			$vote->insert( $timestamp );
-		}
-		$sanction->onVotesChanged();
+		( new VoteHandler( $this->voteStore ) )->handle(
+			$sanction,
+			$user,
+			$period,
+			$post->getPostId()->getTimestamp(),
+			static function ( string $content ) use ( $post ) {
+				// Reply as the bot.
+				FlowUtil::replyTo( $post, Utils::getBot(), $content );
+			}
+		);
 	}
 }

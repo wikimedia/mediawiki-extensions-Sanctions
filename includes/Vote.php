@@ -82,10 +82,18 @@ class Vote {
 	 * @param string $timestamp
 	 */
 	public function updateByPostRevision( PostRevision $post, $timestamp ) {
+		$this->updatePeriod( self::extractPeriodFromReply( $post->getContentRaw() ), $timestamp );
+	}
+
+	/**
+	 * @param int $period
+	 * @param string $timestamp
+	 */
+	public function updatePeriod( int $period, $timestamp ) {
 		$dbw = MediaWikiServices::getInstance()
 			->getConnectionProvider()
 			->getPrimaryDatabase();
-		$period = self::extractPeriodFromReply( $post->getContentRaw() );
+		$this->period = $period;
 
 		$dbw->newUpdateQueryBuilder()
 			->update( 'sanctions_vote' )
