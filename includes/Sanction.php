@@ -361,9 +361,25 @@ class Sanction {
 		if ( !$force && ( !$this->isExpired() || $this->mIsHandled ) ) {
 			return false;
 		}
-		$this->mIsHandled = true;
 
 		$id = $this->mId;
+		$dbw = MediaWikiServices::getInstance()
+			->getConnectionProvider()
+			->getPrimaryDatabase();
+		// Claim the sanction so that concurrent views do not handle it twice.
+		$dbw->newUpdateQueryBuilder()
+			->update( 'sanctions' )
+			->set( [
+				'st_handled' => 1,
+				'st_last_update_timestamp' => wfTimestamp( TS_MW )
+			] )
+			->where( [ 'st_id' => $id, 'st_handled' => 0 ] )
+			->caller( __METHOD__ )
+			->execute();
+		if ( $dbw->affectedRows() === 0 ) {
+			return false;
+		}
+		$this->mIsHandled = true;
 		$emergency = $this->mIsEmergency;
 		$passed = $this->isPassed();
 
@@ -382,19 +398,6 @@ class Sanction {
 		// Update the topic summary
 		$this->updateTopicSummary( $force );
 
-		// Write to DB
-		$dbw = MediaWikiServices::getInstance()
-			->getConnectionProvider()
-			->getPrimaryDatabase();
-		$dbw->newUpdateQueryBuilder()
-			->update( 'sanctions' )
-			->set( [
-				'st_handled' => 1,
-				'st_last_update_timestamp' => wfTimestamp( TS_MW )
-			] )
-			->where( [ 'st_id' => $id ] )
-			->caller( __METHOD__ )
-			->execute();
 		/** @var VoteStore $voteStore */
 		$voteStore = MediaWikiServices::getInstance()->getService( 'VoteStore' );
 		if ( !$voteStore->deleteOn( $this ) ) {
