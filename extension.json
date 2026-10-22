@@ -36,6 +36,10 @@
 			"scripts": [ "ext.flowTopic.js" ],
 			"dependencies": [ "ext.flow.visualEditor", "ext.sanctions.visualEditor" ]
 		},
+		"ext.sanctions.discussionTools": {
+			"scripts": [ "ext.discussionTools.js" ],
+			"dependencies": [ "ext.visualEditor.mwwikitext", "ext.sanctions.visualEditor" ]
+		},
 		"ext.sanctions": {
 			"scripts": [ "sanctions/mw.sanctions.js" ]
 		},
@@ -146,6 +150,11 @@
 		"SanctionsDiscussionBackend": {
 			"value": "Flow",
 			"description": "Where new sanctions are discussed: \"Flow\" for topics on the Flow board, or \"DiscussionTools\" for subpages of the discussion page, which needs DiscussionTools."
+		}
+	},
+	"attributes": {
+		"VisualEditor": {
+			"PluginModules": [ "ext.sanctions.discussionTools" ]
 		}
 	},
 	"DefaultUserOptions": {

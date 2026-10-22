@@ -211,8 +211,8 @@
 						inspector.getFragment(),
 						'inline'
 					);
-					// After insertion move cursor to end of template
-					inspector.fragment.collapseToEnd().select();
+					// A space after the template gives the cursor a place to stay after it.
+					inspector.fragment.collapseToEnd().insertContent( ' ' ).collapseToEnd().select();
 				}
 
 				inspector.close( { action: action } );
