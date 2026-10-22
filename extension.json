@@ -101,6 +101,7 @@
 		"FlowAddModules": "main",
 		"HistoryTools": "ToolLinks",
 		"LoadExtensionSchemaUpdates": "SchemaChanges",
+		"PageSaveComplete": "DiscussionTools",
 		"RecentChange_save": "main",
 		"ResourceLoaderGetConfigVars": "main",
 		"SidebarBeforeOutput": "ToolLinks",
@@ -113,7 +114,7 @@
 		},
 		"DiscussionTools": {
 			"class": "MediaWiki\\Extension\\Sanctions\\Hooks\\DiscussionTools",
-			"services": [ "SanctionStore" ]
+			"services": [ "SanctionStore", "VoteStore", "UserFactory" ]
 		},
 		"SchemaChanges": {
 			"class": "MediaWiki\\Extension\\Sanctions\\Hooks\\SchemaChanges"
