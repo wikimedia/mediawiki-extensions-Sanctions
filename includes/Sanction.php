@@ -4,6 +4,7 @@ namespace MediaWiki\Extension\Sanctions;
 
 use Flow\Model\UUID;
 use MediaWiki\Block\AbstractBlock;
+use MediaWiki\Cache\HTMLCacheUpdater;
 use MediaWiki\Extension\Notifications\Model\Event;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Title\Title;
@@ -11,6 +12,7 @@ use MediaWiki\User\User;
 use stdClass;
 use Wikimedia\LightweightObjectStore\ExpirationAwareness;
 use Wikimedia\Rdbms\DBError;
+use Wikimedia\Rdbms\IDBAccessObject;
 
 class Sanction {
 	/** @var int */
@@ -19,8 +21,11 @@ class Sanction {
 	/** @var User */
 	protected $mAuthor;
 
-	/** @var UUID */
+	/** @var UUID|null The Flow topic of a sanction discussed on Flow */
 	protected $mWorkflowId;
+
+	/** @var int|null The page of a sanction discussed with DiscussionTools */
+	protected $mPageId;
 
 	/** @var User */
 	protected $mTarget;
@@ -73,7 +78,6 @@ class Sanction {
 			return false;
 		}
 
-		// Create a Flow topic
 		$discussionPageName = wfMessage( 'sanctions-discussion-page-name' )->inContentLanguage()->text();
 		$discussionPage = Title::newFromText( $discussionPageName );
 		$topic = wfMessage( 'sanctions-topic-title', [
@@ -82,27 +86,37 @@ class Sanction {
 				->inContentLanguage()->text()
 		] )->inContentLanguage()->text();
 
-		$uuid = FlowUtil::createTopic( $discussionPage, $author, $topic, $content );
-
-		// Write to DB
 		$votingPeriod = (float)wfMessage( 'sanctions-voting-period' )->text();
 		$expiry = wfTimestamp( TS_MW, time() + ( ExpirationAwareness::TTL_DAY * $votingPeriod ) );
 
 		$data = (object)[
 			'st_author' => $author->getId(),
 			'st_target' => $targetId,
-			'st_topic' => $uuid->getBinary(),
 			'st_expiry' => $expiry,
 			'st_original_name' => $forInsultingName ? $targetName : '',
 			'st_last_update_timestamp' => wfTimestamp( TS_MW )
 		];
 
-		$sanction = self::newFromRow( $data );
-		$id = $sanction->insert();
-		if ( $id === null ) {
-			return false;
+		if ( Utils::usesDiscussionTools() ) {
+			$sanction = self::writeWithDiscussionTools( $data, $discussionPage, $author, $topic, $content );
+			if ( !$sanction ) {
+				return false;
+			}
+		} else {
+			// Create a Flow topic
+			$uuid = FlowUtil::createTopic( $discussionPage, $author, $topic, $content );
+			if ( !$uuid ) {
+				return false;
+			}
+			$data->st_topic = $uuid->getBinary();
+
+			$sanction = self::newFromRow( $data );
+			$id = $sanction->insert();
+			if ( $id === null ) {
+				return false;
+			}
+			$sanction->updateTopicSummary();
 		}
-		$sanction->updateTopicSummary();
 
 		Event::create( [
 			'type' => 'sanctions-proposed',
@@ -115,6 +129,53 @@ class Sanction {
 		] );
 
 		SanctionExpireJob::schedule( $sanction );
+
+		return $sanction;
+	}
+
+	/**
+	 * Insert the sanction and create its own discussion page in one transaction, as the page
+	 * title holds the ID of the sanction.
+	 *
+	 * @param stdClass $data
+	 * @param Title $discussionPage
+	 * @param User $author
+	 * @param string $topic
+	 * @param string $content wikitext.
+	 * @return Sanction|null
+	 */
+	private static function writeWithDiscussionTools(
+		stdClass $data, Title $discussionPage, User $author, string $topic, string $content
+	) {
+		$dbw = MediaWikiServices::getInstance()->getConnectionProvider()->getPrimaryDatabase();
+		$dbw->startAtomic( __METHOD__, $dbw::ATOMIC_CANCELABLE );
+
+		$sanction = self::newFromRow( $data );
+		$id = $sanction->insert();
+		if ( $id === null ) {
+			$dbw->cancelAtomic( __METHOD__ );
+			return null;
+		}
+
+		$page = DiscussionToolsUtil::createPage(
+			$discussionPage->getSubpage( (string)$id ),
+			$author,
+			$topic,
+			$content
+		);
+		if ( !$page ) {
+			$dbw->cancelAtomic( __METHOD__ );
+			return null;
+		}
+
+		$dbw->newUpdateQueryBuilder()
+			->update( 'sanctions' )
+			->set( [ 'st_page' => $page->getId() ] )
+			->where( [ 'st_id' => $id ] )
+			->caller( __METHOD__ )
+			->execute();
+		$dbw->endAtomic( __METHOD__ );
+		$sanction->mPageId = $page->getId();
 
 		return $sanction;
 	}
@@ -337,6 +398,19 @@ class Sanction {
 	}
 
 	/**
+	 * Make the discussion page show the current status to every viewer, including the
+	 * cached views of logged-out readers.
+	 */
+	public function purgeDiscussionPage() {
+		$title = $this->getDiscussionPage();
+		$title->invalidateCache();
+		MediaWikiServices::getInstance()->getHtmlCacheUpdater()->purgeTitleUrls(
+			$title,
+			HTMLCacheUpdater::PURGE_INTENT_TXROUND_REFLECTED
+		);
+	}
+
+	/**
 	 * Examine opposition of three or more negative terms.
 	 * @return bool
 	 */
@@ -397,8 +471,16 @@ class Sanction {
 			$this->replaceTemporaryMeasure( $oldBlock );
 		}
 
-		// Update the topic summary
-		$this->updateTopicSummary( $force );
+		if ( $this->mPageId !== null ) {
+			// Leave the result on the page, as the votes are deleted below.
+			DiscussionToolsUtil::appendAsBot(
+				$this->getDiscussionPage(),
+				rtrim( $this->getStatusWikitext( true ) ) . ' ~~~~'
+			);
+		} else {
+			// Update the topic summary
+			$this->updateTopicSummary( $force );
+		}
 
 		/** @var VoteStore $voteStore */
 		$voteStore = MediaWikiServices::getInstance()->getService( 'VoteStore' );
@@ -415,6 +497,12 @@ class Sanction {
 	 * @return bool
 	 */
 	public function updateTopicSummary( bool $done = false ) {
+		if ( $this->mPageId !== null ) {
+			// The status on the page is rendered from the database. See Hooks\DiscussionTools.
+			$this->purgeDiscussionPage();
+			return true;
+		}
+
 		return FlowUtil::updateSummary(
 			$this->getDiscussionPage(),
 			$this->getWorkflowId(),
@@ -563,6 +651,9 @@ class Sanction {
 			$topicUUIDBinary = $row->st_topic;
 			$this->mWorkflowId = UUID::create( $topicUUIDBinary );
 		}
+		if ( isset( $row->st_page ) ) {
+			$this->mPageId = (int)$row->st_page;
+		}
 		if ( isset( $row->st_target ) ) {
 			$this->mTarget = $userFactory->newFromId( (int)$row->st_target );
 		}
@@ -593,7 +684,8 @@ class Sanction {
 		$data = [
 			'st_author' => $this->mAuthor->getId(),
 			'st_target' => $this->mTarget->getId(),
-			'st_topic' => $this->mWorkflowId->getBinary(),
+			'st_topic' => $this->mWorkflowId ? $this->mWorkflowId->getBinary() : null,
+			'st_page' => $this->mPageId,
 			'st_expiry' => $this->mExpiry,
 			'st_original_name' => $this->mTargetOriginalName,
 			'st_last_update_timestamp' => $dbw->timestamp( $this->mTouched ),
@@ -787,16 +879,42 @@ class Sanction {
 	}
 
 	/**
-	 * @return Title The page of the discussion.
+	 * @return Title The page of the discussion, either a Flow topic or a page for DiscussionTools.
 	 */
 	public function getDiscussionPage() {
+		if ( $this->mPageId !== null ) {
+			// The page may be too new for the replica.
+			$title = Title::newFromID( $this->mPageId ) ??
+				Title::newFromID( $this->mPageId, IDBAccessObject::READ_LATEST );
+			if ( $title ) {
+				return $title;
+			}
+			// The page has been deleted. Its name is the ID of the sanction under the discussion page.
+			$discussionPage = Title::newFromTextThrow(
+				wfMessage( 'sanctions-discussion-page-name' )->inContentLanguage()->text()
+			);
+			return Title::makeTitle(
+				$discussionPage->getNamespace(),
+				$discussionPage->getDBkey() . '/' . $this->mId
+			);
+		}
 		$UUIDText = $this->mWorkflowId->getAlphadecimal();
 
 		// TODO Maybe there is a better way?
 		return Title::newFromText( $UUIDText, NS_TOPIC );
 	}
 
-	/** @return UUID */
+	/** @return int|null */
+	public function getPageId() {
+		return $this->mPageId;
+	}
+
+	/** @param int $pageId */
+	public function setPageId( int $pageId ) {
+		$this->mPageId = $pageId;
+	}
+
+	/** @return UUID|null */
 	public function getWorkflowId() {
 		return $this->mWorkflowId;
 	}

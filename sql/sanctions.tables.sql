@@ -3,7 +3,8 @@
 CREATE TABLE /*$wgDBprefix*/sanctions (
     st_id INT unsigned NOT NULL AUTO_INCREMENT,
     st_author BIGINT unsigned NOT NULL,
-    st_topic binary(11) NOT null,
+    st_topic binary(11) DEFAULT NULL,
+    st_page INT unsigned DEFAULT NULL,
     st_target BIGINT unsigned NOT NULL,
     st_original_name varchar(255) binary DEFAULT '',
     st_expiry binary(14) NOT NULL,
@@ -13,7 +14,8 @@ CREATE TABLE /*$wgDBprefix*/sanctions (
 
     PRIMARY KEY (st_id),
     KEY (st_target),
-    KEY (st_topic,st_id)
+    KEY (st_topic,st_id),
+    KEY st_page (st_page)
 ) /*$wgDBTableOptions*/;
 
 CREATE TABLE /*$wgDBprefix*/sanctions_vote (

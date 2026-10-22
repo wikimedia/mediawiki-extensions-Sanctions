@@ -359,6 +359,17 @@ class Utils {
 	}
 
 	/**
+	 * Whether new sanctions are discussed on their own pages with DiscussionTools instead of
+	 * Flow topics.
+	 *
+	 * @return bool
+	 */
+	public static function usesDiscussionTools(): bool {
+		return MediaWikiServices::getInstance()->getMainConfig()
+			->get( 'SanctionsDiscussionBackend' ) === 'DiscussionTools';
+	}
+
+	/**
 	 * @return LoggerInterface
 	 */
 	public static function getLogger(): LoggerInterface {

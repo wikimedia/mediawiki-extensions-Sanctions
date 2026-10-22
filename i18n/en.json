@@ -27,6 +27,8 @@
 	"sanctions-content-placeholder": "Enter the content of the sanction.",
 	"sanctions-submit": "Submit",
 	"sanctions-topic-no-description": "No description provided.",
+	"sanctions-page-creation-summary": "New sanction",
+	"sanctions-page-result-summary": "Result of the sanction",
 	"sanctions-topic-revision": "* [[Special:Redirect/revision/$1|$2 (New page)]]",
 	"sanctions-topic-diff": "* [[Special:Diff/$1/$2|diffs on page $3]]",
 	"sanctions-submit-error-invalid-token": "Invalid token.",

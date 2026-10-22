@@ -92,6 +92,7 @@
 		"sanctionsExpire": "MediaWiki\\Extension\\Sanctions\\SanctionExpireJob"
 	},
 	"Hooks": {
+		"ArticleViewHeader": "DiscussionTools",
 		"BeforeCreateEchoEvent": "MediaWiki\\Extension\\Sanctions\\Hooks\\Notification::onBeforeCreateEchoEvent",
 		"ContributionsToolLinks": "ToolLinks",
 		"DiffTools": "ToolLinks",
@@ -109,6 +110,10 @@
 		"main": {
 			"class": "MediaWiki\\Extension\\Sanctions\\Hooks\\Main",
 			"services": [ "SanctionStore", "VoteStore", "UserFactory" ]
+		},
+		"DiscussionTools": {
+			"class": "MediaWiki\\Extension\\Sanctions\\Hooks\\DiscussionTools",
+			"services": [ "SanctionStore" ]
 		},
 		"SchemaChanges": {
 			"class": "MediaWiki\\Extension\\Sanctions\\Hooks\\SchemaChanges"
@@ -136,6 +141,12 @@
 			]
 		}
 	},
+	"config": {
+		"SanctionsDiscussionBackend": {
+			"value": "Flow",
+			"description": "Where new sanctions are discussed: \"Flow\" for topics on the Flow board, or \"DiscussionTools\" for subpages of the discussion page, which needs DiscussionTools."
+		}
+	},
 	"DefaultUserOptions": {
 		"echo-subscriptions-web-sanctions-against-me": true,
 		"echo-subscriptions-email-sanctions-against-me": true
@@ -150,5 +161,5 @@
 		"MediaWiki\\Extension\\Sanctions\\Tests\\Integration\\": "tests/phpunit/integration/",
 		"MediaWiki\\Extension\\Sanctions\\Tests\\Unit\\": "tests/phpunit/unit/"
 	},
-	"manifest_version": 1
+	"manifest_version": 2
 }

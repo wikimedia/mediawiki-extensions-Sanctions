@@ -135,4 +135,30 @@ class SanctionStoreTest extends MediaWikiIntegrationTestCase {
 		$this->assertEquals( $target, $sanction->getTarget() );
 		$this->assertEquals( $expiry, $sanction->getExpiry() );
 	}
+
+	/**
+	 * @covers \MediaWiki\Extension\Sanctions\SanctionStore::newFromPageId
+	 */
+	public function testNewFromPageId() {
+		$store = $this->getSanctionStore();
+		$this->assertNull( $store->newFromPageId( 111 ), 'should be null if the given page is not found' );
+
+		$author = new User();
+		$author->setId( 10 );
+		$target = new User();
+		$target->setId( 11 );
+
+		$sanction = new Sanction();
+		$sanction->setAuthor( $author );
+		$sanction->setTarget( $target );
+		$sanction->setPageId( 111 );
+		$sanction->setExpiry( wfTimestamp( TS_MW ) );
+		$id = $sanction->insert();
+
+		$find = $store->newFromPageId( 111 );
+		$this->assertInstanceOf( Sanction::class, $find );
+		$this->assertEquals( $id, $find->getId() );
+		$this->assertSame( 111, $find->getPageId() );
+		$this->assertNull( $find->getWorkflowId() );
+	}
 }

@@ -29,6 +29,7 @@ class SanctionStore {
 				'st_id',
 				'st_author',
 				'st_topic',
+				'st_page',
 				'st_target',
 				'st_original_name',
 				'st_expiry',
@@ -112,6 +113,21 @@ class SanctionStore {
 		}
 
 		return $sanctions;
+	}
+
+	/**
+	 * @param int $pageId ID of the discussion page of the sanction.
+	 * @return Sanction|null
+	 */
+	public function newFromPageId( int $pageId ) {
+		$row = $this->newSelectQueryBuilder()
+			->where( [ 'st_page' => $pageId ] )
+			->caller( __METHOD__ )
+			->fetchRow();
+		if ( !$row ) {
+			return null;
+		}
+		return Sanction::newFromRow( $row );
 	}
 
 	/**

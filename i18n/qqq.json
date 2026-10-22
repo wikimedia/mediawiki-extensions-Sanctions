@@ -28,6 +28,8 @@
 	"sanctions-content-placeholder": "Placeholder for textarea for context of sanction",
 	"sanctions-submit": "Label for button for publish sanction",
 	"sanctions-topic-no-description": "Error message.",
+	"sanctions-page-creation-summary": "Edit summary of the creation of the page where a sanction is discussed with DiscussionTools.",
+	"sanctions-page-result-summary": "Edit summary of the bot that writes the result on the page where a sanction is discussed with DiscussionTools.",
 	"sanctions-topic-revision": "Wikitext used in a sanction template. Parameters:\n* $1 - The revision ID\n* $2 - The title of the article",
 	"sanctions-topic-diff": "Wikitext used in a sanction template. Parameters:\n* $1 - The old revision ID\n* $2 The revision ID\n* $3 - The title of the article",
 	"sanctions-submit-error-invalid-token": "Error message.",

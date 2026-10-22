@@ -20,6 +20,9 @@ class SchemaChanges implements \MediaWiki\Installer\Hook\LoadExtensionSchemaUpda
 				"$dir/../../sql/sanctions.tables.sql", true ]
 			);
 			$updater->addExtensionField(
+				'sanctions', 'st_page', "$dir/../../sql/patch-sanctions-st_page.sql"
+			);
+			$updater->addExtensionField(
 				'sanctions_vote', 'stv_sanction', "$dir/../../sql/patch-sanctions_vote-stv_sanction.sql"
 			);
 		}
