@@ -89,6 +89,9 @@
 		"localBasePath": "modules",
 		"remoteExtPath": "Sanctions/modules"
 	},
+	"JobClasses": {
+		"sanctionsExpire": "MediaWiki\\Extension\\Sanctions\\SanctionExpireJob"
+	},
 	"Hooks": {
 		"BeforeCreateEchoEvent": "MediaWiki\\Extension\\Sanctions\\Hooks\\Notification::onBeforeCreateEchoEvent",
 		"ContributionsToolLinks": "ToolLinks",

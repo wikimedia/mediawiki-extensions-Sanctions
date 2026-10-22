@@ -114,6 +114,8 @@ class Sanction {
 			'agent' => $author,
 		] );
 
+		SanctionExpireJob::schedule( $sanction );
+
 		return $sanction;
 	}
 
