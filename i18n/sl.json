@@ -16,8 +16,6 @@
 	"sanctions-submit-error-other": "Oznaka napake $1",
 	"sanctions-row-button-toggle-emergency": "Spremeni prioriteto",
 	"sanctions-topic-auto-reply-no-count": "Zgornji odgovor se ne šteje, ker:",
-	"sanctions-log-take-measure": "[[Topic:$1|Sankcija]] sprejeta.",
-	"sanctions-log-immediate-rejection": "[[Topic:$1|Sankcija]] zavrnjena.",
 	"sanctions-reason-not-logged-in": "Niste prijavljeni.",
 	"sanctions-reason-failed-to-load-registration": "Pridobivanje datuma registracije računa ni uspela.",
 	"sanctions-ve-agree-days-inspector-remove-label": "Odstrani",
