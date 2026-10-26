@@ -96,6 +96,10 @@
 		"sanctionspropose": {
 			"class": "MediaWiki\\Extension\\Sanctions\\Api\\ApiSanctionsPropose",
 			"services": [ "SanctionStore", "UserFactory" ]
+		},
+		"sanctionsprocedure": {
+			"class": "MediaWiki\\Extension\\Sanctions\\Api\\ApiSanctionsProcedure",
+			"services": [ "SanctionStore" ]
 		}
 	},
 	"APIListModules": {

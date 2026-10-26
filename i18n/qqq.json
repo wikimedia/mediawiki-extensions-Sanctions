@@ -131,5 +131,15 @@
 	"apihelp-sanctionspropose-example-insulting-name": "{{doc-apihelp-example|sanctionspropose}}",
 	"apierror-sanctions-cannot-propose": "{{doc-apierror}}\n\nParameters:\n* $1 - The reasons why the user cannot vote on sanctions, separated by spaces.",
 	"apierror-sanctions-insulting-name-exists": "{{doc-apierror}}\n\nParameters:\n* $1 - The name of the user.",
-	"apierror-sanctions-propose-failed": "{{doc-apierror}}"
+	"apierror-sanctions-propose-failed": "{{doc-apierror}}",
+	"apihelp-sanctionsprocedure-summary": "{{doc-apihelp-summary|sanctionsprocedure}}",
+	"apihelp-sanctionsprocedure-extended-description": "{{doc-apihelp-extended-description|sanctionsprocedure}}",
+	"apihelp-sanctionsprocedure-param-id": "{{doc-apihelp-param|sanctionsprocedure|id}}",
+	"apihelp-sanctionsprocedure-param-procedure": "{{doc-apihelp-param|sanctionsprocedure|procedure|paramvalues=1}}",
+	"apihelp-sanctionsprocedure-paramvalue-procedure-normal": "{{doc-apihelp-paramvalue|sanctionsprocedure|procedure|normal}}",
+	"apihelp-sanctionsprocedure-paramvalue-procedure-emergency": "{{doc-apihelp-paramvalue|sanctionsprocedure|procedure|emergency}}",
+	"apihelp-sanctionsprocedure-example-emergency": "{{doc-apihelp-example|sanctionsprocedure}}",
+	"apierror-sanctions-nosuchsanction": "{{doc-apierror}}\n\nParameters:\n* $1 - The ID of the sanction.",
+	"apierror-sanctions-expired": "{{doc-apierror}}",
+	"apierror-sanctions-procedure-failed": "{{doc-apierror}}"
 }

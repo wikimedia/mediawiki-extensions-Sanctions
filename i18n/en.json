@@ -130,5 +130,15 @@
 	"apihelp-sanctionspropose-example-insulting-name": "Propose a change of the username of user <kbd>Example</kbd>.",
 	"apierror-sanctions-cannot-propose": "You cannot propose a sanction: $1",
 	"apierror-sanctions-insulting-name-exists": "There is already an ongoing sanction against the username of $1.",
-	"apierror-sanctions-propose-failed": "Failed to create the sanction."
+	"apierror-sanctions-propose-failed": "Failed to create the sanction.",
+	"apihelp-sanctionsprocedure-summary": "Switch a sanction between the normal and the emergency process.",
+	"apihelp-sanctionsprocedure-extended-description": "In the emergency process, the user is blocked or renamed until the voting ends. Only users who can block can switch the process, and only before the voting ends.",
+	"apihelp-sanctionsprocedure-param-id": "The ID of the sanction.",
+	"apihelp-sanctionsprocedure-param-procedure": "The process to follow:",
+	"apihelp-sanctionsprocedure-paramvalue-procedure-normal": "The result is carried out when the voting ends.",
+	"apihelp-sanctionsprocedure-paramvalue-procedure-emergency": "The user is blocked or renamed until the voting ends.",
+	"apihelp-sanctionsprocedure-example-emergency": "Switch sanction 1 to the emergency process.",
+	"apierror-sanctions-nosuchsanction": "There is no sanction with ID $1.",
+	"apierror-sanctions-expired": "The voting on the sanction has ended.",
+	"apierror-sanctions-procedure-failed": "Failed to change the process of the sanction."
 }
