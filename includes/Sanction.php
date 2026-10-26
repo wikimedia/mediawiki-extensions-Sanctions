@@ -201,7 +201,11 @@ class Sanction {
 					$this->getDiscussionPage()->getPrefixedText()
 				)->inContentLanguage()->text();
 
-			$this->removeTemporaryMeasure( $reason, $user );
+			$this->removeTemporaryMeasure(
+				$reason,
+				$user,
+				MediaWikiServices::getInstance()->getDatabaseBlockStore()->newFromTarget( $this->mTarget )
+			);
 		}
 
 		$emergency = !$emergency;

@@ -12,7 +12,6 @@ use MediaWiki\MediaWikiServices;
 use MediaWiki\Message\Message;
 use MediaWiki\Renameuser\RenameuserSQL;
 use MediaWiki\Title\Title;
-use MediaWiki\Title\TitleValue;
 use MediaWiki\User\User;
 use MediaWiki\User\UserIdentity;
 use MediaWiki\Utils\MWTimestamp;
@@ -322,40 +321,34 @@ class Utils {
 	 * @param bool $withLog
 	 * @param string|null $reason
 	 * @param User|null $user
-	 * @param AbstractBlock|null $block
+	 * @param AbstractBlock|null $block The block to remove. The block of the target is used when
+	 *   it is not given.
 	 * @return bool
 	 */
 	public static function unblock( $target, $withLog = false, $reason = null, $user = null, $block = null ) {
 		$blockStore = MediaWikiServices::getInstance()->getDatabaseBlockStore();
 
-		if ( $block ) {
-			if ( $block instanceof CompositeBlock ) {
-				foreach ( $block->getOriginalBlocks() as $originalBlock ) {
-					if ( $originalBlock instanceof DatabaseBlock ) {
-						'@phan-var DatabaseBlock $originalBlock';
-						return $blockStore->deleteBlock( $originalBlock );
-					}
-				}
-			} elseif ( $block instanceof DatabaseBlock ) {
-				'@phan-var DatabaseBlock $block';
-				return $blockStore->deleteBlock( $block );
-			}
+		$block ??= $blockStore->newFromTarget( $target );
+		if ( $block instanceof CompositeBlock ) {
+			$originalBlocks = array_filter(
+				$block->getOriginalBlocks(),
+				static fn ( $originalBlock ) => $originalBlock instanceof DatabaseBlock
+			);
+			$block = reset( $originalBlocks );
+		}
+		if ( !$block instanceof DatabaseBlock || !$blockStore->deleteBlock( $block ) ) {
+			return false;
 		}
 
-		$page = TitleValue::tryNew( NS_USER, $block->getTargetName() );
-
 		if ( $withLog ) {
-			$bot = self::getBot();
-
 			$logEntry = new ManualLogEntry( 'block', 'unblock' );
-			if ( $page !== null ) {
-				$logEntry->setTarget( $page );
-			}
+			$logEntry->setTarget( Title::makeTitle( NS_USER, $target->getName() ) );
 			$logEntry->setComment( $reason );
-			$logEntry->setPerformer( $user ?? $bot );
+			$logEntry->setPerformer( $user ?? self::getBot() );
 			$logId = $logEntry->insert();
 			$logEntry->publish( $logId );
 		}
+		return true;
 	}
 
 	/**
