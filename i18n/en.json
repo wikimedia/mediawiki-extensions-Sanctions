@@ -104,5 +104,21 @@
 	"echo-category-title-sanctions-against-me": "Sanction against me",
 	"sanctions-pref-tooltip-sanctions-against-me": "Notify me when a sanction against me is proposed or issued.",
 	"notification-header-sanctions-proposed-against-insulting-name": "A sanction against {{GENDER:$2|your}} username have been proposed.",
-	"notification-header-sanctions-proposed": "A sanction against {{GENDER:$2|your}} future edit have been proposed."
+	"notification-header-sanctions-proposed": "A sanction against {{GENDER:$2|your}} future edit have been proposed.",
+	"apihelp-query+sanctions-summary": "List sanctions.",
+	"apihelp-query+sanctions-extended-description": "Expired sanctions are listed only to users who can vote on sanctions.",
+	"apihelp-query+sanctions-param-ids": "Only list sanctions with these IDs.",
+	"apihelp-query+sanctions-param-target": "Only list sanctions against this user.",
+	"apihelp-query+sanctions-param-show": "Show only sanctions that meet these criteria.",
+	"apihelp-query+sanctions-param-prop": "Which properties to get:",
+	"apihelp-query+sanctions-paramvalue-prop-author": "Adds the user who proposed the sanction and their ID.",
+	"apihelp-query+sanctions-paramvalue-prop-target": "Adds the user against whom the sanction is and their ID.",
+	"apihelp-query+sanctions-paramvalue-prop-type": "Adds whether the sanction is a block (<samp>block</samp>) or a change of an insulting username (<samp>insultingname</samp>).",
+	"apihelp-query+sanctions-paramvalue-prop-expiry": "Adds when the voting ends.",
+	"apihelp-query+sanctions-paramvalue-prop-flags": "Tags whether the voting has ended, whether the result has been carried out and whether the sanction follows the emergency process.",
+	"apihelp-query+sanctions-paramvalue-prop-page": "Adds the page where the sanction is discussed.",
+	"apihelp-query+sanctions-paramvalue-prop-votes": "Adds the number of votes, the number of agreeing votes, whether the sanction would pass and the period of the block in days. Only for sanctions whose result has not been carried out yet.",
+	"apihelp-query+sanctions-param-limit": "How many sanctions to return.",
+	"apihelp-query+sanctions-example-not-handled": "List sanctions whose result has not been carried out yet.",
+	"apihelp-query+sanctions-example-target": "List sanctions against user <kbd>Example</kbd> with their votes."
 }

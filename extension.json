@@ -92,6 +92,12 @@
 		"localBasePath": "modules",
 		"remoteExtPath": "Sanctions/modules"
 	},
+	"APIListModules": {
+		"sanctions": {
+			"class": "MediaWiki\\Extension\\Sanctions\\Api\\ApiQuerySanctions",
+			"services": [ "SanctionStore" ]
+		}
+	},
 	"JobClasses": {
 		"sanctionsExpire": "MediaWiki\\Extension\\Sanctions\\SanctionExpireJob"
 	},

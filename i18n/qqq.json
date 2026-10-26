@@ -105,5 +105,21 @@
 	"echo-category-title-sanctions-against-me": "{{doc-echo-category-title|tooltip=sanctions-pref-tooltip-sanctions-against-me}}",
 	"sanctions-pref-tooltip-sanctions-against-me": "{{doc-echo-pref-tooltip|title=echo-category-title-sanctions-against-me}}",
 	"notification-header-sanctions-proposed-against-insulting-name": "Header text for a notification when a sanction against your username have been proposed.",
-	"notification-header-sanctions-proposed": "Header text for a notification when a sanction against your future edit have been proposed."
+	"notification-header-sanctions-proposed": "Header text for a notification when a sanction against your future edit have been proposed.",
+	"apihelp-query+sanctions-summary": "{{doc-apihelp-summary|query+sanctions}}",
+	"apihelp-query+sanctions-extended-description": "{{doc-apihelp-extended-description|query+sanctions}}",
+	"apihelp-query+sanctions-param-ids": "{{doc-apihelp-param|query+sanctions|ids}}",
+	"apihelp-query+sanctions-param-target": "{{doc-apihelp-param|query+sanctions|target}}",
+	"apihelp-query+sanctions-param-show": "{{doc-apihelp-param|query+sanctions|show}}",
+	"apihelp-query+sanctions-param-prop": "{{doc-apihelp-param|query+sanctions|prop|paramvalues=1}}",
+	"apihelp-query+sanctions-paramvalue-prop-author": "{{doc-apihelp-paramvalue|query+sanctions|prop|author}}",
+	"apihelp-query+sanctions-paramvalue-prop-target": "{{doc-apihelp-paramvalue|query+sanctions|prop|target}}",
+	"apihelp-query+sanctions-paramvalue-prop-type": "{{doc-apihelp-paramvalue|query+sanctions|prop|type}}",
+	"apihelp-query+sanctions-paramvalue-prop-expiry": "{{doc-apihelp-paramvalue|query+sanctions|prop|expiry}}",
+	"apihelp-query+sanctions-paramvalue-prop-flags": "{{doc-apihelp-paramvalue|query+sanctions|prop|flags}}",
+	"apihelp-query+sanctions-paramvalue-prop-page": "{{doc-apihelp-paramvalue|query+sanctions|prop|page}}",
+	"apihelp-query+sanctions-paramvalue-prop-votes": "{{doc-apihelp-paramvalue|query+sanctions|prop|votes}}",
+	"apihelp-query+sanctions-param-limit": "{{doc-apihelp-param|query+sanctions|limit}}",
+	"apihelp-query+sanctions-example-not-handled": "{{doc-apihelp-example|query+sanctions}}",
+	"apihelp-query+sanctions-example-target": "{{doc-apihelp-example|query+sanctions}}"
 }
