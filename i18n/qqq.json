@@ -121,5 +121,15 @@
 	"apihelp-query+sanctions-paramvalue-prop-votes": "{{doc-apihelp-paramvalue|query+sanctions|prop|votes}}",
 	"apihelp-query+sanctions-param-limit": "{{doc-apihelp-param|query+sanctions|limit}}",
 	"apihelp-query+sanctions-example-not-handled": "{{doc-apihelp-example|query+sanctions}}",
-	"apihelp-query+sanctions-example-target": "{{doc-apihelp-example|query+sanctions}}"
+	"apihelp-query+sanctions-example-target": "{{doc-apihelp-example|query+sanctions}}",
+	"apihelp-sanctionspropose-summary": "{{doc-apihelp-summary|sanctionspropose}}",
+	"apihelp-sanctionspropose-extended-description": "{{doc-apihelp-extended-description|sanctionspropose}}",
+	"apihelp-sanctionspropose-param-target": "{{doc-apihelp-param|sanctionspropose|target}}",
+	"apihelp-sanctionspropose-param-insultingname": "{{doc-apihelp-param|sanctionspropose|insultingname}}",
+	"apihelp-sanctionspropose-param-content": "{{doc-apihelp-param|sanctionspropose|content}}",
+	"apihelp-sanctionspropose-example-block": "{{doc-apihelp-example|sanctionspropose}}",
+	"apihelp-sanctionspropose-example-insulting-name": "{{doc-apihelp-example|sanctionspropose}}",
+	"apierror-sanctions-cannot-propose": "{{doc-apierror}}\n\nParameters:\n* $1 - The reasons why the user cannot vote on sanctions, separated by spaces.",
+	"apierror-sanctions-insulting-name-exists": "{{doc-apierror}}\n\nParameters:\n* $1 - The name of the user.",
+	"apierror-sanctions-propose-failed": "{{doc-apierror}}"
 }

@@ -92,6 +92,12 @@
 		"localBasePath": "modules",
 		"remoteExtPath": "Sanctions/modules"
 	},
+	"APIModules": {
+		"sanctionspropose": {
+			"class": "MediaWiki\\Extension\\Sanctions\\Api\\ApiSanctionsPropose",
+			"services": [ "SanctionStore", "UserFactory" ]
+		}
+	},
 	"APIListModules": {
 		"sanctions": {
 			"class": "MediaWiki\\Extension\\Sanctions\\Api\\ApiQuerySanctions",

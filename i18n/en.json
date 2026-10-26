@@ -120,5 +120,15 @@
 	"apihelp-query+sanctions-paramvalue-prop-votes": "Adds the number of votes, the number of agreeing votes, whether the sanction would pass and the period of the block in days. Only for sanctions whose result has not been carried out yet.",
 	"apihelp-query+sanctions-param-limit": "How many sanctions to return.",
 	"apihelp-query+sanctions-example-not-handled": "List sanctions whose result has not been carried out yet.",
-	"apihelp-query+sanctions-example-target": "List sanctions against user <kbd>Example</kbd> with their votes."
+	"apihelp-query+sanctions-example-target": "List sanctions against user <kbd>Example</kbd> with their votes.",
+	"apihelp-sanctionspropose-summary": "Propose a sanction against a user.",
+	"apihelp-sanctionspropose-extended-description": "Only users who can vote on sanctions can propose one. The votes are the comments on the discussion page of the sanction.",
+	"apihelp-sanctionspropose-param-target": "The user against whom the sanction is.",
+	"apihelp-sanctionspropose-param-insultingname": "Propose a change of the insulting username of the user instead of a block.",
+	"apihelp-sanctionspropose-param-content": "The reason for the sanction, in wikitext.",
+	"apihelp-sanctionspropose-example-block": "Propose a block of user <kbd>Example</kbd>.",
+	"apihelp-sanctionspropose-example-insulting-name": "Propose a change of the username of user <kbd>Example</kbd>.",
+	"apierror-sanctions-cannot-propose": "You cannot propose a sanction: $1",
+	"apierror-sanctions-insulting-name-exists": "There is already an ongoing sanction against the username of $1.",
+	"apierror-sanctions-propose-failed": "Failed to create the sanction."
 }
