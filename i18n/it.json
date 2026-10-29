@@ -7,5 +7,6 @@
 	"sanctions-submit": "Invia",
 	"sanctions-row-button-execute": "Esegui",
 	"sanctions-ve-agree-days-inspector-title": "Scadenza",
-	"sanctions-ve-agree-days-inspector-invalid-value": "\"$1\" non è valido."
+	"sanctions-ve-agree-days-inspector-invalid-value": "\"$1\" non è valido.",
+	"apihelp-query+sanctions-param-prop": "Quali proprietà ottenere:"
 }

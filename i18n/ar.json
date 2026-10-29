@@ -25,6 +25,8 @@
 	"sanctions-content-placeholder": "أدخل محتوى العقوبة.",
 	"sanctions-submit": "إرسال",
 	"sanctions-topic-no-description": "لا يوجد وصف مقدم.",
+	"sanctions-page-creation-summary": "عقوبة جديدة",
+	"sanctions-page-result-summary": "نتيجة العقوبة",
 	"sanctions-topic-revision": "* [[Special:Redirect/revision/$1|$2 (صفحة جديدة)]]",
 	"sanctions-topic-diff": "* [[Special:Diff/$1/$2|فرق في الصفحة $3]]",
 	"sanctions-submit-error-invalid-token": "رمز غير صالح.",
