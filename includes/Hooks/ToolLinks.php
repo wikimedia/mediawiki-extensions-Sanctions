@@ -20,10 +20,23 @@ class ToolLinks implements
 	\MediaWiki\Hook\SidebarBeforeOutputHook,
 	\MediaWiki\Hook\UserToolLinksEditHook
 {
+	/** @var bool[] Whether each viewer, by name, may vote */
+	private array $voteRights = [];
+
 	public function __construct(
 		private readonly UserFactory $userFactory,
 		private readonly LinkRenderer $linkRenderer,
 	) {
+	}
+
+	/**
+	 * The history, diff and user tool hooks run once per row, so they
+	 * remember each viewer's right for the rest of the request.
+	 */
+	private function hasVoteRight( UserIdentity $user ): bool {
+		$name = $user->getName();
+		$this->voteRights[$name] ??= Utils::hasVoteRight( $user );
+		return $this->voteRights[$name];
 	}
 
 	/**
@@ -35,7 +48,7 @@ class ToolLinks implements
 	 */
 	public function onUserToolLinksEdit( $userId, $userText, &$items ) {
 		$viewer = RequestContext::getMain()->getUser();
-		if ( !Utils::hasVoteRight( $viewer ) ) {
+		if ( !$this->hasVoteRight( $viewer ) ) {
 			return true;
 		}
 
@@ -54,7 +67,7 @@ class ToolLinks implements
 	 * @return bool|void True or no return value to continue or false to abort
 	 */
 	public function onDiffTools( $newRevRecord, &$links, $oldRevRecord, $userIdentity ) {
-		if ( !Utils::hasVoteRight( $userIdentity ) ) {
+		if ( !$this->hasVoteRight( $userIdentity ) ) {
 			return true;
 		}
 
@@ -82,7 +95,7 @@ class ToolLinks implements
 	 * @inheritDoc
 	 */
 	public function onHistoryTools( $revRecord, &$links, $prevRevRecord, $userIdentity ) {
-		if ( !Utils::hasVoteRight( $userIdentity ) ) {
+		if ( !$this->hasVoteRight( $userIdentity ) ) {
 			return true;
 		}
 
