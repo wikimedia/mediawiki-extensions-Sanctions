@@ -84,24 +84,17 @@ class Utils {
 
 		// There have been more than three contribution histories within the last 20 days (currently
 		// active)
-		$count = $db->selectRowCount(
-			[
-				'revision',
-				'actor',
-				'user',
-			],
-			'user_id',
-			[
+		$count = $db->newSelectQueryBuilder()
+			->select( 'user_id' )
+			->from( 'revision' )
+			->leftJoin( 'actor', null, 'rev_actor = actor_id' )
+			->leftJoin( 'user', null, 'actor_user = user_id' )
+			->where( [
 				'user_id' => $user->getId(),
-				'rev_timestamp > ' . $twentyDaysAgo
-			],
-			__METHOD__,
-			[],
-			[
-				'actor' => [ 'LEFT JOIN', [ 'rev_actor = actor_id ' ] ],
-				'user' => [ 'LEFT JOIN', [ 'actor_user = user_id ' ] ],
-			]
-		);
+				$db->expr( 'rev_timestamp', '>', $db->timestamp( $twentyDaysAgo ) ),
+			] )
+			->caller( __METHOD__ )
+			->fetchRowCount();
 		if ( $count < $verificationEdits ) {
 			if ( $reasons !== false ) {
 				self::addReason( wfMessage( 'sanctions-reason-unsatisfying-verification-edits', [
