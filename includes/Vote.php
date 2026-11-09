@@ -67,7 +67,7 @@ class Vote {
 			->insertInto( 'sanctions_vote' )
 			->row( [
 				'stv_sanction' => $this->getSanction()->getId(),
-				'stv_topic' => $this->getSanction()->getWorkflowId()?->getBinary(),
+				'stv_topic' => $this->getSanction()->getTopic(),
 				'stv_user' => $this->getUser()->getId(),
 				'stv_period' => $this->getPeriod(),
 				'stv_last_update_timestamp' => $timestamp ?? $dbw->timestamp(),

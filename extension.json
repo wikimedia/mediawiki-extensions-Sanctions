@@ -9,8 +9,7 @@
 	"requires": {
 		"MediaWiki": ">= 1.44.0",
 		"extensions": {
-			"Echo": "*",
-			"Flow": "*"
+			"Echo": "*"
 		}
 	},
 	"AutoloadNamespaces": {
@@ -165,7 +164,7 @@
 	"config": {
 		"SanctionsDiscussionBackend": {
 			"value": "Flow",
-			"description": "Where new sanctions are discussed: \"Flow\" for topics on the Flow board, or \"DiscussionTools\" for subpages of the discussion page, which needs DiscussionTools."
+			"description": "Where new sanctions are discussed: \"Flow\" for topics on the Flow board, or \"DiscussionTools\" for subpages of the discussion page, which needs DiscussionTools. New sanctions use DiscussionTools when Flow is not installed."
 		}
 	},
 	"attributes": {

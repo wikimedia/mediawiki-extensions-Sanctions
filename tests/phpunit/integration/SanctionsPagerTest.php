@@ -102,7 +102,7 @@ class SanctionsPagerTest extends MediaWikiIntegrationTestCase {
 		$row += [
 			'st_id' => 0,
 			'st_author' => '',
-			'st_topic' => UUID::create(),
+			'st_topic' => UUID::create()->getBinary(),
 			'st_target' => '',
 			'st_original_name' => '',
 			'st_expiry' => 'test' . wfTimestamp( TS_MW, time() + 60 ),

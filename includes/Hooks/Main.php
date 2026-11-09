@@ -18,8 +18,10 @@ use MediaWiki\Title\Title;
 use MediaWiki\User\User;
 use MediaWiki\User\UserFactory;
 
+/**
+ * Does not implement FlowAddModulesHook, as this class must load without Flow.
+ */
 class Main implements
-	\Flow\Hooks\FlowAddModulesHook,
 	\MediaWiki\Hook\RecentChange_saveHook,
 	\MediaWiki\ResourceLoader\Hook\ResourceLoaderGetConfigVarsHook
 {
@@ -107,7 +109,9 @@ class Main implements
 	 * phpcs:disable MediaWiki.NamingConventions.LowerCamelFunctionsName.FunctionName
 	 */
 	public function onRecentChange_save( $recentChange ) {
-		if ( $recentChange->getAttribute( 'rc_source' ) != RecentChangesListener::SRC_FLOW ) {
+		if ( !Utils::isFlowLoaded() ||
+			$recentChange->getAttribute( 'rc_source' ) != RecentChangesListener::SRC_FLOW
+		) {
 			return;
 		}
 

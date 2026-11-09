@@ -10,6 +10,7 @@ use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\Logging\ManualLogEntry;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Message\Message;
+use MediaWiki\Registration\ExtensionRegistry;
 use MediaWiki\Renameuser\RenameuserSQL;
 use MediaWiki\Title\Title;
 use MediaWiki\User\User;
@@ -351,8 +352,18 @@ class Utils {
 	 * @return bool
 	 */
 	public static function usesDiscussionTools(): bool {
-		return MediaWikiServices::getInstance()->getMainConfig()
+		return !self::isFlowLoaded() || MediaWikiServices::getInstance()->getMainConfig()
 			->get( 'SanctionsDiscussionBackend' ) === 'DiscussionTools';
+	}
+
+	/**
+	 * Flow is optional. Without it, old sanctions discussed on Flow can still be viewed, but
+	 * their topics are no longer updated.
+	 *
+	 * @return bool
+	 */
+	public static function isFlowLoaded(): bool {
+		return ExtensionRegistry::getInstance()->isLoaded( 'Flow' );
 	}
 
 	/**

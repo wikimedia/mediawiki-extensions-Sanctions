@@ -25,6 +25,20 @@ class SanctionTest extends MediaWikiIntegrationTestCase {
 	}
 
 	/**
+	 * @covers \MediaWiki\Extension\Sanctions\Sanction::getDiscussionPage
+	 * @covers \MediaWiki\Extension\Sanctions\Sanction::getFlowTopicName
+	 */
+	public function testDiscussionPageOfFlowTopic() {
+		$sanction = Sanction::newFromRow( (object)[
+			'st_id' => 1,
+			'st_topic' => "\x05\xd8\x1c\x7a\x24\x3e\x8a\x1b\x2c\x3d\x4e",
+		] );
+		$title = $sanction->getDiscussionPage();
+		$this->assertSame( Sanction::FLOW_TOPIC_NAMESPACE, $title->getNamespace() );
+		$this->assertSame( 'Vyi6npgrgpbzkj7y', $title->getDBkey() );
+	}
+
+	/**
 	 * @covers \MediaWiki\Extension\Sanctions\Sanction::toggleEmergency
 	 * @covers \MediaWiki\Extension\Sanctions\Utils::unblock
 	 */

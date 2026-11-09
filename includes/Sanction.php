@@ -15,14 +15,17 @@ use Wikimedia\Rdbms\DBError;
 use Wikimedia\Rdbms\IDBAccessObject;
 
 class Sanction {
+	/** The namespace of Flow topics, which does not need Flow to be installed. */
+	public const FLOW_TOPIC_NAMESPACE = 2600;
+
 	/** @var int */
 	public $mId;
 
 	/** @var User */
 	protected $mAuthor;
 
-	/** @var UUID|null The Flow topic of a sanction discussed on Flow */
-	protected $mWorkflowId;
+	/** @var string|null The binary UUID of the Flow topic of a sanction discussed on Flow */
+	protected $mTopic;
 
 	/** @var int|null The page of a sanction discussed with DiscussionTools */
 	protected $mPageId;
@@ -506,6 +509,9 @@ class Sanction {
 			$this->purgeDiscussionPage();
 			return true;
 		}
+		if ( !Utils::isFlowLoaded() ) {
+			return false;
+		}
 
 		return FlowUtil::updateSummary(
 			$this->getDiscussionPage(),
@@ -652,8 +658,7 @@ class Sanction {
 			$this->mAuthor = $userFactory->newFromId( (int)$row->st_author );
 		}
 		if ( isset( $row->st_topic ) ) {
-			$topicUUIDBinary = $row->st_topic;
-			$this->mWorkflowId = UUID::create( $topicUUIDBinary );
+			$this->mTopic = (string)$row->st_topic;
 		}
 		if ( isset( $row->st_page ) ) {
 			$this->mPageId = (int)$row->st_page;
@@ -688,7 +693,7 @@ class Sanction {
 		$data = [
 			'st_author' => $this->mAuthor->getId(),
 			'st_target' => $this->mTarget->getId(),
-			'st_topic' => $this->mWorkflowId ? $this->mWorkflowId->getBinary() : null,
+			'st_topic' => $this->mTopic,
 			'st_page' => $this->mPageId,
 			'st_expiry' => $this->mExpiry,
 			'st_original_name' => $this->mTargetOriginalName,
@@ -902,10 +907,20 @@ class Sanction {
 				$discussionPage->getDBkey() . '/' . $this->mId
 			);
 		}
-		$UUIDText = $this->mWorkflowId->getAlphadecimal();
+		return Title::makeTitle( self::FLOW_TOPIC_NAMESPACE, self::getFlowTopicName( $this->mTopic ) );
+	}
 
-		// TODO Maybe there is a better way?
-		return Title::newFromText( $UUIDText, NS_TOPIC );
+	/**
+	 * Get the name of a Flow topic from its binary UUID, the same way as
+	 * Flow\Model\UUID::getAlphadecimal(), so that it works without Flow.
+	 *
+	 * @param string $binary
+	 * @return string
+	 */
+	public static function getFlowTopicName( string $binary ): string {
+		$hex = str_pad( bin2hex( $binary ), 22, '0', STR_PAD_LEFT );
+		$alphadecimal = str_pad( \Wikimedia\base_convert( $hex, 16, 36 ), 16, '0', STR_PAD_LEFT );
+		return ucfirst( $alphadecimal );
 	}
 
 	/** @return int|null */
@@ -918,13 +933,22 @@ class Sanction {
 		$this->mPageId = $pageId;
 	}
 
-	/** @return UUID|null */
+	/**
+	 * Needs Flow.
+	 *
+	 * @return UUID|null
+	 */
 	public function getWorkflowId() {
-		return $this->mWorkflowId;
+		return $this->mTopic === null ? null : UUID::create( $this->mTopic );
 	}
 
 	/** @param UUID $uuid */
 	public function setWorkflowId( UUID $uuid ) {
-		$this->mWorkflowId = $uuid;
+		$this->mTopic = (string)$uuid->getBinary();
+	}
+
+	/** @return string|null The binary UUID of the Flow topic */
+	public function getTopic() {
+		return $this->mTopic;
 	}
 }
