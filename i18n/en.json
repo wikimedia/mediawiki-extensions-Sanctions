@@ -5,10 +5,6 @@
 		]
 	},
 	"sanctions-desc": "Let users handle sanctions",
-	"sanctions-voting-period": "3",
-	"sanctions-voting-right-verification-period": "20",
-	"sanctions-voting-right-verification-edits": "3",
-	"sanctions-max-block-period": "30",
 	"sanctions-autoblock": "1",
 	"sanctions-discussion-page-name": "Project Talk:Sanctions",
 	"sanctions-bot-name": "Sanction",
@@ -140,5 +136,11 @@
 	"apihelp-sanctionsprocedure-example-emergency": "Switch sanction 1 to the emergency process.",
 	"apierror-sanctions-nosuchsanction": "There is no sanction with ID $1.",
 	"apierror-sanctions-expired": "The voting on the sanction has ended.",
-	"apierror-sanctions-procedure-failed": "Failed to change the process of the sanction."
+	"apierror-sanctions-procedure-failed": "Failed to change the process of the sanction.",
+	"communityconfiguration-sanctions-title": "Sanctions",
+	"communityconfiguration-sanctions-description": "Rules for voting on sanctions.",
+	"communityconfiguration-sanctions-sanctionsvotingperiod-label": "Days a sanction is voted on",
+	"communityconfiguration-sanctions-sanctionsvotingrightverificationperiod-label": "Days a user must have been registered to vote",
+	"communityconfiguration-sanctions-sanctionsvotingrightverificationedits-label": "Edits a user must have made in those last days to vote",
+	"communityconfiguration-sanctions-sanctionsmaxblockperiod-label": "Most days a vote can propose to block for. A vote for more days counts as this many."
 }

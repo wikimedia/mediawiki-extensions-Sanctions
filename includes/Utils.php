@@ -5,6 +5,7 @@ namespace MediaWiki\Extension\Sanctions;
 use MediaWiki\Block\AbstractBlock;
 use MediaWiki\Block\CompositeBlock;
 use MediaWiki\Block\DatabaseBlock;
+use MediaWiki\Config\Config;
 use MediaWiki\Extension\Sanctions\Hooks\SanctionsHookRunner;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\Logging\ManualLogEntry;
@@ -59,10 +60,9 @@ class Utils {
 			}
 		}
 
-		$verificationPeriod = (float)wfMessage( 'sanctions-voting-right-verification-period' )
-			->inContentLanguage()->text();
-		$verificationEdits = (int)wfMessage( 'sanctions-voting-right-verification-edits' )
-			->inContentLanguage()->text();
+		$config = self::getConfig();
+		$verificationPeriod = (float)$config->get( 'SanctionsVotingRightVerificationPeriod' );
+		$verificationEdits = (int)$config->get( 'SanctionsVotingRightVerificationEdits' );
 
 		$twentyDaysAgo = time() - ( 60 * 60 * 24 * $verificationPeriod );
 		$twentyDaysAgo = wfTimestamp( TS_MW, $twentyDaysAgo );
@@ -376,6 +376,18 @@ class Utils {
 	 */
 	public static function isFlowLoaded(): bool {
 		return ExtensionRegistry::getInstance()->isLoaded( 'Flow' );
+	}
+
+	/**
+	 * Configuration with the voting rules, which are set on the wiki where CommunityConfiguration
+	 * is installed.
+	 */
+	public static function getConfig(): Config {
+		$services = MediaWikiServices::getInstance();
+		if ( ExtensionRegistry::getInstance()->isLoaded( 'CommunityConfiguration' ) ) {
+			return $services->getService( 'CommunityConfiguration.MediaWikiConfigRouter' );
+		}
+		return $services->getMainConfig();
 	}
 
 	/**

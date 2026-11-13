@@ -6,10 +6,6 @@
 		]
 	},
 	"sanctions-desc": "{{desc|name=Sanctions|url=https://www.mediawiki.org/wiki/Special:MyLanguage/Extension:Sanctions}}",
-	"sanctions-voting-period": "{{notranslate}}",
-	"sanctions-voting-right-verification-period": "{{notranslate}}",
-	"sanctions-voting-right-verification-edits": "{{notranslate}}",
-	"sanctions-max-block-period": "{{notranslate}}",
 	"sanctions-autoblock": "{{notranslate}}",
 	"sanctions-discussion-page-name": "Given talk page name for proposing sanctions.",
 	"sanctions-bot-name": "Username of reserved user that processes sanctions.",
@@ -141,5 +137,11 @@
 	"apihelp-sanctionsprocedure-example-emergency": "{{doc-apihelp-example|sanctionsprocedure}}",
 	"apierror-sanctions-nosuchsanction": "{{doc-apierror}}\n\nParameters:\n* $1 - The ID of the sanction.",
 	"apierror-sanctions-expired": "{{doc-apierror}}",
-	"apierror-sanctions-procedure-failed": "{{doc-apierror}}"
+	"apierror-sanctions-procedure-failed": "{{doc-apierror}}",
+	"communityconfiguration-sanctions-title": "Title of the Sanctions page in [[Special:CommunityConfiguration]].",
+	"communityconfiguration-sanctions-description": "Description of the Sanctions page in [[Special:CommunityConfiguration]].",
+	"communityconfiguration-sanctions-sanctionsvotingperiod-label": "Label in [[Special:CommunityConfiguration/Sanctions]].",
+	"communityconfiguration-sanctions-sanctionsvotingrightverificationperiod-label": "Label in [[Special:CommunityConfiguration/Sanctions]].",
+	"communityconfiguration-sanctions-sanctionsvotingrightverificationedits-label": "Label in [[Special:CommunityConfiguration/Sanctions]].",
+	"communityconfiguration-sanctions-sanctionsmaxblockperiod-label": "Label in [[Special:CommunityConfiguration/Sanctions]]."
 }

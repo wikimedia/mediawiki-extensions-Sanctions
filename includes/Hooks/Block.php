@@ -4,7 +4,7 @@ namespace MediaWiki\Extension\Sanctions\Hooks;
 
 use MediaWiki\Extension\Sanctions\Sanction;
 use MediaWiki\Extension\Sanctions\SanctionStore;
-use MediaWiki\Message\Message;
+use MediaWiki\Extension\Sanctions\Utils;
 use MediaWiki\Utils\MWTimestamp;
 use Wikimedia\ObjectCache\WANObjectCache;
 
@@ -70,10 +70,7 @@ class Block implements \MediaWiki\Block\Hook\GetUserBlockHook {
 	 * @return int
 	 */
 	protected static function getDefaultTtl(): int {
-		$ttl = ( new Message( 'sanctions-voting-period' ) )->text();
-		$ttl = (float)$ttl;
-		$ttl *= WANObjectCache::TTL_DAY;
-
-		return (int)$ttl;
+		$votingPeriod = (float)Utils::getConfig()->get( 'SanctionsVotingPeriod' );
+		return (int)( $votingPeriod * WANObjectCache::TTL_DAY );
 	}
 }

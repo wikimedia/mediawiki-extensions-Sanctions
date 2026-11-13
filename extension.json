@@ -165,11 +165,42 @@
 		"SanctionsDiscussionBackend": {
 			"value": "Flow",
 			"description": "Where new sanctions are discussed: \"Flow\" for topics on the Flow board, or \"DiscussionTools\" for subpages of the discussion page, which needs DiscussionTools. New sanctions use DiscussionTools when Flow is not installed."
+		},
+		"SanctionsVotingPeriod": {
+			"value": 3,
+			"description": "Days a sanction is voted on. Where CommunityConfiguration is installed, this is set on the wiki at Special:CommunityConfiguration/Sanctions instead."
+		},
+		"SanctionsVotingRightVerificationPeriod": {
+			"value": 20,
+			"description": "Days a user must have been registered to vote. Edits count toward $wgSanctionsVotingRightVerificationEdits only within this many last days. Where CommunityConfiguration is installed, this is set on the wiki at Special:CommunityConfiguration/Sanctions instead."
+		},
+		"SanctionsVotingRightVerificationEdits": {
+			"value": 3,
+			"description": "Edits a user must have made in the last $wgSanctionsVotingRightVerificationPeriod days to vote. Where CommunityConfiguration is installed, this is set on the wiki at Special:CommunityConfiguration/Sanctions instead."
+		},
+		"SanctionsMaxBlockPeriod": {
+			"value": 30,
+			"description": "Most days a vote can propose to block for. A vote for more days counts as this many. Where CommunityConfiguration is installed, this is set on the wiki at Special:CommunityConfiguration/Sanctions instead."
 		}
 	},
 	"attributes": {
 		"VisualEditor": {
 			"PluginModules": [ "ext.sanctions.discussionTools" ]
+		},
+		"CommunityConfiguration": {
+			"Providers": {
+				"Sanctions": {
+					"store": {
+						"type": "wikipage",
+						"args": [ "MediaWiki:SanctionsConfig.json" ]
+					},
+					"validator": {
+						"type": "jsonschema",
+						"args": [ "MediaWiki\\Extension\\Sanctions\\SanctionsSchema" ]
+					},
+					"type": "mw-config"
+				}
+			}
 		}
 	},
 	"DefaultUserOptions": {

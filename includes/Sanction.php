@@ -70,7 +70,7 @@ class Sanction {
 				->inContentLanguage()->text()
 		] )->inContentLanguage()->text();
 
-		$votingPeriod = (float)wfMessage( 'sanctions-voting-period' )->text();
+		$votingPeriod = (float)Utils::getConfig()->get( 'SanctionsVotingPeriod' );
 		$expiry = wfTimestamp( TS_MW, time() + ( ExpirationAwareness::TTL_DAY * $votingPeriod ) );
 
 		$data = (object)[
@@ -709,7 +709,7 @@ class Sanction {
 
 		$sumPeriod = 0;
 		$agree = 0;
-		$maxBlockPeriod = (float)wfMessage( 'sanctions-max-block-period' )->text();
+		$maxBlockPeriod = (int)Utils::getConfig()->get( 'SanctionsMaxBlockPeriod' );
 		foreach ( $votes as $userId => $period ) {
 			$sumPeriod += $period > $maxBlockPeriod ? $maxBlockPeriod : $period;
 			if ( $period > 0 ) {

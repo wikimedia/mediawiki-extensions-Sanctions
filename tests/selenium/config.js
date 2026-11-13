@@ -26,17 +26,14 @@ class Config {
 	async setup() {
 		const apiClient = await createApiClient();
 		try {
+			// Read where CommunityConfiguration is installed, as in CI
 			await apiClient.edit(
-				'MediaWiki:sanctions-voting-right-verification-period',
-				VERIFICATION_PERIOD / SECONDS_IN_DAY
-			);
-			await apiClient.edit(
-				'MediaWiki:sanctions-voting-right-verification-edits',
-				VERIFICATION_EDITS
-			);
-			await apiClient.edit(
-				'MediaWiki:sanctions-voting-period',
-				VOTING_PERIOD / SECONDS_IN_DAY
+				'MediaWiki:SanctionsConfig.json',
+				JSON.stringify( {
+					SanctionsVotingRightVerificationPeriod: VERIFICATION_PERIOD / SECONDS_IN_DAY,
+					SanctionsVotingRightVerificationEdits: VERIFICATION_EDITS,
+					SanctionsVotingPeriod: VOTING_PERIOD / SECONDS_IN_DAY
+				} )
 			);
 			await apiClient.edit( 'MediaWiki:sanctions-autoblock', '0' );
 		} catch ( e ) {

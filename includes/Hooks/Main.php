@@ -99,8 +99,7 @@ class Main implements
 			->inContentLanguage()->text();
 		$vars['wgSanctionsInsultingNameTopicTitle'] = wfMessage( 'sanctions-type-insulting-name' )
 			->inContentLanguage()->text();
-		$vars['wgSanctionsMaxBlockPeriod'] = (int)wfMessage( 'sanctions-max-block-period' )
-			->inContentLanguage()->text();
+		$vars['wgSanctionsMaxBlockPeriod'] = (int)Utils::getConfig()->get( 'SanctionsMaxBlockPeriod' );
 	}
 
 	/**

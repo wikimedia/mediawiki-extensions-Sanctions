@@ -4,7 +4,7 @@ namespace MediaWiki\Extension\Sanctions\Tests\Integration\Api;
 
 use Flow\Model\UUID;
 use MediaWiki\Extension\Sanctions\Sanction;
-use MediaWiki\MainConfigNames;
+use MediaWiki\Extension\Sanctions\Tests\Integration\VotingRulesTrait;
 use MediaWiki\Tests\Api\ApiTestCase;
 use MediaWiki\User\User;
 
@@ -14,6 +14,7 @@ use MediaWiki\User\User;
  * @group Database
  */
 class ApiQuerySanctionsTest extends ApiTestCase {
+	use VotingRulesTrait;
 
 	private User $author;
 	private User $target;
@@ -28,14 +29,10 @@ class ApiQuerySanctionsTest extends ApiTestCase {
 	 * Let every registered user vote, without the waiting period and the edits.
 	 */
 	private function letEveryoneVote() {
-		$this->overrideConfigValue( MainConfigNames::UseDatabaseMessages, true );
-		$this->setTemporaryHook( 'MessagesPreLoad', static function ( $title, &$message ) {
-			if ( $title === 'Sanctions-voting-right-verification-period' ) {
-				$message = '-1';
-			} elseif ( $title === 'Sanctions-voting-right-verification-edits' ) {
-				$message = '0';
-			}
-		} );
+		$this->setVotingRules( [
+			'SanctionsVotingRightVerificationPeriod' => 0,
+			'SanctionsVotingRightVerificationEdits' => 0,
+		] );
 	}
 
 	/**

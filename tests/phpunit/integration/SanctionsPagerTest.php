@@ -8,7 +8,6 @@ use MediaWiki\Extension\Sanctions\SanctionsPager;
 use MediaWiki\Extension\Sanctions\SanctionStore;
 use MediaWiki\User\User;
 use MediaWikiIntegrationTestCase;
-use MessageCache;
 use Wikimedia\TestingAccessWrapper;
 
 /**
@@ -16,6 +15,7 @@ use Wikimedia\TestingAccessWrapper;
  * @group Database
  */
 class SanctionsPagerTest extends MediaWikiIntegrationTestCase {
+	use VotingRulesTrait;
 
 	private function getSanctionsPager( ?User $viewer = null, ?string $targetName = null ) {
 		$request = new RequestContext();
@@ -30,17 +30,10 @@ class SanctionsPagerTest extends MediaWikiIntegrationTestCase {
 	}
 
 	/**
-	 * TODO Mock edit counts without touching system message.
 	 * @return User
 	 */
 	private function getVotableUser() {
-		// Make MessageCache to return sanctions-voting-right-verification-edits as 0
-		$mock = $this->createMock( MessageCache::class );
-		$mock->method( 'get' )
-			->willReturn( '0' );
-		$mock->method( 'transform' )
-			->willReturnArgument( 0 );
-		$this->setService( 'MessageCache', $mock );
+		$this->setVotingRules( [ 'SanctionsVotingRightVerificationEdits' => 0 ] );
 
 		$user = $this->createMock( User::class );
 
