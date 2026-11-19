@@ -135,5 +135,11 @@
 	"apihelp-sanctionsprocedure-example-emergency": "U beddel cunaqabataynta 1 habraaca degdegga ah.",
 	"apierror-sanctions-nosuchsanction": "Ma jiro cunaqabatayn leh aqoonsiga $1.",
 	"apierror-sanctions-expired": "Codbixintii cunaqabataynta way dhammaatay.",
-	"apierror-sanctions-procedure-failed": "Beddelidda habraaca cunaqabataynta way fashilantay."
+	"apierror-sanctions-procedure-failed": "Beddelidda habraaca cunaqabataynta way fashilantay.",
+	"communityconfiguration-sanctions-title": "Cunaqabatayno",
+	"communityconfiguration-sanctions-description": "Xeerarka cod u qaadista cunaqabataynta.",
+	"communityconfiguration-sanctions-sanctionsvotingperiod-label": "Tirada maalmaha cunaqabataynta cod loo qaadayo",
+	"communityconfiguration-sanctions-sanctionsvotingrightverificationperiod-label": "Tirada maalmaha ay tahay in isticmaaluhu diiwaangashanaa si uu cod u dhiibto",
+	"communityconfiguration-sanctions-sanctionsvotingrightverificationedits-label": "Tirada wax ka beddellada ay tahay in isticmaaluhu sameeyay maalmahaas ugu dambeeyay si uu cod u dhiibto",
+	"communityconfiguration-sanctions-sanctionsmaxblockperiod-label": "Tirada ugu badan ee maalmaha uu codku soo jeedin karo xannibaad. Codka lagu taageero maalmo intaas ka badan waxaa loo xisaabinayaa tiradan."
 }

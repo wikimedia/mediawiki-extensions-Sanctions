@@ -47,5 +47,6 @@
 	"notification-header-sanctions-proposed-against-insulting-name": "Et gouf eng Sanktioun géint {{GENDER:$2|Äre}} Benotzernumm proposéiert.",
 	"apierror-sanctions-cannot-propose": "Dir kënnt keng Sanktioun proposéieren: $1",
 	"apihelp-sanctionsprocedure-param-id": "D'ID vun der Sanktioun.",
-	"apierror-sanctions-nosuchsanction": "Et gëtt keng Sanktioun mat der ID $1."
+	"apierror-sanctions-nosuchsanction": "Et gëtt keng Sanktioun mat der ID $1.",
+	"communityconfiguration-sanctions-title": "Sanktiounen"
 }

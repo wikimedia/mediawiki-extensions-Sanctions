@@ -20,5 +20,11 @@
 	"sanctions-reason-failed-to-load-registration": "Pridobivanje datuma registracije računa ni uspela.",
 	"sanctions-ve-agree-days-inspector-remove-label": "Odstrani",
 	"echo-category-title-sanctions-against-me": "Sankcija zoper mene",
-	"sanctions-pref-tooltip-sanctions-against-me": "Obvesti me, ko je zoper mene predlagana ali uvedena sankcija."
+	"sanctions-pref-tooltip-sanctions-against-me": "Obvesti me, ko je zoper mene predlagana ali uvedena sankcija.",
+	"communityconfiguration-sanctions-title": "Sankcije",
+	"communityconfiguration-sanctions-description": "Pravila za glasovanje o sankcijah.",
+	"communityconfiguration-sanctions-sanctionsvotingperiod-label": "Dnevi glasovanja o sankciji",
+	"communityconfiguration-sanctions-sanctionsvotingrightverificationperiod-label": "Dnevi, ko mora biti uporabnik registriran za glasovanje",
+	"communityconfiguration-sanctions-sanctionsvotingrightverificationedits-label": "Urejanja, ki jih je moral uporabnik opraviti v teh zadnjih dneh, da lahko glasuje",
+	"communityconfiguration-sanctions-sanctionsmaxblockperiod-label": "Večino dni lahko glasovanje predlaga blokiranje. Glasovanje za več dni šteje toliko dni."
 }

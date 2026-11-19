@@ -135,5 +135,10 @@
 	"apihelp-sanctionsprocedure-example-emergency": "Cambiar a sanción 1 ao proceso de emerxencia.",
 	"apierror-sanctions-nosuchsanction": "Non hai ningunha sanción con identificador $1.",
 	"apierror-sanctions-expired": "Rematou a votación na sanción.",
-	"apierror-sanctions-procedure-failed": "Non se puido cambiar o proceso da sanción."
+	"apierror-sanctions-procedure-failed": "Non se puido cambiar o proceso da sanción.",
+	"communityconfiguration-sanctions-title": "Sancións",
+	"communityconfiguration-sanctions-description": "Normas para a votación de sancións.",
+	"communityconfiguration-sanctions-sanctionsvotingperiod-label": "Días nos que se vota unha sanción",
+	"communityconfiguration-sanctions-sanctionsvotingrightverificationperiod-label": "Días que un usuario debe estar rexistrado para votar",
+	"communityconfiguration-sanctions-sanctionsvotingrightverificationedits-label": "Edicións que un usuario debe facer nos últimos días para votar"
 }

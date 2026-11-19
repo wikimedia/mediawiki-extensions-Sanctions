@@ -4,6 +4,7 @@
 			"Meno25",
 			"Michel Bakni",
 			"Mohammed Qays",
+			"Muxammad Xafiz",
 			"ديفيد"
 		]
 	},
@@ -98,5 +99,6 @@
 	"echo-category-title-sanctions-against-me": "جزاء ضدي",
 	"sanctions-pref-tooltip-sanctions-against-me": "إعلامي عندما يتم اقتراح أو إصدار عقوبة ضدي.",
 	"notification-header-sanctions-proposed-against-insulting-name": "عقوبة ضد {{GENDER:$2| تم اقتراح اسم المستخدم الخاص بك}}.",
-	"notification-header-sanctions-proposed": "عقوبة ضد {{GENDER:$2| تم اقتراح تعديلك المستقبلي}}."
+	"notification-header-sanctions-proposed": "عقوبة ضد {{GENDER:$2| تم اقتراح تعديلك المستقبلي}}.",
+	"communityconfiguration-sanctions-title": "العقوبات"
 }
