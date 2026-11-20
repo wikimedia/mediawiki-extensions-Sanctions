@@ -140,5 +140,6 @@
 	"communityconfiguration-sanctions-description": "Normas para a votación de sancións.",
 	"communityconfiguration-sanctions-sanctionsvotingperiod-label": "Días nos que se vota unha sanción",
 	"communityconfiguration-sanctions-sanctionsvotingrightverificationperiod-label": "Días que un usuario debe estar rexistrado para votar",
-	"communityconfiguration-sanctions-sanctionsvotingrightverificationedits-label": "Edicións que un usuario debe facer nos últimos días para votar"
+	"communityconfiguration-sanctions-sanctionsvotingrightverificationedits-label": "Edicións que un usuario debe facer nos últimos días para votar",
+	"communityconfiguration-sanctions-sanctionsmaxblockperiod-label": "Número máximo de días que se pode propoñer como duración dun bloqueo. Un voto para máis días conta como este número de días."
 }

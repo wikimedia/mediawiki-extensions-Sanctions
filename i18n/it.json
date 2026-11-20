@@ -8,5 +8,7 @@
 	"sanctions-row-button-execute": "Esegui",
 	"sanctions-ve-agree-days-inspector-title": "Scadenza",
 	"sanctions-ve-agree-days-inspector-invalid-value": "\"$1\" non è valido.",
-	"apihelp-query+sanctions-param-prop": "Quali proprietà ottenere:"
+	"apihelp-query+sanctions-param-prop": "Quali proprietà ottenere:",
+	"communityconfiguration-sanctions-title": "Sanzioni",
+	"communityconfiguration-sanctions-description": "Regole per la votazione sulle sanzioni."
 }
