@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"Jdx",
+			"PanWor",
 			"Rail"
 		]
 	},
@@ -53,5 +54,7 @@
 	"sanctions-ve-vote-disagree-tool-title": "Przeciw",
 	"sanctions-ve-agree-days-inspector-title": "Wygasa",
 	"sanctions-ve-agree-days-inspector-remove-label": "Usuń",
-	"sanctions-ve-agree-days-inspector-invalid-value": "„$1” nie jest prawidłowej."
+	"sanctions-ve-agree-days-inspector-invalid-value": "„$1” nie jest prawidłowej.",
+	"communityconfiguration-sanctions-title": "Sankcje",
+	"communityconfiguration-sanctions-description": "Zasady głosowania nad sankcjami."
 }
